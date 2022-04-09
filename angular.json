@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "projects": {
+    "api": "apps/api",
+    "api-interfaces": "libs/api-interfaces",
+    "ull": "apps/ull",
+    "ull-e2e": "apps/ull-e2e",
+    "mobile": "apps/mobile"
+  }
+}
