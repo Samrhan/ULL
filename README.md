@@ -2,19 +2,23 @@
 
 # Ull
 
-This project was generated using [Nx](https://nx.dev).
+## Prérequis (Windows) :
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+* [Node v16](https://nodejs.org/dist/v16.14.2/node-v16.14.2-x64.msi) (N'oubliez pas d'installer npm)
+* [Flutter SDK](https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_2.10.4-stable.zip)
+* IntelliJ avec les plugins Dart et Flutter
+* NX : `npm i -g nx`
+* AngularCLI : `npm install -g @angular/cli`
 
-🔎 **Smart, Fast and Extensible Build System**
+## Prérequis (MacOS)
 
-## Quick Start & Documentation
+* Node v16: `brew install node` ou `brew install fnm`
+* Flutter SDK : `brew install flutter`
+* NX : `npm i -g nx`
+* AngularCLI : `npm install -g @angular/cli`
+* IntelliJ avec les plugins Dart et Flutter
 
-[Nx Documentation](https://nx.dev/angular)
-
-[10-minute video showing all Nx features](https://nx.dev/getting-started/intro)
-
-[Interactive Tutorial](https://nx.dev/tutorial/01-create-application)
+# Configuration : 
 
 ## Adding capabilities to your workspace
 
