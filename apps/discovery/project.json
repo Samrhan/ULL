@@ -1,0 +1,84 @@
+{
+  "root": "apps/discovery",
+  "sourceRoot": "apps/discovery/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/discovery",
+        "main": "apps/discovery/src/main.ts",
+        "tsConfig": "apps/discovery/tsconfig.app.json",
+        "assets": ["apps/discovery/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/discovery/src/environments/environment.ts",
+              "with": "apps/discovery/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "discovery:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/discovery/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/discovery"],
+      "options": {
+        "jestConfig": "apps/discovery/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "migration-generate": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:generate -f .env.local",
+        "cwd": "apps/discovery"
+      }
+    },
+    "migration-run": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:run -f .env.local",
+        "cwd": "apps/discovery"
+      }
+    },
+    "migration-revert": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:revert -f .env.local",
+        "cwd": "apps/discovery"
+      }
+    },
+    "migration-create": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:create -f .env.local",
+        "cwd": "apps/discovery"
+      }
+    }
+  },
+  "tags": []
+}

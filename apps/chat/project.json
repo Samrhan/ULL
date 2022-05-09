@@ -1,0 +1,84 @@
+{
+  "root": "apps/chat",
+  "sourceRoot": "apps/chat/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/chat",
+        "main": "apps/chat/src/main.ts",
+        "tsConfig": "apps/chat/tsconfig.app.json",
+        "assets": ["apps/chat/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/chat/src/environments/environment.ts",
+              "with": "apps/chat/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "chat:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/chat/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/chat"],
+      "options": {
+        "jestConfig": "apps/chat/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "migration-generate": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:generate -f .env.local",
+        "cwd": "apps/chat"
+      }
+    },
+    "migration-run": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:run -f .env.local",
+        "cwd": "apps/chat"
+      }
+    },
+    "migration-revert": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:revert -f .env.local",
+        "cwd": "apps/chat"
+      }
+    },
+    "migration-create": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:create -f .env.local",
+        "cwd": "apps/chat"
+      }
+    }
+  },
+  "tags": []
+}

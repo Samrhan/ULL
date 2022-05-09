@@ -1,10 +1,16 @@
 {
   "version": 2,
   "projects": {
-    "api": "apps/api",
+    "accounting": "apps/accounting",
     "api-interfaces": "libs/api-interfaces",
+    "authentication": "apps/authentication",
+    "chat": "apps/chat",
+    "customer": "apps/customer",
+    "discovery": "apps/discovery",
+    "mobile": "apps/mobile",
+    "provider": "apps/provider",
+    "reservation": "apps/reservation",
     "ull": "apps/ull",
-    "ull-e2e": "apps/ull-e2e",
-    "mobile": "apps/mobile"
+    "ull-e2e": "apps/ull-e2e"
   }
 }

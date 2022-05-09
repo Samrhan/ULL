@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All Services" type="CompoundRunConfigurationType">
+    <toRun name="accounting:serve" type="js.build_tools.npm" />
+    <toRun name="chat:serve" type="js.build_tools.npm" />
+    <toRun name="customer:serve" type="js.build_tools.npm" />
+    <toRun name="discovery:serve" type="js.build_tools.npm" />
+    <toRun name="provider:serve" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>
