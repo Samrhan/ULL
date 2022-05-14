@@ -50,7 +50,7 @@ export class AuthService implements OnApplicationBootstrap {
     return request.data.access_token
   }
 
-  async checkSiren(siren: string): Promise<boolean> {
+  async checkSiren(siren: string): Promise<void> {
     try {
       await firstValueFrom(this.httpService.get(`https://api.insee.fr/entreprises/sirene/V3/siren/${siren}`,
         {
@@ -59,19 +59,16 @@ export class AuthService implements OnApplicationBootstrap {
             "Content-Type": "application/x-www-form-urlencoded"
           }
         }));
-      return true
     } catch {
-      return false
+      throw new BadRequestException('Siren is not valid')
     }
   }
 
-  async register(registerDto: RegisterDto) {
-    if (!await this.checkSiren(registerDto.siren)) {
-      throw new BadRequestException('Siren is not valid')
-    }
+  async register(registerDto: RegisterDto, id?: string) {
+    await this.checkSiren(registerDto.siren)
 
     const provider = new Provider();
-    provider.id = uuidv4();
+    provider.id = id || uuidv4();
     provider.companyName = registerDto.company_name;
     provider.companyDescription = registerDto.company_description || '';
     provider.siren = registerDto.siren;

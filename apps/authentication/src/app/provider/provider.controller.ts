@@ -8,7 +8,7 @@ export class ProviderController {
   @Inject() private readonly providerService: ProviderService;
 
   @MessagePattern('register')
-  async getNotifications(@Payload() registerMessage: RegisterMessage, @Ctx() context: RmqContext) {
+  async registerProvider(@Payload() registerMessage: RegisterMessage, @Ctx() context: RmqContext) {
     return await this.providerService.register(registerMessage)
   }
 }

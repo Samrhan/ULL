@@ -12,11 +12,13 @@ export class ProviderService {
   @InjectRepository(ProviderAccount) providerAccountRepository: Repository<ProviderAccount>
 
   async register(registerMessage: RegisterMessage) {
-    const user = await this.providerAccountRepository.save(
-      {
-        ...registerMessage,
-        password: await bcrypt.hash(registerMessage.password, SALT_OR_ROUNDS)
-      })
+    const user = {
+      ...await this.providerAccountRepository.save(
+        {
+          ...registerMessage,
+          password: await bcrypt.hash(registerMessage.password, SALT_OR_ROUNDS)
+        })
+    }
     delete user.password
     return user;
   }
