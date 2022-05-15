@@ -7,6 +7,7 @@
     "chat": "apps/chat",
     "customer": "apps/customer",
     "discovery": "apps/discovery",
+    "global-constants": "libs/global-constants",
     "mobile": "apps/mobile",
     "provider": "apps/provider",
     "reservation": "apps/reservation",
