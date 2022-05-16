@@ -30,7 +30,7 @@ describe('AuthController', () => {
   });
 
   it('register should call register', () => {
-    const spy = jest.spyOn(service, "register").mockResolvedValue()
+    const spy = jest.spyOn(service, "registerProvider").mockResolvedValue()
     controller.register(fakeRegisterDto);
     expect(spy).toHaveBeenCalledWith(fakeRegisterDto);
   });

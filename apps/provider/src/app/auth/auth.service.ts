@@ -1,4 +1,4 @@
-import {BadRequestException, Inject, Injectable, Logger} from '@nestjs/common';
+import {BadRequestException, Inject, Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {ConfigService} from "@nestjs/config";
 import {firstValueFrom} from "rxjs";
@@ -14,9 +14,9 @@ const DEFAULT_PROFILE_PIC = 'default'
 const DEFAULT_COVER_PIC = 'default'
 
 @Injectable()
-export class AuthService  {
+export class AuthService {
 
-  private logger = new Logger()
+
   @Inject() amqpConnection: AmqpConnection
   @Inject() configService: ConfigService
   @Inject() httpService: HttpService
@@ -52,7 +52,7 @@ export class AuthService  {
     }
   }
 
-  async register(registerDto: RegisterDto, id?: string) {
+  async registerProvider(registerDto: RegisterDto, id?: string) {
     await this.checkSiren(registerDto.siren)
 
     const provider = new Provider();
@@ -67,14 +67,14 @@ export class AuthService  {
     provider.areaServed = registerDto.area_served  || '';
 
     try {
-      await this.registerProvider({idProvider: provider.id, password: registerDto.password, email: registerDto.email})
-      await this.providerRepository.save(provider)
+      await this.registerProviderAuthService({idProvider: provider.id, password: registerDto.password, email: registerDto.email});
+      await this.providerRepository.save(provider);
     } catch (e) {
-      throw new BadRequestException('Siren, mail or phone are already used in another account.')
+      throw new BadRequestException('Siren, mail or phone are already used in another account.');
     }
   }
 
-  private async registerProvider(registerProvider: RegisterProviderMessage) {
+  async registerProviderAuthService(registerProvider: RegisterProviderMessage) {
     return await this.amqpConnection.request({
       exchange: 'provider',
       routingKey: 'register',

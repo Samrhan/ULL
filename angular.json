@@ -3,8 +3,10 @@
   "projects": {
     "accounting": "apps/accounting",
     "api-interfaces": "libs/api-interfaces",
+    "auth": "libs/auth",
     "authentication": "apps/authentication",
     "chat": "apps/chat",
+    "config": "libs/config",
     "customer": "apps/customer",
     "discovery": "apps/discovery",
     "global-constants": "libs/global-constants",

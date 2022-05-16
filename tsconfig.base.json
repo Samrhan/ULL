@@ -17,6 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@ull/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@ull/auth": ["libs/auth/src/index.ts"],
+      "@ull/config": ["libs/config/src/index.ts"],
       "@ull/global-constants": ["libs/global-constants/src/index.ts"]
     }
   },

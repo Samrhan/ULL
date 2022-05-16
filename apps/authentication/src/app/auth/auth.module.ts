@@ -1,32 +1,50 @@
 import {Module} from '@nestjs/common';
 import {AuthService} from './auth.service';
 import {JwtModule} from "@nestjs/jwt";
-import {AuthController} from './auth.controller';
 import {HttpModule} from "@nestjs/axios";
 import {RabbitMQModule} from "@golevelup/nestjs-rabbitmq";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {ProviderAccount} from "../provider/provider-account.entity";
+import {JwtStrategy} from "./jwt.strategy";
+import {ConfigModule, ConfigService} from "@nestjs/config";
+import {RabbitMQConfig} from "@ull/config";
+import {AuthConfig} from "./auth.config";
 
 @Module({
-  providers: [AuthService],
-  imports: [JwtModule.register({
-    secret: 'test',
-    // signOptions: { expiresIn: '7d' },
-  }), HttpModule,
-    RabbitMQModule.forRoot(RabbitMQModule, {
-      exchanges: [
-        {
-          name: 'customer',
-          type: 'topic',
+  imports: [HttpModule,
+    RabbitMQModule.forRootAsync(RabbitMQModule, {
+      imports: [ConfigModule, ConfigModule.forFeature(RabbitMQConfig)],
+      useFactory: async (configService: ConfigService)=>({
+        exchanges: [
+          {
+            name: 'auth',
+            type: 'topic',
+          },
+        ],
+        channels: {
+          'auth': {
+            prefetchCount: 15,
+            default: true,
+          },
         },
-        {
-          name: 'provider',
-          type: 'topic',
-        },
-      ],
-      uri: 'amqp://localhost:5672',
-      connectionInitOptions: { wait: false },
+        uri: configService.get<string>('rabbitmq.url'),
+        connectionInitOptions: {wait: false},
+      }),
+      inject: [ConfigService]
     }),
+    TypeOrmModule.forFeature([ProviderAccount]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule, ConfigModule.forFeature(AuthConfig)],
+      useFactory: async (configService: ConfigService) => ({
+        secret: Buffer.from(configService.get<string>('auth.secret'), 'base64'),
+        signOptions: {expiresIn: '7d'},
+      }),
+      inject: [ConfigService]
+    }),
+    ConfigModule,
   ],
-  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService]
 })
 export class AuthModule {
 }

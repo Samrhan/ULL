@@ -15,3 +15,14 @@ export interface CheckUser {
   id: string;
 }
 
+export enum UserType {
+  PROVIDER = 'provider',
+  CUSTOMER = 'customer',
+}
+
+export interface JwtUser {
+  id: string,
+  userType: UserType,
+  jti?: string,
+}
+

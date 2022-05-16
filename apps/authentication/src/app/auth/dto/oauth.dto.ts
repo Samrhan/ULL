@@ -3,7 +3,6 @@ import {IsEmail, IsNotEmpty, IsString} from "class-validator";
 
 export class OAuthDto {
   @ApiProperty()
-  @IsString()
   @IsEmail()
   @IsNotEmpty()
   public email: string;
