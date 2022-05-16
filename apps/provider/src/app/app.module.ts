@@ -3,7 +3,10 @@ import {AuthModule} from './auth/auth.module';
 import {DatabaseModule} from "./shared/database/database.module";
 
 @Module({
-  imports: [AuthModule, DatabaseModule],
+  imports: [
+    AuthModule,
+    DatabaseModule,
+    ],
   controllers: [],
   providers: [],
 })

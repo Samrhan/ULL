@@ -7,7 +7,6 @@ import {Logger} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 
 import {AppModule} from './app/app.module';
-import {Transport} from "@nestjs/microservices";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
 async function bootstrap() {
@@ -19,18 +18,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://localhost:5672'],
-      queue: 'provider',
-      replyToQueue: 'reply',
-      queueOptions: {
-        durable: false
-      },
-    },
-  });
-  await app.startAllMicroservices();
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT_AUTHENTICATION || 3333;

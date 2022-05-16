@@ -2,8 +2,9 @@ import {Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {ProviderAccount} from "./provider-account.entity";
 import {Repository} from "typeorm";
-import {RegisterMessage} from "@ull/api-interfaces";
+import {RegisterProviderMessage} from "@ull/api-interfaces";
 import * as bcrypt from "bcrypt";
+import {RabbitRPC} from "@golevelup/nestjs-rabbitmq";
 
 const SALT_OR_ROUNDS = 10
 
@@ -11,7 +12,11 @@ const SALT_OR_ROUNDS = 10
 export class ProviderService {
   @InjectRepository(ProviderAccount) providerAccountRepository: Repository<ProviderAccount>
 
-  async register(registerMessage: RegisterMessage) {
+  @RabbitRPC({
+    exchange: 'provider',
+    routingKey: 'register',
+  })
+  async register(registerMessage: RegisterProviderMessage) {
     const user = {
       ...await this.providerAccountRepository.save(
         {
