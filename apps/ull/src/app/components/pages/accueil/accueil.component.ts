@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faTwitter, faFacebook, faInstagram, faLinkedin} from "@fortawesome/free-brands-svg-icons";
 
 @Component({
   selector: 'ull-accueil',
@@ -11,6 +12,12 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 })
 export class AccueilComponent {
   faBars = faBars;
+  faArrowRight = faArrowRight;
+
+  faTwitter = faTwitter;
+  faFacebook = faFacebook;
+  faInstagram = faInstagram;
+  faLinkedin = faLinkedin;
 
   explainPannels = [{
     category: "Organisez des événements inoubliables",

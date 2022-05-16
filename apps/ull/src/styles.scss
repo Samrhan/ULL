@@ -10,6 +10,10 @@ a, a:hover, a:focus, a:active {
   color: inherit;
 }
 
+img {
+  object-fit: cover;
+}
+
 .vh-25 {
   height: 25vh !important;
 }
