@@ -13,6 +13,7 @@
     "mobile": "apps/mobile",
     "provider": "apps/provider",
     "reservation": "apps/reservation",
+    "storage": "libs/storage",
     "ull": "apps/ull",
     "ull-e2e": "apps/ull-e2e"
   }

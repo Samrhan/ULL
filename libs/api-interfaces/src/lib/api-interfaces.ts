@@ -26,3 +26,12 @@ export interface JwtUser {
   jti?: string,
 }
 
+export interface MinimalFile {
+  fieldname: string,
+  originalname: string,
+  encoding: string,
+  mimetype: string,
+  buffer: Buffer,
+  size: number
+}
+

@@ -6,8 +6,10 @@
     "types": []
   },
   "include": [
-    "**/*.ts",
-    "../../node_modules/@types/node/*.ts"
+    "**/*.ts"
   ],
-  "exclude": ["**/*.spec.ts"]
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
 }
