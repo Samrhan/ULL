@@ -15,6 +15,9 @@ export class ProviderAccount {
   @Column()
   password: string;
 
+  @Column({nullable: true, name: 'reset_password_token'})
+  resetPasswordToken?: string
+
   @CreateDateColumn({name: 'created_at'})
   createdAt: string;
 

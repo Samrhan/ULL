@@ -10,6 +10,7 @@ import {LoginDto} from "./dto/login.dto";
 import {AuthService} from "../auth/auth.service";
 import {ChangePasswordDto} from "./dto/change-password.dto";
 import {v4 as uuidv4} from 'uuid';
+import {MailerService} from "@ull/mailer";
 
 const SALT_OR_ROUNDS = 10
 
@@ -22,6 +23,7 @@ export class ProviderService {
   @Inject() authService: AuthService
   @Inject() httpService: HttpService
   @Inject() amqpConnection: AmqpConnection
+  @Inject() mailerService: MailerService
 
 
   @RabbitRPC({
@@ -59,13 +61,15 @@ export class ProviderService {
     }
   }
 
-
-  async getUser(id): Promise<ProviderAccount> {
-    return await this.providerAccountRepository.findOne(id)
+  async getUserByMail(email: string): Promise<ProviderAccount | undefined> {
+    return await this.providerAccountRepository.findOne({email})
   }
 
-  async changePassword(changePasswordDto: ChangePasswordDto, reqUser: any): Promise<{ access_token: string }> {
-    let user = await this.getUser(reqUser.id);
+  async changePassword(changePasswordDto: ChangePasswordDto): Promise<{ access_token: string }> {
+    let user = await this.getUserByMail(changePasswordDto.email);
+    if(!user?.resetPasswordToken || user.resetPasswordToken !== changePasswordDto.token){
+      throw new UnauthorizedException()
+    }
     if (changePasswordDto.old_password === changePasswordDto.new_password) {
       throw new ForbiddenException('Old and new password must me different')
     }
@@ -75,8 +79,16 @@ export class ProviderService {
     user = await this.providerAccountRepository.save({
       ...user,
       password: await bcrypt.hash(changePasswordDto.new_password, SALT_OR_ROUNDS),
-      jti: uuidv4()
+      jti: uuidv4(),
+      resetPasswordToken: null
     })
     return {access_token: this.authService.getJwt({id: user.idProvider, userType: UserType.PROVIDER, jti: user.jti})}
+  }
+
+  async resetPassword(reqUser: JwtUser) {
+    await this.providerAccountRepository.save({idProvider:reqUser.id, resetPasswordToken: uuidv4()})
+    const user = await this.providerAccountRepository.findOne(reqUser.id)
+
+    await this.mailerService.sendMail(user.email,'Changement de mot de passe', `Token : ${user.resetPasswordToken}`)
   }
 }

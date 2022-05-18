@@ -15,9 +15,14 @@ export class ProviderController {
     return await this.providerService.login(login)
   }
 
-  @UseGuards(JwtOauthGuard)
   @Post("changePassword")
-  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @User() user: JwtUser) {
-    return await this.providerService.changePassword(changePasswordDto, user)
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto) {
+    return await this.providerService.changePassword(changePasswordDto)
+  }
+
+  @UseGuards(JwtOauthGuard)
+  @Post("resetPassword")
+  async resetPassword(@User() user: JwtUser) {
+    return await this.providerService.resetPassword(user)
   }
 }

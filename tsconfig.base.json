@@ -20,6 +20,7 @@
       "@ull/auth": ["libs/auth/src/index.ts"],
       "@ull/config": ["libs/config/src/index.ts"],
       "@ull/global-constants": ["libs/global-constants/src/index.ts"],
+      "@ull/mailer": ["libs/mailer/src/index.ts"],
       "@ull/storage": ["libs/storage/src/index.ts"]
     }
   },

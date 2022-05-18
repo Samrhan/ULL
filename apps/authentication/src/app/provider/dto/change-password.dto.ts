@@ -1,8 +1,14 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsNotEmpty, IsString, Matches} from "class-validator";
+import {IsEmail, IsNotEmpty, IsString, IsUUID, Matches} from "class-validator";
 import {PASSWORD_REGEX} from "@ull/global-constants";
 
 export class ChangePasswordDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  @IsEmail()
+  public email: string;
+
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -13,4 +19,10 @@ export class ChangePasswordDto {
   @IsNotEmpty()
   @Matches(PASSWORD_REGEX)
   public new_password: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  @IsUUID()
+  public token: string;
 }
