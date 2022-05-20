@@ -51,7 +51,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:generate -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:generate -f .env.local",
         "cwd": "apps/discovery"
       }
     },
@@ -59,7 +59,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:run -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:run -f .env.local",
         "cwd": "apps/discovery"
       }
     },
@@ -67,7 +67,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:revert -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:revert -f .env.local",
         "cwd": "apps/discovery"
       }
     },
@@ -75,7 +75,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:create -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:create -f .env.local",
         "cwd": "apps/discovery"
       }
     }
