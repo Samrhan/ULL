@@ -3,3 +3,11 @@ export interface RegisterMessage {
   password: string,
   email: string,
 }
+
+export interface RegisterProviderRequestBody {
+  company_name: string,
+  email: string,
+  password: string,
+  phone: string,
+  siren: string
+}
