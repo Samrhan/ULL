@@ -1,11 +1,11 @@
-<div class="bg-dark text-white min-vh-100 w-100 d-flex flex-column px-5 pt-2 pb-3">
+<div class="bg-dark text-white min-vh-100 w-100 d-flex flex-column px-5">
 
   <nav class="border-bottom border-white d-flex justify-content-between align-items-center py-2">
-    <h1>ULL</h1>
-    <button class="btn btn-light rounded-pill" [routerLink]="'login'">Déjà partenaire ?</button>
+    <h1><a [routerLink]="'/'">ULL</a></h1>
+    <button class="btn btn-light rounded-pill" [routerLink]="'/login'">Déjà partenaire ?</button>
   </nav>
 
-  <div class="bg-white mt-4 p-3 flex-grow-1 d-flex"> <!-- White border around the image + growing container -->
+  <div class="bg-white my-4 p-3 flex-grow-1 d-flex"> <!-- White border around the image + growing container -->
     <div class="bg-img-wedding shadow-sm flex-grow-1"> <!-- Image background -->
       <div class="row py-3 justify-content-between"> <!-- Container for the column, placing them opposite sides -->
         <div class="col-xl-7 mb-4"> <!-- First column with call to action text -->

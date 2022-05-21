@@ -5,7 +5,6 @@ import {HTTP_INTERCEPTORS, HttpEvent, HttpRequest} from "@angular/common/http";
 import {Observable, of, throwError} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import exp from "constants";
 
 describe('HttpInterceptorService', () => {
   let service: HttpInterceptorService;
@@ -75,6 +74,8 @@ describe('HttpInterceptorService', () => {
 
   it('should remove the token if error type is 401 and coming from our server', done => {
     const error = {status: 401};
+
+    service.reloadPage = () => {};
 
     // Arrange false handlers
     const next: any = {
@@ -154,6 +155,8 @@ describe('HttpInterceptorService', () => {
   it('should still work when 401 from our server with a unauthenticated user', done => {
     localStorage.removeItem('user-token');
     const error = {status: 401};
+
+    service.reloadPage = () => {};
 
     // Arrange false handlers
     const next: any = {

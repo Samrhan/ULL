@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
 import {AuthenticationService} from "../../../services/authentication/authentication.service";
 
 @Component({
@@ -54,8 +53,7 @@ export class RegisterComponent {
 
   constructor(
     private authentication: AuthenticationService,
-    private formBuilder: FormBuilder,
-    public router: Router,
+    private formBuilder: FormBuilder
   ) {}
 
   invalidInput(name: string, type: string) {

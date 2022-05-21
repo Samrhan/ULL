@@ -4,10 +4,12 @@ import {RouterModule, Routes} from "@angular/router";
 
 import {AccueilComponent} from "./components/pages/accueil/accueil.component";
 import {RegisterComponent} from "./components/pages/register/register.component";
+import {LoginComponent} from "./components/pages/login/login.component";
 
 const routes: Routes = [
   { path: '', component: AccueilComponent},
   { path: 'register', component: RegisterComponent},
+  { path: 'login', component: LoginComponent},
   { path: 'profile', component: AccueilComponent},
   // Redirection par défaut
   { path: '**', redirectTo: ''}

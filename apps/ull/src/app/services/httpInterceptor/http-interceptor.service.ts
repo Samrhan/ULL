@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {catchError, Observable, tap, throwError} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {environment} from "../../../environments/environment";
 
 @Injectable()
@@ -28,7 +28,7 @@ export class HttpInterceptorService implements HttpInterceptor {
           catchError((err) => { // Use catchError and throwError to propagate other kinds of errors
             if (err.status === 401) {
               HttpInterceptorService.deleteUserToken();
-              //location.reload();
+              this.reloadPage();
             }
             return throwError(() => err);
           })
@@ -45,5 +45,12 @@ export class HttpInterceptorService implements HttpInterceptor {
     return req.clone({
       headers: req.headers.set('Authorization', `Bearer ${userToken}`)
     });
+  }
+
+  /**
+   * Exists to make testing easier by removing the location.reload() call that is incompatible with jest
+   */
+  reloadPage(){
+    location.reload();
   }
 }

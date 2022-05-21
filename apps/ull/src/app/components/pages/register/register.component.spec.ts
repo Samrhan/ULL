@@ -4,8 +4,9 @@ import { RegisterComponent } from './register.component';
 
 import { AuthenticationService } from "../../../services/authentication/authentication.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {RouterTestingModule} from "@angular/router/testing";
 import {AbstractControl, FormBuilder, ReactiveFormsModule} from "@angular/forms";
+import {RouterTestingModule} from "@angular/router/testing";
+import {AccueilComponent} from "../accueil/accueil.component";
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -15,8 +16,11 @@ describe('RegisterComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterTestingModule.withRoutes([
+          { path: '', component: AccueilComponent},
+          { path: 'profile', component: AccueilComponent}
+        ])
       ],
       providers: [
         FormBuilder,
@@ -44,7 +48,7 @@ describe('RegisterComponent', () => {
     expect(component.registerForm.get('siren')).toBeTruthy();
   })
 
-  describe('#invalidInput()', () => {
+  describe('invalidInput()', () => {
     it("Should return true if the control doesn't exist", () => {
       expect(component.invalidInput('', '')).toBeTruthy();
     });

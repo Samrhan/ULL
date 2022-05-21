@@ -8,16 +8,22 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
 import { AppComponent } from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AccueilComponent } from './components/pages/accueil/accueil.component';
 import { RegisterComponent } from './components/pages/register/register.component';
-import {HttpInterceptorService} from "./services/httpInterceptor/http-interceptor.service";
-import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
+import { HttpInterceptorService } from './services/httpInterceptor/http-interceptor.service';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './components/pages/login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, AccueilComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    AccueilComponent,
+    RegisterComponent,
+    LoginComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -30,8 +36,12 @@ import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
   ],
   providers: [
     BsDropdownDirective,
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
-    FormBuilder
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi: true,
+    },
+    FormBuilder,
   ],
   bootstrap: [AppComponent],
 })

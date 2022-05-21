@@ -19,7 +19,7 @@ export class AuthenticationService {
     public router: Router
   ) { }
 
-  register(body: RegisterProviderRequestBody): Observable<any> {
+  register(body: RegisterProviderRequestBody): Observable<{access_token: string}> {
     return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.providerServiceURL + "/register", body)
       .pipe(
         tap(body => {
@@ -29,7 +29,7 @@ export class AuthenticationService {
       )
   }
 
-  login(body: LoginProviderRequestBody): Observable<any> {
+  login(body: LoginProviderRequestBody): Observable<{access_token: string}> {
     return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.authenticationServiceURL + "/login", body)
       .pipe(
         tap(body => {
