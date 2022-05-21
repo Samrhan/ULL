@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AccueilComponent } from './components/pages/accueil/accueil.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 import {HttpInterceptorService} from "./services/httpInterceptor/http-interceptor.service";
+import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [AppComponent, AccueilComponent, RegisterComponent],
@@ -25,10 +26,12 @@ import {HttpInterceptorService} from "./services/httpInterceptor/http-intercepto
     FontAwesomeModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
+    ReactiveFormsModule,
   ],
   providers: [
     BsDropdownDirective,
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
+    FormBuilder
   ],
   bootstrap: [AppComponent],
 })

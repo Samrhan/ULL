@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseServerURL: "localhost:",
+  baseServerURL: "http://localhost:",
   authenticationServiceURL: "3333/api",
   chatServiceURL: "3334/api",
   customerServiceURL: "3335/api",
