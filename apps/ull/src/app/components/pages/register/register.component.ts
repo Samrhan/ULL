@@ -58,10 +58,10 @@ export class RegisterComponent {
     public router: Router,
   ) {}
 
-  invalidInput(name: string, validation: string) {
+  invalidInput(name: string, type: string) {
     const control: AbstractControl | null = this.registerForm.get(name);
     if (control){
-      return control.hasError(validation) && (control.dirty || control.touched)
+      return control.hasError(type) && (control.dirty || control.touched)
     } else {
       return true;
     }
