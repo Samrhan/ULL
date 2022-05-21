@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { AuthenticationService } from './authentication.service';
-import { RegisterProviderRequestBody } from "@ull/api-interfaces";
+import {LoginProviderRequestBody, RegisterProviderRequestBody} from "@ull/api-interfaces";
 import {environment} from "../../../environments/environment";
 import {AccueilComponent} from "../../components/pages/accueil/accueil.component";
 import spyOn = jest.spyOn;
@@ -10,14 +10,6 @@ import spyOn = jest.spyOn;
 describe('AuthenticationService', () => {
   let httpTestingController: HttpTestingController;
   let service: AuthenticationService;
-
-  const exampleBody: RegisterProviderRequestBody = {
-    phone: "+33637327468",
-    siren: "120027016",
-    company_name: "Lorem",
-    email: "Lorem@ipsum.com",
-    password: "password"
-  }
 
   afterAll(() => {
     localStorage.clear();
@@ -53,35 +45,84 @@ describe('AuthenticationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should post the register request to the right address', () => {
-    service.register(exampleBody).subscribe();
+  describe('register()', () => {
+    const exampleBody: RegisterProviderRequestBody = {
+      phone: "+33637327468",
+      siren: "120027016",
+      company_name: "Lorem",
+      email: "Lorem@ipsum.com",
+      password: "password"
+    }
 
-    const req = httpTestingController.expectOne(environment.baseServerURL + environment.providerServiceURL + "/register");
+    it('should post the register request to the right address', () => {
+      service.register(exampleBody).subscribe();
 
-    expect(req.request.method).toEqual('POST');
+      const req = httpTestingController.expectOne(environment.baseServerURL + environment.providerServiceURL + "/register");
 
-    req.flush({access_token: "XXX"});
-  })
+      expect(req.request.method).toEqual('POST');
 
-  it('should save the JWT on correct authentification', () => {
-    const userToken = 'abcd'
-
-    service.register(exampleBody).subscribe({
-      next: () => expect(localStorage.getItem('user-token')).toEqual(userToken)
+      req.flush({access_token: "XXX"});
     })
 
-    const req = httpTestingController.expectOne(environment.baseServerURL + environment.providerServiceURL + "/register");
-    req.flush({access_token: userToken});
+    it('should save the JWT on success', () => {
+      const userToken = 'abcd'
+
+      service.register(exampleBody).subscribe({
+        next: () => expect(localStorage.getItem('user-token')).toEqual(userToken)
+      })
+
+      const req = httpTestingController.expectOne(environment.baseServerURL + environment.providerServiceURL + "/register");
+      req.flush({access_token: userToken});
+    })
+
+    it('should redirect to profile on success', () => {
+      spyOn(service.router, 'navigate');
+
+      service.register(exampleBody).subscribe();
+
+      const req = httpTestingController.expectOne(environment.baseServerURL + environment.providerServiceURL + "/register");
+      req.flush({});
+
+      expect(service.router.navigate).toHaveBeenCalledWith(['/profile']);
+    })
   })
 
-  it('should redirect to profile on authentication', () => {
-    spyOn(service.router, 'navigate');
+  describe('login()', () => {
+    const exampleBody: LoginProviderRequestBody = {
+      email: "Lorem@ipsum.com",
+      password: "password"
+    }
 
-    service.register(exampleBody).subscribe();
+    it('should post the login request to the right address', () => {
+      service.login(exampleBody).subscribe();
 
-    const req = httpTestingController.expectOne(environment.baseServerURL + environment.providerServiceURL + "/register");
-    req.flush({});
+      const req = httpTestingController.expectOne(environment.baseServerURL + environment.authenticationServiceURL + "/login");
 
-    expect(service.router.navigate).toHaveBeenCalledWith(['/profile']);
+      expect(req.request.method).toEqual('POST');
+
+      req.flush({access_token: "XXX"});
+    })
+
+    it('should save the JWT on success', () => {
+      const userToken = 'abcd'
+
+      service.login(exampleBody).subscribe({
+        next: () => expect(localStorage.getItem('user-token')).toEqual(userToken)
+      })
+
+      const req = httpTestingController.expectOne(environment.baseServerURL + environment.authenticationServiceURL + "/login");
+      req.flush({access_token: userToken});
+    })
+
+    it('should redirect to profile on success', () => {
+      spyOn(service.router, 'navigate');
+
+      service.login(exampleBody).subscribe();
+
+      const req = httpTestingController.expectOne(environment.baseServerURL + environment.authenticationServiceURL + "/login");
+      req.flush({});
+
+      expect(service.router.navigate).toHaveBeenCalledWith(['/profile']);
+    })
   })
 });

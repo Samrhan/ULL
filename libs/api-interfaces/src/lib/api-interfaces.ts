@@ -11,3 +11,8 @@ export interface RegisterProviderRequestBody {
   phone: string,
   siren: string
 }
+
+export interface LoginProviderRequestBody {
+  email: string,
+  password: string
+}
