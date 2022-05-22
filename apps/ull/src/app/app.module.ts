@@ -16,6 +16,7 @@ import { RegisterComponent } from './components/pages/register/register.componen
 import { HttpInterceptorService } from './services/httpInterceptor/http-interceptor.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/pages/login/login.component';
+import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { LoginComponent } from './components/pages/login/login.component';
     AccueilComponent,
     RegisterComponent,
     LoginComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
