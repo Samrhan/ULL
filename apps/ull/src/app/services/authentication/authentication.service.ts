@@ -16,21 +16,25 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private static storeUserToken(userToken: string){
+  static storeUserToken(userToken: string){
     localStorage.setItem('user-token', userToken);
   }
 
   constructor(
     private httpClient: HttpClient,
-    public router: Router
+    private router: Router
   ) { }
+
+  storeTokenAndRedirect(userToken: string){
+    AuthenticationService.storeUserToken(userToken);
+    this.router.navigate(['/profile']);
+  }
 
   register(body: RegisterProviderRequestBody): Observable<{access_token: string}> {
     return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.providerServiceURL + "/register", body)
       .pipe(
         tap(body => {
-          AuthenticationService.storeUserToken(body.access_token);
-          this.router.navigate(['/profile']);
+          this.storeTokenAndRedirect(body.access_token);
         })
       );
   }
@@ -39,8 +43,7 @@ export class AuthenticationService {
     return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.authenticationServiceURL + "/login", body)
       .pipe(
         tap(body => {
-          AuthenticationService.storeUserToken(body.access_token);
-          this.router.navigate(['/profile']);
+          this.storeTokenAndRedirect(body.access_token);
         })
       );
   }
@@ -53,8 +56,7 @@ export class AuthenticationService {
     return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.authenticationServiceURL + "/resetPassword", body)
       .pipe(
         tap(body => {
-          AuthenticationService.storeUserToken(body.access_token);
-          this.router.navigate(['/profile']);
+          this.storeTokenAndRedirect(body.access_token);
         })
       );
   }
