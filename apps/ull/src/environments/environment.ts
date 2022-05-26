@@ -6,11 +6,11 @@ export const environment = {
   production: false,
   baseServerURL: "http://localhost:",
   authenticationServiceURL: "3333/api",
-  chatServiceURL: "3334/api",
-  customerServiceURL: "3335/api",
-  accountingServiceURL: "3336/api",
+  chatServiceURL: "3337/api",
+  customerServiceURL: "3336/api",
+  accountingServiceURL: "3332/api",
   discoveryServiceURL: "3337/api",
-  providerServiceURL: "3338/api"
+  providerServiceURL: "3335/api"
 };
 
 /*
