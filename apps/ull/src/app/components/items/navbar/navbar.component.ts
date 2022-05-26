@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {UserService} from "../../../services/user-service/user.service";
 
 import {faCalendar, faDollar, faMessage} from "@fortawesome/free-solid-svg-icons";
 
@@ -9,15 +8,14 @@ import {faCalendar, faDollar, faMessage} from "@fortawesome/free-solid-svg-icons
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent{
-  @Input() selected = ""
+  @Input() selected = "";
+  @Input() profilePictureUrl = "";
+  @Input() companyName = "";
+  @Input() companyDescription = "";
 
   faCalendar = faCalendar;
   faDollar = faDollar;
   faMessage = faMessage;
 
   console = console;
-
-  constructor(
-    public userService: UserService
-  ) {}
 }

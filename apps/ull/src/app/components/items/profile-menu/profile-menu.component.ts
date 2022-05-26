@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import {UserService} from "../../../services/user-service/user.service";
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'ull-profile-menu',
@@ -7,7 +6,7 @@ import {UserService} from "../../../services/user-service/user.service";
   styleUrls: ['./profile-menu.component.scss'],
 })
 export class ProfileMenuComponent {
-  constructor(
-    public userService: UserService
-  ) {}
+  @Input() profilePictureUrl = "";
+  @Input() companyName = "";
+  @Input() companyDescription = "";
 }

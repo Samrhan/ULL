@@ -1,6 +1,12 @@
-<ull-navbar [selected]="'Vous'"></ull-navbar>
-<div class="bg-light d-flex justify-content-center">
-  <div class="w-75">
+<div *ngIf="profile">
+  <ull-navbar [selected]="'Vous'"
+              [profilePictureUrl]="profile.profile_picture"
+              [companyName]="profile.company_name"
+              [companyDescription]="profile.company_description">
+  </ull-navbar>
+  <div class="bg-light d-flex justify-content-center">
+    <div class="w-75">
 
+    </div>
   </div>
 </div>
