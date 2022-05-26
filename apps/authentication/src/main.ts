@@ -20,6 +20,12 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  app.enableCors({
+    origin: (origin, callback) => {
+      callback(null, true)
+    },
+    credentials: true
+  });
   const port = process.env.PORT_AUTHENTICATION || 3333;
 
 

@@ -14,7 +14,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  
+  app.enableCors({
+    origin: (origin, callback) => {
+      callback(null, true)
+    },
+    credentials: true
+  });
   const config = new DocumentBuilder()
     .setTitle('Ull Provder')
     .setDescription('Ull Provider description')
