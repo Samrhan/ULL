@@ -37,7 +37,7 @@ import {AuthConfig} from "./auth.config";
       imports: [ConfigModule, ConfigModule.forFeature(AuthConfig)],
       useFactory: async (configService: ConfigService) => ({
         secret: Buffer.from(configService.get<string>('auth.secret'), 'base64'),
-        signOptions: {expiresIn: '7d'},
+        signOptions: {expiresIn: '1y'},
       }),
       inject: [ConfigService]
     }),

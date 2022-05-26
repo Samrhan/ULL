@@ -1,4 +1,4 @@
-import {BadRequestException, Inject, Injectable} from '@nestjs/common';
+import {BadRequestException, ConflictException, Inject, Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {ConfigService} from "@nestjs/config";
 import {firstValueFrom} from "rxjs";
@@ -70,7 +70,7 @@ export class AuthService {
       await this.registerProviderAuthService({idProvider: provider.id, password: registerDto.password, email: registerDto.email});
       await this.providerRepository.save(provider);
     } catch (e) {
-      throw new BadRequestException('Siren, mail or phone are already used in another account.');
+      throw new ConflictException('Siren, mail or phone are already used in another account.');
     }
   }
 
