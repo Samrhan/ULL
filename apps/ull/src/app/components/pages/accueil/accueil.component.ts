@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 
 import { faBars, faArrowRight } from '@fortawesome/free-solid-svg-icons';

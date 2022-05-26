@@ -1,9 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+/* Override bootstrap constants */
 $primary: #832232;
 $secondary: #E1B0B4;
 $light: #FCF8F7;
 $dark: #000000;
+$border-radius: 0.5rem;
+$border-radius-sm: 0.25rem;
+$border-radius-lg: 1rem;
 @import "~bootstrap/scss/bootstrap.scss";
+
+/* Other global styles */
 
 a, a:hover, a:focus, a:active {
   text-decoration: none;
@@ -12,6 +17,10 @@ a, a:hover, a:focus, a:active {
 
 img {
   object-fit: cover;
+}
+
+.bg-gray {
+  background-color: #C4C4C4;
 }
 
 .vh-25 {
@@ -52,4 +61,12 @@ img {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.bg-transparent-dark {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.fs-xl {
+  font-size: 3.5rem;
 }
