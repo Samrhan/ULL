@@ -31,7 +31,7 @@ export class UserService {
       company_name: "Catering premium",
       company_description: "Un service traiteur de qualité",
       area_served: "Région parisienne",
-      cover_picture: "",
+      cover_picture: "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
       profile_picture: "../../../../assets/images/cocktails.jpg",
       rating: 4.5,
     } as ProviderProfile)
