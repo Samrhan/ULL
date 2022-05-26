@@ -17,6 +17,11 @@ import { HttpInterceptorService } from './services/httpInterceptor/http-intercep
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/pages/login/login.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
+import { ProfileComponent } from './components/pages/profile/profile.component';
+import { NavbarComponent } from './components/items/navbar/navbar.component';
+import { ProfileMenuComponent } from './components/items/profile-menu/profile-menu.component';
+import { EditInfoComponent } from './components/pages/edit-info/edit-info.component';
+import { EditProfileComponent } from './components/pages/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +30,11 @@ import { ResetPasswordComponent } from './components/pages/reset-password/reset-
     RegisterComponent,
     LoginComponent,
     ResetPasswordComponent,
+    ProfileComponent,
+    NavbarComponent,
+    ProfileMenuComponent,
+    EditInfoComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
