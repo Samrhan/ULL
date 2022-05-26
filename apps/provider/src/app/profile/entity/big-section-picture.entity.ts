@@ -3,11 +3,10 @@ import {Section} from "./section.entity";
 
 @Entity()
 export class BigSectionPicture {
-    @PrimaryColumn({name: 'id_section'})
-    @ManyToOne(() => Section, (section) => section.bigSectionPictures)
+    @ManyToOne(() => Section, (section) => section.bigSectionPictures, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
     @JoinColumn({name: 'id_section'})
     sectionId: string;
 
-    @Column()
+    @PrimaryColumn()
     picture: string;
 }

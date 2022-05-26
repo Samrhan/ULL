@@ -1,10 +1,5 @@
-import {UserType} from "./api-enums";
+import {SectionType, UserType} from "./api-enums";
 
-export interface RegisterMessage {
-  idProvider: string,
-  password: string,
-  email: string,
-}
 export interface RegisterProviderMessage {
     idProvider: string,
     password: string,
@@ -66,4 +61,23 @@ export interface EnactResetPasswordProviderBody {
 export interface ChangePasswordProviderBody {
   old_password: string,
   new_password: string
+}
+
+export interface UploadSectionBody {
+    type: SectionType,
+    y_index: string,
+    section_title: string,
+    section_description: string,
+    purchasable: string,
+    preview_amount? : string,
+    pictures?: File[],
+}
+
+export interface UpdateSectionBody {
+    id_section: string,
+    y_index: number,
+    section_title: string,
+    section_description: string,
+    purchasable: boolean,
+    preview_amount? : number,
 }

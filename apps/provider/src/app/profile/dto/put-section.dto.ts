@@ -1,21 +1,15 @@
-import {
-    IsBoolean, IsBooleanString, IsEnum,
-    IsNotEmpty, IsNumber, IsNumberString,
-    IsOptional,
-    IsString,
-} from 'class-validator';
+import {IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID} from 'class-validator';
 import {ApiProperty} from "@nestjs/swagger";
-import {SectionType} from "@ull/api-interfaces";
 
 
-export class UploadSectionDto {
+export class PutSectionDto {
     @ApiProperty()
-    @IsEnum(SectionType)
+    @IsUUID()
     @IsNotEmpty()
-    public type: SectionType;
+    public id_section: string;
 
     @ApiProperty()
-    @IsNumberString()
+    @IsNumber()
     @IsNotEmpty()
     public y_index: number;
 
@@ -30,12 +24,12 @@ export class UploadSectionDto {
     public section_description: string;
 
     @ApiProperty()
-    @IsBooleanString()
+    @IsBoolean()
     @IsNotEmpty()
     public purchasable: string;
 
     @ApiProperty()
-    @IsNumberString()
+    @IsNumber()
     @IsOptional()
-    public preview_amount: number;
+    public preview_amount?: number;
 }

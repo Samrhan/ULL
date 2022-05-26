@@ -7,10 +7,11 @@ import {Section} from "./entity/section.entity";
 import {PreviewAmount} from "./entity/preview-amount.entity";
 import {BigSectionPicture} from "./entity/big-section-picture.entity";
 import {TypeEnumEntity} from "./entity/type-enum.entity";
+import {Provider} from "../auth/entity/provider.entity";
 
 @Module({
   controllers: [ProfileController],
   providers: [ProfileService],
-  imports: [ConfigModule.forRoot(), TypeOrmModule.forFeature([Section, PreviewAmount, BigSectionPicture, TypeEnumEntity])]
+  imports: [ConfigModule.forRoot(), TypeOrmModule.forFeature([Section, PreviewAmount, BigSectionPicture, TypeEnumEntity, Provider])]
 })
 export class ProfileModule {}

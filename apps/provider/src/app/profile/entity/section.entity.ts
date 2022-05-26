@@ -1,15 +1,16 @@
 import {
-    Column,
+    Column, CreateDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
     OneToMany,
     OneToOne,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn, UpdateDateColumn
 } from "typeorm";
 import {PreviewAmount} from "./preview-amount.entity";
 import {BigSectionPicture} from "./big-section-picture.entity";
 import {TypeEnumEntity} from "./type-enum.entity";
+import {Provider} from "../../auth/entity/provider.entity";
 
 @Entity()
 export class Section {
@@ -20,6 +21,10 @@ export class Section {
     @ManyToOne(() => TypeEnumEntity)
     @JoinColumn({name: 'type'})
     type: string;
+
+    @ManyToOne(() => Provider, (provider) => provider.sections)
+    @JoinColumn({name: 'provider_id'})
+    provider: Provider;
 
     @Column({name: 'y_index'})
     yIndex: number;
@@ -38,4 +43,10 @@ export class Section {
 
     @OneToMany(() => BigSectionPicture, (bigSectionPicture) => bigSectionPicture.sectionId)
     bigSectionPictures?: BigSectionPicture[];
+
+    @CreateDateColumn({name: 'created_at'})
+    createdAt: string;
+
+    @UpdateDateColumn({name: 'updated_at'})
+    updatedAt: string;
 }

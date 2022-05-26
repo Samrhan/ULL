@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn} from 'typeorm';
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn} from 'typeorm';
+import {Section} from "../../profile/entity/section.entity";
 
 @Entity()
 @Unique('unique_provider', ['siren', 'email', 'phoneNumber'])
@@ -42,4 +43,7 @@ export class Provider {
 
   @Column({name: 'deleted_at', type: 'timestamp with time zone', nullable: true})
   deletedAt?: string;
+
+  @OneToMany(()=>Section, section => section.provider)
+  sections: Section[];
 }
