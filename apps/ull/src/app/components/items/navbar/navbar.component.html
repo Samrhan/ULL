@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark py-2 justify-content-center">
+  <div class="w-75 d-flex justify-content-between align-items-center">
+    <a class="navbar-brand fs-1" [routerLink]="'/profile'">ULL</a>
+    <ul class="navbar-nav col-8 col-lg-5 justify-content-around">
+      <li class="nav-item d-flex flex-column align-items-center justify-content-between cursor-pointer"
+          [ngClass]="{'border-bottom': selected === 'Réservations'}"
+          [routerLink]="['/reservations']">
+        <fa-icon [icon]="faCalendar" class="fs-1 text-white"></fa-icon>
+        <a class="nav-link active">Réservations</a>
+      </li>
+      <li class="nav-item d-flex flex-column align-items-center justify-content-between cursor-pointer"
+          [ngClass]="{'border-bottom': selected === 'Comptabilité'}"
+          [routerLink]="['/accounting']">
+        <fa-icon [icon]="faDollar" class="fs-1 text-white"></fa-icon>
+        <a class="nav-link active">Comptabilité</a>
+      </li>
+      <li class="nav-item d-flex flex-column align-items-center justify-content-between cursor-pointer"
+          [ngClass]="{'border-bottom': selected === 'Messagerie'}"
+          [routerLink]="['/chat']">
+        <fa-icon [icon]="faMessage" class="fs-1 text-white"></fa-icon>
+        <a class="nav-link active">Messagerie</a>
+      </li>
+      <li class="nav-item d-flex flex-column align-items-center justify-content-between cursor-pointer btn-group"
+          [ngClass]="{'border-bottom': selected === 'Vous'}" dropdown dropdownToggle>
+          <div class="rounded-circle border border-white bg-white square-div">
+            <img [src]="profilePictureUrl" alt="Profile picture" class="h-100 w-100"/>
+          </div>
+          <a class="nav-link active">Vous</a>
+          <ull-profile-menu class="dropdown-menu dropdown-menu-right" *dropdownMenu role="menu"
+                            [profilePictureUrl]="profilePictureUrl"
+                            [companyName]="companyName"
+                            [companyDescription]="companyDescription">
+          </ull-profile-menu>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="bg-light">
+
+</div>

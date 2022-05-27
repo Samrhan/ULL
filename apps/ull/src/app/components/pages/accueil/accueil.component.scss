@@ -1,0 +1,106 @@
+@import "../../../../styles.scss";
+
+.cocktail-background-image {
+  background-image: url("/assets/images/cocktails.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.explain-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.explain-text {
+  font-size: 1.5rem;
+  font-weight: lighter;
+}
+
+.store-icon {
+  height: 4em;
+}
+
+@media (max-width: 500px) {
+  .store-icon {
+    height: 3em;
+    margin-bottom: 0.5em;
+  }
+}
+
+.explain-category {
+  cursor: pointer;
+}
+
+.explain-category:hover {
+  background: $secondary;
+  color: #FFFFFF;
+}
+
+.hover-img {
+  color: #fff;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+}
+
+.hover-img * {
+  box-sizing: border-box;
+  transition: all 0.45s ease;
+}
+
+.hover-img:before,
+.hover-img:after {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: '';
+  transition: all 0.3s ease;
+  z-index: 1;
+  opacity: 0;
+  transform: scaleY(2);
+}
+
+.hover-img img {
+  vertical-align: top;
+  max-width: 100%;
+  backface-visibility: hidden;
+}
+
+.hover-img figcaption {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1em;
+  opacity: 0;
+  z-index: 2;
+  transition-delay: 0.1s;
+  font-size: 24px;
+  font-family: sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hover-img:hover:before,
+.hover-img:hover:after {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.hover-img:hover > img {
+  opacity: 0.7;
+}
+
+.hover-img:hover figcaption {
+  opacity: 1;
+}
