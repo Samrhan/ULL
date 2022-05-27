@@ -22,6 +22,9 @@ import { NavbarComponent } from './components/items/navbar/navbar.component';
 import { ProfileMenuComponent } from './components/items/profile-menu/profile-menu.component';
 import { EditInfoComponent } from './components/pages/edit-info/edit-info.component';
 import { EditProfileComponent } from './components/pages/edit-profile/edit-profile.component';
+import { ProfileSectionComponent } from './components/items/profile-section/profile-section.component';
+import { PurchasableIndicatorComponent } from './components/items/purchasable-indicator/purchasable-indicator.component';
+import {TooltipModule} from "ngx-bootstrap/tooltip";
 
 @NgModule({
   declarations: [
@@ -35,6 +38,8 @@ import { EditProfileComponent } from './components/pages/edit-profile/edit-profi
     ProfileMenuComponent,
     EditInfoComponent,
     EditProfileComponent,
+    ProfileSectionComponent,
+    PurchasableIndicatorComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,7 @@ import { EditProfileComponent } from './components/pages/edit-profile/edit-profi
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     ReactiveFormsModule,
+    TooltipModule,
   ],
   providers: [
     BsDropdownDirective,
