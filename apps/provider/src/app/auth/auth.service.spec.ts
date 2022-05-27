@@ -57,8 +57,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    service.client = {send: jest.fn().mockReturnValue(of("test"))} as never
-
+    service.amqpConnection = {request: jest.fn().mockReturnValue(of("test"))} as never
   })
 
   it('Should return Insee token correctly', async () => {
@@ -83,14 +82,15 @@ describe('AuthService', () => {
 
   it("Should check siren on register", async () => {
     const spy = jest.spyOn(service, 'checkSiren').mockResolvedValue()
-    await service.register(fakeRegisterDto);
+    await service.registerProvider(fakeRegisterDto);
     expect(spy).toHaveBeenCalledWith('123456789')
   })
 
   it("Should send data to auth service", async () => {
     jest.spyOn(service, 'checkSiren').mockResolvedValue()
-    await service.register(fakeRegisterDto, 'test');
-    expect(service.client.send).toHaveBeenCalledWith("register", {
+    jest.spyOn(service, 'registerProviderAuthService').mockResolvedValue({} as never)
+    await service.registerProvider(fakeRegisterDto, 'test');
+    expect(service.registerProviderAuthService).toHaveBeenCalledWith("register", {
       "email": "test@test.com",
       "idProvider": "test",
       "password": "test"
@@ -99,14 +99,14 @@ describe('AuthService', () => {
 
   it("Should throw error if auth service throw error", async () => {
     jest.spyOn(service, 'checkSiren').mockResolvedValue()
-    service.client.send = jest.fn().mockResolvedValue(throwError('test'))
-    const error = await getError(async () => await service.register(fakeRegisterDto, 'test'));
+    service.amqpConnection.request = jest.fn().mockResolvedValue(throwError('test'))
+    const error = await getError(async () => await service.registerProvider(fakeRegisterDto, 'test'));
     expect(error).toBeInstanceOf(BadRequestException)
   })
 
   it('Should insert user in database', async () => {
     jest.spyOn(service, 'checkSiren').mockResolvedValue()
-    await service.register(fakeRegisterDto, 'test');
+    await service.registerProvider(fakeRegisterDto, 'test');
     expect(service.providerRepository.save).toHaveBeenCalledWith({
       "areaServed": "",
       "companyDescription": "",
@@ -123,7 +123,7 @@ describe('AuthService', () => {
   it("Should throw error if database throw error", async () => {
     jest.spyOn(service, 'checkSiren').mockResolvedValue()
     saveMock.mockRejectedValueOnce('test')
-    const error = await getError(async () => await service.register(fakeRegisterDto, 'test'));
+    const error = await getError(async () => await service.registerProvider(fakeRegisterDto, 'test'));
     expect(error).toBeInstanceOf(BadRequestException)
   })
 });

@@ -1,25 +1,37 @@
 import {Module} from '@nestjs/common';
 import {AuthController} from './auth.controller';
 import {AuthService} from './auth.service';
-import {RabbitMQModule} from "@golevelup/nestjs-rabbitmq";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Customer} from "./entity/customer.entity";
+import {RabbitMQModule} from "@golevelup/nestjs-rabbitmq";
+import {ConfigModule, ConfigService} from "@nestjs/config";
+import {RabbitMQConfig} from "@ull/config";
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
   imports:[
-    RabbitMQModule.forRoot(RabbitMQModule, {
-      exchanges: [
-        {
-          name: 'customer',
-          type: 'topic',
+    TypeOrmModule.forFeature([Customer]),
+    RabbitMQModule.forRootAsync(RabbitMQModule, {
+      imports: [ConfigModule, ConfigModule.forFeature(RabbitMQConfig)],
+      useFactory: async (configService: ConfigService)=>({
+        exchanges: [
+          {
+            name: 'customer',
+            type: 'topic',
+          },
+        ],
+        channels: {
+          'customer': {
+            prefetchCount: 15,
+            default: true,
+          },
         },
-      ],
-      uri: 'amqp://localhost:5672',
-      connectionInitOptions: { wait: false },
+        uri: configService.get('rabbitmq.url'),
+        connectionInitOptions: {wait: false},
+      }),
+      inject: [ConfigService]
     }),
-    TypeOrmModule.forFeature([Customer])
   ]
 })
 export class AuthModule {}

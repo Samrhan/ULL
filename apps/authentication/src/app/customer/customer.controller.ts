@@ -1,20 +1,14 @@
-import {Controller, Get, Inject, Query, Res} from '@nestjs/common';
+import {Body, Controller, Inject, Post} from '@nestjs/common';
 import {CustomerService} from "./customer.service";
-import {AuthorizationCode} from "./interface/authorization-code.interface";
+import {OAuthDto} from "../auth/dto/oauth.dto";
 
-@Controller('customer')
+@Controller('')
 export class CustomerController {
 
   @Inject() customerService: CustomerService
 
-  @Get('callback')
-  async callback(@Query() query: AuthorizationCode, @Res() res) {
-    await this.customerService.login(query)
-    return res.redirect('/api')
-  }
-
-  @Get('oauth')
-  async getAuthorizationUrl(@Res() res) {
-    return res.redirect(await this.customerService.getAuthorizationUrl());
+  @Post('oauth')
+  async oauth(@Body() oauth: OAuthDto) {
+    return await this.customerService.oauth(oauth)
   }
 }

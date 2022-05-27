@@ -25,7 +25,5 @@ export class Customer {
   createdAt: string;
 
   @UpdateDateColumn({name: 'updated_at'})
-  updated_at: Date;
-
-
+  updatedAt: Date;
 }

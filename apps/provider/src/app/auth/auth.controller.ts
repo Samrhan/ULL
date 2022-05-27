@@ -7,13 +7,14 @@ import {ApiTags} from "@nestjs/swagger";
 @Controller('')
 export class AuthController {
 
-  private logger = new Logger()
-
   @Inject() authService: AuthService
 
+  private logger = new Logger()
+
   @Post('register')
-  @UsePipes(new ValidationPipe({ transform: true, disableErrorMessages: false }))
+  @UsePipes(new ValidationPipe({transform: true, disableErrorMessages: false}))
   async register(@Body() registerDto: RegisterDto) {
-    await this.authService.register(registerDto)
+    this.logger.log('New Request')
+    await this.authService.registerProvider(registerDto)
   }
 }

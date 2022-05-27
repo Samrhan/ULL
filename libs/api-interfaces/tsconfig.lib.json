@@ -5,6 +5,9 @@
     "declaration": true,
     "types": []
   },
-  "include": ["**/*.ts"],
+  "include": [
+    "**/*.ts",
+    "../../node_modules/@types/node/*.ts"
+  ],
   "exclude": ["**/*.spec.ts"]
 }

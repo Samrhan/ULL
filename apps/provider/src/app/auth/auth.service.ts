@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable, Logger, OnApplicationBootstrap} from '@nestjs/common';
+import {BadRequestException, Inject, Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {ConfigService} from "@nestjs/config";
 import {firstValueFrom} from "rxjs";
@@ -6,32 +6,20 @@ import {RegisterDto} from "./dto/register.dto";
 import {Provider} from "./entity/provider.entity";
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Client, ClientProxy, Transport} from "@nestjs/microservices";
 import {v4 as uuidv4} from 'uuid';
+import {AmqpConnection} from "@golevelup/nestjs-rabbitmq";
+import {RegisterProviderMessage} from "@ull/api-interfaces";
 
 const DEFAULT_PROFILE_PIC = 'default'
 const DEFAULT_COVER_PIC = 'default'
 
 @Injectable()
-export class AuthService implements OnApplicationBootstrap {
+export class AuthService {
 
-  private logger = new Logger()
 
-  constructor(private httpService: HttpService, private configService: ConfigService) {
-  }
-
-  @Client({
-    transport: Transport.RMQ, options: {
-      queue: 'provider', queueOptions: {
-        durable: false
-      },
-    }
-  })
-  client: ClientProxy;
-
-  async onApplicationBootstrap() {
-    await this.client.connect();
-  }
+  @Inject() amqpConnection: AmqpConnection
+  @Inject() configService: ConfigService
+  @Inject() httpService: HttpService
 
   @InjectRepository(Provider) providerRepository: Repository<Provider>;
 
@@ -64,7 +52,7 @@ export class AuthService implements OnApplicationBootstrap {
     }
   }
 
-  async register(registerDto: RegisterDto, id?: string) {
+  async registerProvider(registerDto: RegisterDto, id?: string) {
     await this.checkSiren(registerDto.siren)
 
     const provider = new Provider();
@@ -79,11 +67,19 @@ export class AuthService implements OnApplicationBootstrap {
     provider.areaServed = registerDto.area_served  || '';
 
     try {
-      await firstValueFrom(this.client.send("register", {idProvider: provider.id, password: registerDto.password, email: registerDto.email}));
-      await this.providerRepository.save(provider)
+      await this.registerProviderAuthService({idProvider: provider.id, password: registerDto.password, email: registerDto.email});
+      await this.providerRepository.save(provider);
     } catch (e) {
-      this.logger.error(e)
-      throw new BadRequestException('Siren, mail or phone are already used in another account.')
+      throw new BadRequestException('Siren, mail or phone are already used in another account.');
     }
+  }
+
+  async registerProviderAuthService(registerProvider: RegisterProviderMessage) {
+    return await this.amqpConnection.request({
+      exchange: 'provider',
+      routingKey: 'register',
+      payload: registerProvider,
+      timeout: 10000
+    });
   }
 }

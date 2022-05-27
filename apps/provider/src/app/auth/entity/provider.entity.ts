@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn} from 'typeorm';
 
 @Entity()
 @Unique('unique_provider', ['siren', 'email', 'phoneNumber'])
@@ -34,6 +34,12 @@ export class Provider {
   @Column({default: false})
   deleted: boolean;
 
-  @Column({name: 'deletion_date', type: 'timestamp with time zone', nullable: true})
-  deletionDate?: string;
+  @CreateDateColumn({name: 'created_at'})
+  createdAt: string;
+
+  @UpdateDateColumn({name: 'updated_at'})
+  updatedAt: Date;
+
+  @Column({name: 'deleted_at', type: 'timestamp with time zone', nullable: true})
+  deletedAt?: string;
 }
