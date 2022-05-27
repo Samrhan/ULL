@@ -3,7 +3,7 @@ import {AuthenticationService} from "../authentication/authentication.service";
 import {HttpClient} from "@angular/common/http";
 
 import {
-  ProviderProfile
+  ProviderProfile, ProviderSectionType
 } from "@ull/api-interfaces";
 import {environment} from "../../../environments/environment";
 import {Observable, of, tap} from "rxjs";
@@ -34,6 +34,120 @@ export class UserService {
       cover_picture: "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
       profile_picture: "../../../../assets/images/cocktails.jpg",
       rating: 4.5,
+      services: [
+        {
+          id_section: "84c9cb02-0a76-4a91-a9f0-9bca7a917725",
+          type: "big",
+          section_title: "Le bar",
+          section_description: "",
+          purchasable: true,
+          pictures: [
+            "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
+            "../../../../assets/images/beer-820011_1920.jpg",
+            "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
+            "../../../../assets/images/beer-820011_1920.jpg"
+          ],
+          content: [
+            {
+              id_performance: "046e2f63-b8cb-44a3-9202-3fb3c748f00c",
+              performance_title: "Service au bar",
+              performance_description: "Nos cocktails, nos softs\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lacinia accumsan mattis. Nulla elementum nunc turpis, quis condimentum lorem aliquet vitae. Ut vel augue nec lectus tristique sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac ultrices dui, vel vestibulum magna. Etiam consequat mi non arcu elementum, sed porta lacus vestibulum. Mauris porttitor fringilla tempus. Ut consectetur libero in libero vestibulum pretium.",
+              price: {
+                value: 1300,
+                unit: "person"
+              },
+              picture: "../../../../assets/images/cocktails.jpg",
+            }
+          ]
+        },
+        {
+          id_section: "0f506496-e57b-465a-b10d-87ca2ed19b4f",
+          type: "info",
+          section_title: "Texte d’information (FAQ, Conditions, etc)",
+          section_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \nEtiam id vulputate dui, vel finibus nibh. Aliquam fringilla mi vel fermentum pulvinar. Ut venenatis nisi lorem, sit amet lacinia orci sollicitudin eget. In mattis est ex, eu tristique orci dignissim varius. \n\nPhasellus bibendum, felis vitae rutrum ultrices, velit odio elementum nibh, at ultrices ex lacus at tortor. Proin tincidunt volutpat efficitur. Ut est ante, blandit at nisi bibendum, efficitur sollicitudin ex. Suspendisse potenti. Vestibulum id lectus rutrum, pretium diam ut, euismod risus. Vestibulum mi magna, volutpat vitae viverra eget, consectetur eu enim. Mauris tincidunt rhoncus velit, et pharetra lacus hendrerit eu. \n\nEtiam mattis dolor eu euismod bibendum. Cras ultrices nec dolor gravida venenatis.",
+          purchasable: false,
+          content: []
+        },
+        {
+          id_section: "b72c8885-8d72-4ab6-a32a-fbbbbbd47c76",
+          type: "medium",
+          section_title: "Notre carte",
+          section_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id vulputate dui, vel finibus nibh.",
+          purchasable: true,
+          content: [
+            {
+              id_performance: "9744f6ec-5dc5-43df-9364-9ff309845035",
+              performance_title: "Cupcakes",
+              performance_description: "De très bons cupcakes",
+              price: {
+                value: 500,
+                unit: "stack"
+              },
+              picture: "../../../../assets/images/cupcakes-gc0620a627_1920.jpg",
+            },
+            {
+              id_performance: "0934496a-ac98-468d-8750-5149de3deb9f",
+              performance_title: "Tiramisu",
+              performance_description: "Meilleur dessert fait maison.\nLorem ipsum dolor sit amet, consectetur adipiscing elit. \nEtiam id vulputate dui, vel finibus nibh. Aliquam fringilla mi vel fermentum pulvinar. Ut venenatis nisi lorem, sit amet lacinia orci sollicitudin eget. In mattis est ex, eu tristique orci dignissim varius.",
+              price: {
+                value: 500,
+                unit: "stack"
+              },
+              picture: "../../../../assets/images/italian-food-2157246__340.png",
+            }
+          ]
+        },
+        {
+          id_section: "d7d00f16-e09d-47e1-8653-94d6f236c287",
+          type: "small",
+          section_title: "La carte des pizza",
+          section_description: "De bonnes pizza italiennes.",
+          purchasable: false,
+          preview_amount: 3,
+          content: [
+            {
+              id_performance: "54e8f2d9-8b23-43c6-8ea2-f5f1ace208f1",
+              performance_title: "Pizza margherita",
+              performance_description: "Base tomate, mozarella, basilic",
+              price: {
+                value: 600,
+                unit: "unit"
+              },
+              picture: "../../../../assets/images/telechargement.jpeg",
+            },
+            {
+              id_performance: "8d370782-d690-4736-ae11-963f83cf20f9",
+              performance_title: "Pizza 4 fromages",
+              performance_description: "Base crème fraiche, gruyère, mozarella, chèvre, gorgonzola",
+              price: {
+                value: 1000,
+                unit: "unit"
+              },
+              picture: "../../../../assets/images/telechargement_(1).jpeg",
+            },
+            {
+              id_performance: "64856a10-b098-4fcf-8ac2-46eccd2e172f",
+              performance_title: "Pizza pepperoni",
+              performance_description: "Base tomate, mozarella, pepperoni",
+              price: {
+                value: 1250,
+                unit: "unit"
+              },
+              picture: "../../../../assets/images/telechargement_(2).jpeg",
+            },
+            {
+              id_performance: "fc378d3d-d447-43d5-a721-88fc4237e4b3",
+              performance_title: "Pizza regina",
+              performance_description: "Base tomate, mozarella, jambon, champignons",
+              price: {
+                value: 800,
+                unit: "unit"
+              },
+              picture: "../../../../assets/images/telechargement_(3).jpeg",
+            },
+          ]
+        },
+      ]
     } as ProviderProfile)
 
     /* Commented out right now to avoid warning from unreachable code

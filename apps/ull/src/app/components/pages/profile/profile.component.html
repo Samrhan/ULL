@@ -6,6 +6,7 @@
   </ull-navbar>
   <div class="bg-light d-flex justify-content-center">
     <div class="w-75 mt-3">
+
       <div class="card mb-3 rounded border border-dark">
         <img [src]="profile.cover_picture" class="card-img-top max-vh-50" alt="Image de couverture">
         <div class="profile-picture-container rounded-circle border border-dark shadow-lg ms-5">
@@ -23,6 +24,9 @@
           </div>
         </div>
       </div>
+
+      <ull-profile-section *ngFor="let section of profile.services" [section]="section"></ull-profile-section>
+
     </div>
   </div>
 </div>

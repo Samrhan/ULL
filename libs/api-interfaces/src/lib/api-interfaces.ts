@@ -66,9 +66,10 @@ export interface ProviderProfileSection {
   type: ProviderSectionType,
   section_title: string,
   section_description: string,
-  content ?: [Performance], // In case of "info" section this property is absent
+  purchasable: boolean,
+  content: Performance[],
   preview_amount ?: number, // For "small" sections
-  pictures ?: [string] // For "big" sections
+  pictures ?: string[] // For "big" sections
 }
 
 export interface ProviderProfile {
@@ -79,5 +80,5 @@ export interface ProviderProfile {
   cover_picture: string,
   profile_picture: string,
   rating: number,
-  services: [ProviderProfileSection]
+  services: ProviderProfileSection[]
 }
