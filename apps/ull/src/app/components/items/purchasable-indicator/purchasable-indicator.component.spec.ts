@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PurchasableIndicatorComponent } from './purchasable-indicator.component';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {TooltipModule} from "ngx-bootstrap/tooltip";
 
 describe('PurchasableIndicatorComponent', () => {
   let component: PurchasableIndicatorComponent;
@@ -9,6 +11,10 @@ describe('PurchasableIndicatorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PurchasableIndicatorComponent],
+      imports: [
+        FontAwesomeModule,
+        TooltipModule
+      ]
     }).compileComponents();
   });
 
