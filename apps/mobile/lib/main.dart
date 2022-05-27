@@ -7,6 +7,7 @@
 import 'dart:async';
 import 'dart:convert' show json;
 
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -61,7 +62,7 @@ class SignInDemoState extends State<SignInDemo> {
       _contactText = 'Logging in';
     });
     final http.Response response = await http.post(
-      Uri.parse('http://10.0.2.2:3333/api/oauth'),
+      Uri.parse('http://10.0.2.2:3333/api/auth/login'),
       body: {'email': user.email, 'id': user.id, 'access_token': (await user.authHeaders)['Authorization']},
     );
     final Map<String, dynamic> data =
@@ -126,13 +127,77 @@ class SignInDemoState extends State<SignInDemo> {
       );
     } else {
       return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          const Text('You are not currently signed in.'),
-          ElevatedButton(
-            onPressed: _handleSignIn,
-            child: const Text('SIGN IN'),
+        children: [
+          ClipPath(
+          clipper: SkewCut(),
+            child:Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height/2+100,
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: <Color>[
+                        Color(0xFF894c56),
+                        Color(0xFFa80d0d)
+                      ]
+                  )
+              ),
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Image.asset("asset/logo.png",width: 200),
+                  const Text('Une toute petite étape avant de débuter',
+                  style: TextStyle(
+                      fontSize: 35,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center),
+                  /*ElevatedButton(
+                    onPressed: _handleSignIn,
+                    child: const Text('SIGN IN'),
+                  ),*/
+                ],
+              ),
+            )
           ),
+          Container(
+            height: 100,
+          ),
+          Container(
+            width: 300,
+            decoration: ShapeDecoration(
+              color: Colors.white,
+              shape: SmoothRectangleBorder(
+                borderRadius: SmoothBorderRadius(
+                  cornerRadius: 10,
+                  cornerSmoothing: 0.5,
+                ),
+              ),
+              shadows: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: MaterialButton(
+              onPressed: _handleSignIn,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.asset("asset/google.png",width: 30),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  const Text("Continuer avec Google",
+                    style: TextStyle(color: Colors.grey,fontSize: 20),)
+                ],
+              ),),
+          )
+
         ],
       );
     }
@@ -141,12 +206,26 @@ class SignInDemoState extends State<SignInDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Google Sign In'),
-        ),
         body: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
           child: _buildBody(),
         ));
   }
+}
+
+class SkewCut extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, 6*size.height/7);
+    path.lineTo(0, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(SkewCut oldClipper) => false;
 }

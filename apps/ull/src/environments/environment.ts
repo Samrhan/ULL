@@ -4,6 +4,13 @@
 
 export const environment = {
   production: false,
+  baseServerURL: "http://localhost:",
+  authenticationServiceURL: "3333/api",
+  chatServiceURL: "3337/api",
+  customerServiceURL: "3336/api",
+  accountingServiceURL: "3332/api",
+  discoveryServiceURL: "3337/api",
+  providerServiceURL: "3335/api"
 };
 
 /*
