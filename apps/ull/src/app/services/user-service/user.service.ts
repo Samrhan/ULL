@@ -3,6 +3,8 @@ import {AuthenticationService} from "../authentication/authentication.service";
 import {HttpClient} from "@angular/common/http";
 
 import {
+  Address,
+  EditProviderInfoBody, ProviderCompanyInformation,
   ProviderProfile, ProviderSectionType
 } from "@ull/api-interfaces";
 import {environment} from "../../../environments/environment";
@@ -168,5 +170,72 @@ export class UserService {
         )
     }
     */
+  }
+
+  /**
+   * Returns the private information of the connected user
+   *
+   * Employs a caching strategy : on the first fetch, the info is stored to sessionStorage, and this
+   * value is reused for subsequent calls. Use the #force parameter to invalidate the cache.
+   * @param force invalidates the cache and forces a reload from the server
+   */
+  fetchProviderCompanyInfo(force : boolean = false) : Observable<ProviderCompanyInformation> {
+    return of({
+      company_name: "Catering premium",
+      company_description: "Un service traiteur de qualité",
+      email: "lorem@ipsum.com",
+      area_served: "Région parisienne",
+      cover_picture: "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
+      profile_picture: "../../../../assets/images/cocktails.jpg",
+      address: {
+        number: "1",
+        street: "Rue de la paix",
+        city: "Paris",
+        postal_code: "75010",
+        complement: ""
+      }
+    })
+
+    /*if (force) {
+      sessionStorage.removeItem('company-info')
+    }
+
+    const cachedInfo = sessionStorage.getItem('company-info');
+    if (cachedInfo){
+      return of(JSON.parse(cachedInfo));
+    } else {
+      return this.httpClient.get<ProviderCompanyInformation>(environment.baseServerURL + environment.providerServiceURL + '/provider_info')
+        .pipe(
+          tap({
+            next: payload => sessionStorage.setItem('company-info', JSON.stringify(payload))
+          })
+        )
+    }*/
+  }
+
+  editProfileInfo(newInfo : EditProviderInfoBody) : Observable<any> {
+    const formData = new FormData();
+    formData.append('company_name', newInfo.company_name)
+    formData.append('company_description', newInfo.company_description)
+    formData.append('email', newInfo.email)
+    formData.append('area_served', newInfo.area_served)
+    formData.append('address_number', newInfo.address.number)
+    formData.append('address_street', newInfo.address.street)
+    formData.append('address_city', newInfo.address.city)
+    formData.append('address_postal_code', newInfo.address.postal_code)
+    formData.append('address_complement', newInfo.address.complement)
+
+    if(newInfo.profile_picture){
+      formData.append('profile_picture', newInfo.profile_picture)
+    }
+
+    if(newInfo.cover_picture){
+      formData.append('cover_picture', newInfo.cover_picture)
+    }
+
+    return this.httpClient.post<any>(environment.baseServerURL + environment.providerServiceURL + '/provider_profile', formData, {
+      reportProgress: true,
+      observe: 'events'
+    })
   }
 }
