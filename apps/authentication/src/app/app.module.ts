@@ -1,21 +1,12 @@
-import {Module} from '@nestjs/common';
-import {DatabaseModule} from './shared/database/database.module';
-import {ProviderModule} from "./provider/provider.module";
-import {CustomerModule} from './customer/customer.module';
-import {AuthModule} from './auth/auth.module';
-import {StorageModule} from "@ull/storage";
-import {MailerModule} from "@ull/mailer";
+import { Module } from '@nestjs/common';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { DatabaseModule } from './shared/database/database.module';
 
 @Module({
-  imports: [DatabaseModule,
-    ProviderModule,
-    CustomerModule,
-    AuthModule,
-    StorageModule.forRoot(),
-    MailerModule.forRoot(),
-  ],
-  controllers: [],
-  providers: [],
+  imports: [DatabaseModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

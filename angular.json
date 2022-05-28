@@ -3,18 +3,13 @@
   "projects": {
     "accounting": "apps/accounting",
     "api-interfaces": "libs/api-interfaces",
-    "auth": "libs/auth",
     "authentication": "apps/authentication",
     "chat": "apps/chat",
-    "config": "libs/config",
     "customer": "apps/customer",
     "discovery": "apps/discovery",
-    "global-constants": "libs/global-constants",
-    "mailer": "libs/mailer",
     "mobile": "apps/mobile",
     "provider": "apps/provider",
     "reservation": "apps/reservation",
-    "storage": "libs/storage",
     "ull": "apps/ull",
     "ull-e2e": "apps/ull-e2e"
   }

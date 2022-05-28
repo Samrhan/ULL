@@ -1,8 +1,0 @@
-<fa-stack
-  [adaptivePosition]="false"
-  placement="right"
-  [tooltip]="purchasable ? 'Les prestations de cette section peuvent être commandées par des clients'
-                         : 'Les prestations de cette section ne peuvent pas être commandées par des clients et ne sont qu\'à titre indicatif'">
-  <fa-icon [icon]="faDollarSign" stackItemSize="1x"></fa-icon>
-  <fa-icon *ngIf="!purchasable" [icon]="faBan" stackItemSize="1x" class="text-danger"></fa-icon>
-</fa-stack>

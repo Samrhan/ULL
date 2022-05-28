@@ -24,10 +24,7 @@
             "prefix": "ull",
             "style": "kebab-case"
           }
-        ],
-        "@typescript-eslint/member-ordering": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-empty-function": "off"
+        ]
       }
     },
     {
