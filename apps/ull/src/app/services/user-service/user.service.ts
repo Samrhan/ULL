@@ -184,6 +184,7 @@ export class UserService {
       company_name: "Catering premium",
       company_description: "Un service traiteur de qualité",
       email: "lorem@ipsum.com",
+      phone : "0601020304",
       area_served: "Région parisienne",
       cover_picture: "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
       profile_picture: "../../../../assets/images/cocktails.jpg",
@@ -218,6 +219,7 @@ export class UserService {
     formData.append('company_name', newInfo.company_name)
     formData.append('company_description', newInfo.company_description)
     formData.append('email', newInfo.email)
+    formData.append('phone', newInfo.phone)
     formData.append('area_served', newInfo.area_served)
     formData.append('address_number', newInfo.address.number)
     formData.append('address_street', newInfo.address.street)

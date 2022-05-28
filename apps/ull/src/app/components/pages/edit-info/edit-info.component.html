@@ -6,8 +6,100 @@
   </ull-navbar>
   <div class="bg-light d-flex justify-content-center">
     <div class="w-75 mt-3">
-      <form [formGroup]="updateInfoForm" (ngSubmit)="updateInfo()">
+      <form [formGroup]="updateInfoForm" (ngSubmit)="updateInfo()" class="mb-5">
 
+        <h1>Profil de l'entreprise</h1>
+        <small class="text-muted">Ces informations sont visibles des utilisateurs et permettent de les orienter dans leur recherche.</small>
+
+        <button type="button" class="btn w-100 vh-50 rounded border-dark bg-img my-3" [style]="'background-image : url(' + info.cover_picture + ');'">
+          <fa-icon [icon]="faCamera" class="p-3 rounded-start fs-2 bg-transparent-dark text-white"></fa-icon>
+          <span class="p-3 rounded-end fs-2 bg-transparent-dark text-white">Changer la photo de couverture</span>
+        </button>
+
+        <div class="d-flex my-3 align-items-center">
+          <button type="button" class="btn rounded-circle border-dark bg-img square-div" [style]="'background-image : url(' + info.profile_picture + ');'">
+            <fa-icon [icon]="faCamera" class="p-4 rounded-circle bg-transparent-dark text-white d-inline-block" size="3x"></fa-icon>
+          </button>
+
+          <div class="ms-5 d-flex flex-column flex-grow-1">
+            <div class="mb-3 border rounded p-2 w-50 mb-3">
+              <label for="companyName" class="w-100">Nom de l'entreprise</label>
+              <input id="companyName" type="text" [formControlName]="'company_name'" required class="inner-shadow rounded p-2 w-100 fs-4 border-danger" [ngClass]="{'border-0' : validInput('company_name')}">
+            </div>
+
+            <div class="mb-3 border rounded p-2 w-100 mb-3">
+              <label for="companyDescription" class="w-100">Description de l'entreprise (2000 caractères)</label>
+              <textarea rows="4" maxlength="2000" style="resize: none;" id="companyDescription" type="text" [formControlName]="'company_description'" required class="inner-shadow rounded border-0 p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('company_description')}"></textarea>
+            </div>
+
+            <div class="mb-3 border rounded p-2 w-100 mb-3">
+              <label for="area_served" class="w-100">Zone désservie</label>
+              <input id="area_served" type="text" [formControlName]="'area_served'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('area_served')}">
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="container-fluid">
+          <h1>Adresse de l'entreprise</h1>
+          <small class="text-muted">Ces informations sont utilisées uniquement par le service et ne sont pas montrées au public.</small>
+          <div class="row">
+            <div class="col mb-3 border rounded p-2 m-2">
+              <label for="number" class="w-100">Numéro</label>
+              <input id="number" type="text" [formControlName]="'number'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('number')}">
+            </div>
+            <div class="col mb-3 border rounded p-2 m-2">
+              <label for="street" class="w-100">Rue</label>
+              <input id="street" type="text" [formControlName]="'street'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('street')}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3 border rounded p-2 m-2">
+              <label for="city" class="w-100">Ville</label>
+              <input id="city" type="text" [formControlName]="'city'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('city')}">
+            </div>
+            <div class="col mb-3 border rounded p-2 m-2">
+              <label for="postal_code" class="w-100">Code postal</label>
+              <input id="postal_code" type="text" [formControlName]="'postal_code'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('postal_code')}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3 border rounded p-2 m-2">
+              <label for="complement" class="w-100">Complément d'adresse</label>
+              <textarea rows="4" maxlength="400" style="resize: none;" id="complement" type="text" [formControlName]="'complement'" class="inner-shadow rounded border-0 p-2 w-100 border-0"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="container-fluid">
+          <h1>Contacts</h1>
+          <small class="text-muted">Utilisés uniquement par ULL pour vous contacter.</small>
+          <div class="row">
+            <div class="col mb-3 border rounded p-2 m-2">
+              <label for="email" class="w-100">Adresse e-mail</label>
+              <input id="email" type="email" [formControlName]="'email'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('email')}">
+            </div>
+            <div class="col mb-3 border rounded p-2 m-2">
+              <label for="phone" class="w-100">Numéro de téléphone</label>
+              <input id="phone" type="tel" [formControlName]="'phone'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('phone')}">
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center flex-wrap">
+          <button type="button" class="btn btn-outline-primary px-3 rounded me-5" [routerLink]="'/profile'">Annuler</button>
+          <button type="submit" class="btn btn-primary px-3 rounded d-flex align-items-center" [disabled]="!updateInfoForm.valid || uploadInProgress">
+            <div *ngIf="uploadInProgress" class="spinner-border me-2" role="status"></div>
+            Sauvegarder
+          </button>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <small *ngIf="uploadInProgress" class="fst-italic">Envoi des données en cours : {{uploadProgress}}%</small>
+        </div>
       </form>
     </div>
   </div>
