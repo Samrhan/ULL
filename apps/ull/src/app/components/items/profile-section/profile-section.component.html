@@ -1,0 +1,89 @@
+<div class="card mb-3 px-5 py-3 rounded border border-dark" *ngIf="section">
+  <!-- Big profile section -->
+  <div *ngIf="section.type === 'big'">
+    <!-- Title header -->
+    <div class="d-flex justify-content-between align-content-center">
+      <h1 class="mb-3">{{section.section_title}}</h1>
+      <ull-purchasable-indicator [purchasable]="section.purchasable" class="fs-2"></ull-purchasable-indicator>
+    </div>
+    <!-- Images carousel -->
+    <div class="mb-3 p-2 rounded border">
+      <div class="d-flex overflow-auto py-1">
+        <img [src]="section.content[0].picture" alt="illustration" class="big-image me-2">
+        <img *ngFor="let imageUrl of section.pictures" [src]="imageUrl" alt="illustration" class="big-image me-2">
+      </div>
+    </div>
+    <!-- Section description & price -->
+    <div class="d-flex justify-content-between align-content-center">
+      <p class="fs-3">{{section.content[0].performance_title}}</p>
+      <p class="fs-3">{{formatPrice(section.content[0].price)}}</p>
+    </div>
+    <p class="text-muted fs-5">{{section.content[0].performance_description}}</p>
+  </div>
+
+  <!-- Medium profile section -->
+  <div *ngIf="section.type === 'medium'">
+    <!-- Title header -->
+    <div class="d-flex justify-content-between align-content-center">
+      <h1 class="mb-3">{{section.section_title}}</h1>
+      <ull-purchasable-indicator [purchasable]="section.purchasable" class="fs-2"></ull-purchasable-indicator>
+    </div>
+    <!-- Description -->
+    <p class="text-muted fs-5">{{section.section_description}}</p>
+    <!-- List of performances -->
+    <div *ngFor="let performance of section.content; let idx = index">
+      <div class="d-flex justify-content-between align-items-start">
+        <!-- Performance details -->
+        <div class="flex-grow-1 me-5">
+          <div class="d-flex justify-content-between align-content-center">
+            <p class="fs-3">{{performance.performance_title}}</p>
+            <p class="fs-3">{{formatPrice(performance.price)}}</p>
+          </div>
+          <p class="text-muted fs-5">{{performance.performance_description}}</p>
+        </div>
+        <!-- Performance image -->
+        <div class="col-3">
+          <img [src]="performance.picture" alt="illustration" class="medium-image">
+        </div>
+      </div>
+      <hr *ngIf="idx !== section.content.length - 1"> <!-- Separator if not last entry -->
+    </div>
+  </div>
+
+  <!-- Small profile section -->
+  <div *ngIf="section.type === 'small'">
+    <!-- Title header -->
+    <div class="d-flex justify-content-between align-content-center">
+      <h1 class="mb-3">{{section.section_title}}</h1>
+      <ull-purchasable-indicator [purchasable]="section.purchasable" class="fs-2"></ull-purchasable-indicator>
+    </div>
+    <!-- List of performances -->
+    <div *ngFor="let performance of getShortDisplayList(section.content, section.preview_amount); let idx = index">
+      <div class="d-flex justify-content-between align-items-start">
+        <!-- Performance picture -->
+        <div class="col-1 me-3">
+          <img [src]="performance.picture" alt="illustration" class="small-image">
+        </div>
+        <!-- Performance details -->
+        <div class="flex-grow-1 me-5">
+          <div class="d-flex justify-content-between align-content-center">
+            <p class="fs-3">{{performance.performance_title}}</p>
+            <p class="fs-3">{{formatPrice(performance.price)}}</p>
+          </div>
+          <p class="text-muted fs-5">{{performance.performance_description}}</p>
+        </div>
+      </div>
+      <hr *ngIf="idx !== getShortDisplayList(section.content, section.preview_amount).length - 1"> <!-- Separator if not last entry -->
+    </div>
+    <!-- "Voir plus" button if the number of entries to show by default is lower than the total amount of entries -->
+    <div class="d-flex justify-content-end" *ngIf="section.content.length > (section.preview_amount || 0)">
+      <button (click)="showAll = !showAll" class="btn btn-outline-primary">Voir {{showAll ? "moins" : "plus"}}</button>
+    </div>
+  </div>
+
+  <!-- Info profile section -->
+  <div *ngIf="section.type === 'info'">
+    <h1>{{section.section_title}}</h1>
+    <p>{{section.section_description}}</p>
+  </div>
+</div>
