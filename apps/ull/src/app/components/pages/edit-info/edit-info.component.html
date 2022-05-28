@@ -4,34 +4,48 @@
               [companyName]="info.company_name"
               [companyDescription]="info.company_description">
   </ull-navbar>
+
   <div class="bg-light d-flex justify-content-center">
     <div class="w-75 mt-3">
+      <!-- Info form -->
       <form [formGroup]="updateInfoForm" (ngSubmit)="updateInfo()" class="mb-5">
 
+        <!--
+        ----      First category
+        --->
         <h1>Profil de l'entreprise</h1>
         <small class="text-muted">Ces informations sont visibles des utilisateurs et permettent de les orienter dans leur recherche.</small>
 
-        <button type="button" class="btn w-100 vh-50 rounded border-dark bg-img my-3" [style]="'background-image : url(' + info.cover_picture + ');'">
+        <!-- Big cover picture with file input on click -->
+        <label for="coverPicture" type="button" class="w-100 vh-50 rounded border border-dark bg-img my-3 d-flex justify-content-center align-items-center" [style]="'background-image : url(' + coverPictureUrl + ');'">
           <fa-icon [icon]="faCamera" class="p-3 rounded-start fs-2 bg-transparent-dark text-white"></fa-icon>
           <span class="p-3 rounded-end fs-2 bg-transparent-dark text-white">Changer la photo de couverture</span>
-        </button>
+          <input id="coverPicture" hidden type="file" (change)="onCoverPictureSelected('coverPicture', $event)">
+        </label>
 
+        <!-- Rest of the profile -->
         <div class="d-flex my-3 align-items-center">
-          <button type="button" class="btn rounded-circle border-dark bg-img square-div" [style]="'background-image : url(' + info.profile_picture + ');'">
+          <!-- Left colum -->
+          <!-- Small profile picture with file input on click -->
+          <label for="profilePicture" type="button" class="rounded-circle border border-dark bg-img square-div d-flex justify-content-center align-items-center" [style]="'background-image : url(' + profilePictureUrl + ');'">
             <fa-icon [icon]="faCamera" class="p-4 rounded-circle bg-transparent-dark text-white d-inline-block" size="3x"></fa-icon>
-          </button>
+            <input id="profilePicture" hidden type="file" (change)="onCoverPictureSelected('profilePicture', $event)">
+          </label>
 
+          <!-- Right column -->
+          <!-- Text informations about the company -->
           <div class="ms-5 d-flex flex-column flex-grow-1">
+            <!-- Company name -->
             <div class="mb-3 border rounded p-2 w-50 mb-3">
               <label for="companyName" class="w-100">Nom de l'entreprise</label>
               <input id="companyName" type="text" [formControlName]="'company_name'" required class="inner-shadow rounded p-2 w-100 fs-4 border-danger" [ngClass]="{'border-0' : validInput('company_name')}">
             </div>
-
+            <!-- Company description -->
             <div class="mb-3 border rounded p-2 w-100 mb-3">
               <label for="companyDescription" class="w-100">Description de l'entreprise (2000 caractères)</label>
               <textarea rows="4" maxlength="2000" style="resize: none;" id="companyDescription" type="text" [formControlName]="'company_description'" required class="inner-shadow rounded border-0 p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('company_description')}"></textarea>
             </div>
-
+            <!-- Company serviced area -->
             <div class="mb-3 border rounded p-2 w-100 mb-3">
               <label for="area_served" class="w-100">Zone désservie</label>
               <input id="area_served" type="text" [formControlName]="'area_served'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('area_served')}">
@@ -41,30 +55,42 @@
 
         <hr>
 
+        <!--
+        ----      Second category
+        --->
         <div class="container-fluid">
           <h1>Adresse de l'entreprise</h1>
           <small class="text-muted">Ces informations sont utilisées uniquement par le service et ne sont pas montrées au public.</small>
+          <!-- First line of the grid -->
           <div class="row">
+            <!-- Address number -->
             <div class="col mb-3 border rounded p-2 m-2">
               <label for="number" class="w-100">Numéro</label>
               <input id="number" type="text" [formControlName]="'number'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('number')}">
             </div>
+            <!-- Address street -->
             <div class="col mb-3 border rounded p-2 m-2">
               <label for="street" class="w-100">Rue</label>
               <input id="street" type="text" [formControlName]="'street'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('street')}">
             </div>
           </div>
+          <!-- Second line of the grid -->
           <div class="row">
+            <!-- Address city -->
             <div class="col mb-3 border rounded p-2 m-2">
               <label for="city" class="w-100">Ville</label>
               <input id="city" type="text" [formControlName]="'city'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('city')}">
             </div>
+            <!-- Address postal code -->
             <div class="col mb-3 border rounded p-2 m-2">
               <label for="postal_code" class="w-100">Code postal</label>
               <input id="postal_code" type="text" [formControlName]="'postal_code'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('postal_code')}">
             </div>
           </div>
+          <!-- Third line of the gris -->
           <div class="row">
+            <!-- Component takes all space -->
+            <!-- Address additional information -->
             <div class="col mb-3 border rounded p-2 m-2">
               <label for="complement" class="w-100">Complément d'adresse</label>
               <textarea rows="4" maxlength="400" style="resize: none;" id="complement" type="text" [formControlName]="'complement'" class="inner-shadow rounded border-0 p-2 w-100 border-0"></textarea>
@@ -74,14 +100,19 @@
 
         <hr>
 
+        <!--
+        ----      Third category
+        --->
         <div class="container-fluid">
           <h1>Contacts</h1>
           <small class="text-muted">Utilisés uniquement par ULL pour vous contacter.</small>
           <div class="row">
+            <!-- E-mail address -->
             <div class="col mb-3 border rounded p-2 m-2">
               <label for="email" class="w-100">Adresse e-mail</label>
               <input id="email" type="email" [formControlName]="'email'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('email')}">
             </div>
+            <!-- Phone number -->
             <div class="col mb-3 border rounded p-2 m-2">
               <label for="phone" class="w-100">Numéro de téléphone</label>
               <input id="phone" type="tel" [formControlName]="'phone'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('phone')}">
@@ -89,16 +120,27 @@
           </div>
         </div>
 
+        <!-- Buttons at the bottom -->
         <div class="d-flex justify-content-center align-items-center flex-wrap">
+          <!-- Cancel button ; just navigate back to profile since no change has been committed -->
           <button type="button" class="btn btn-outline-primary px-3 rounded me-5" [routerLink]="'/profile'">Annuler</button>
+          <!-- Confirm button -->
           <button type="submit" class="btn btn-primary px-3 rounded d-flex align-items-center" [disabled]="!updateInfoForm.valid || uploadInProgress">
-            <div *ngIf="uploadInProgress" class="spinner-border me-2" role="status"></div>
+            <div *ngIf="uploadInProgress" class="spinner-border me-2" role="status"></div> <!-- Spinner while upload is in progress -->
             Sauvegarder
           </button>
         </div>
 
-        <div class="d-flex justify-content-center">
-          <small *ngIf="uploadInProgress" class="fst-italic">Envoi des données en cours : {{uploadProgress}}%</small>
+        <!-- Display the progress of the upload while it is going on -->
+        <div *ngIf="uploadInProgress" class="d-flex justify-content-center">
+          <small class="fst-italic">Envoi des données en cours : {{uploadProgress}}%</small>
+        </div>
+
+        <!-- Display alert on success -->
+        <div *ngIf="uploadSuccess" class="d-flex justify-content-center mt-2">
+          <div class="alert alert-success w-25 text-center">
+            <p class="m-0">Les modifications ont bien été enregistrées</p>
+          </div>
         </div>
       </form>
     </div>
