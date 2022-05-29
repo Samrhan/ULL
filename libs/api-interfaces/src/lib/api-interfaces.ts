@@ -35,6 +35,13 @@ export interface MinimalFile {
   size: number
 }
 
+export interface Address {
+  number : string,
+  street : string,
+  city : string,
+  postal_code : string,
+  complement : string
+}
 
 export interface RegisterCustomerMessage {
   oauth_sub: string,
@@ -75,6 +82,17 @@ export interface ChangePasswordProviderBody {
   new_password: string
 }
 
+export interface EditProviderInfoBody {
+  company_name : string,
+  company_description : string,
+  email : string,
+  phone : string,
+  area_served : string,
+  address : Address,
+  profile_picture ?: File,
+  cover_picture ?: File
+}
+
 export interface Performance {
   id_performance: string,
   performance_title: string,
@@ -113,4 +131,15 @@ export interface ProviderProfile {
   profile_picture: string,
   rating: number,
   services: ProviderProfileSection[]
+}
+
+export interface ProviderCompanyInformation {
+  company_name : string,
+  company_description : string,
+  email : string,
+  phone : string,
+  profile_picture : string,
+  cover_picture : string,
+  area_served : string,
+  address : Address
 }

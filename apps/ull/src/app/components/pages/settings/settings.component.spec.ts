@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditInfoComponent } from './edit-info.component';
+import { SettingsComponent } from './settings.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {RouterTestingModule} from "@angular/router/testing";
 import {AccueilComponent} from "../accueil/accueil.component";
-import {AuthenticationService} from "../../../services/authentication/authentication.service";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {AuthenticationService} from "../../../services/authentication/authentication.service";
 import {NavbarComponent} from "../../items/navbar/navbar.component";
 import {ProfileMenuComponent} from "../../items/profile-menu/profile-menu.component";
 
-describe('EditInfoComponent', () => {
-  let component: EditInfoComponent;
-  let fixture: ComponentFixture<EditInfoComponent>;
+describe('SettingsComponent', () => {
+  let component: SettingsComponent;
+  let fixture: ComponentFixture<SettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,15 +30,15 @@ describe('EditInfoComponent', () => {
         AuthenticationService
       ],
       declarations: [
-        EditInfoComponent,
+        SettingsComponent,
         NavbarComponent,
         ProfileMenuComponent
-      ],
+      ]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditInfoComponent);
+    fixture = TestBed.createComponent(SettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
