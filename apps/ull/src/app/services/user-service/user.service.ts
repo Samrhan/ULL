@@ -20,6 +20,10 @@ export class UserService {
     private httpClient: HttpClient
   ) { }
 
+  invalidateCache(){
+    sessionStorage.clear();
+  }
+
   /**
    * Returns the full profile of the connected user.
    *
@@ -238,6 +242,8 @@ export class UserService {
     return this.httpClient.post<any>(environment.baseServerURL + environment.providerServiceURL + '/provider_profile', formData, {
       reportProgress: true,
       observe: 'events'
-    })
+    }).pipe(
+      tap(() => {this.invalidateCache()}) // Invalidate the cache when the new info is posted
+    )
   }
 }

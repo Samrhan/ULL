@@ -24,7 +24,8 @@ import { EditInfoComponent } from './components/pages/edit-info/edit-info.compon
 import { EditProfileComponent } from './components/pages/edit-profile/edit-profile.component';
 import { ProfileSectionComponent } from './components/items/profile-section/profile-section.component';
 import { PurchasableIndicatorComponent } from './components/items/purchasable-indicator/purchasable-indicator.component';
-import {TooltipModule} from "ngx-bootstrap/tooltip";
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { SettingsComponent } from './components/pages/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {TooltipModule} from "ngx-bootstrap/tooltip";
     EditProfileComponent,
     ProfileSectionComponent,
     PurchasableIndicatorComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

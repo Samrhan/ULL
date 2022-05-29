@@ -11,6 +11,7 @@ import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 import {AuthPreventService} from "./services/auth-prevent/auth-prevent.service";
 import {EditInfoComponent} from "./components/pages/edit-info/edit-info.component";
 import {EditProfileComponent} from "./components/pages/edit-profile/edit-profile.component";
+import {SettingsComponent} from "./components/pages/settings/settings.component";
 
 const routes: Routes = [
   { path: '', component: AccueilComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   { path: 'editInfo', component: EditInfoComponent, canActivate: [AuthGuardService]},
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService]},
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService]},
   // Redirection par défaut
   { path: '**', redirectTo: 'login'}
 ]
