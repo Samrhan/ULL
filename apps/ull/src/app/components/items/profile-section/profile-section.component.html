@@ -7,18 +7,19 @@
       <ull-purchasable-indicator [purchasable]="section.purchasable" class="fs-2"></ull-purchasable-indicator>
     </div>
     <!-- Images carousel -->
-    <div class="mb-3 p-2 rounded border">
+    <div class="mb-3 p-2 rounded border" *ngIf="section.content[0]">
       <div class="d-flex overflow-auto py-1">
         <img [src]="section.content[0].picture" alt="illustration" class="big-image me-2">
         <img *ngFor="let imageUrl of section.pictures" [src]="imageUrl" alt="illustration" class="big-image me-2">
       </div>
     </div>
     <!-- Section description & price -->
-    <div class="d-flex justify-content-between align-content-center">
+    <div class="d-flex justify-content-between align-content-center" *ngIf="section.content[0]">
       <p class="fs-3">{{section.content[0].performance_title}}</p>
       <p class="fs-3">{{formatPrice(section.content[0].price)}}</p>
     </div>
-    <p class="text-muted fs-5">{{section.content[0].performance_description}}</p>
+    <p class="text-muted fs-5" *ngIf="section.content[0]">{{section.content[0].performance_description}}</p>
+    <p *ngIf="!section.content[0]" class="fst-italic">Cette section ne contient aucune prestation</p>
   </div>
 
   <!-- Medium profile section -->
