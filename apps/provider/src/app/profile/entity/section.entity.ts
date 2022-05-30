@@ -11,6 +11,7 @@ import {PreviewAmount} from "./preview-amount.entity";
 import {BigSectionPicture} from "./big-section-picture.entity";
 import {TypeEnumEntity} from "./type-enum.entity";
 import {Provider} from "../../auth/entity/provider.entity";
+import {PerformanceEntity} from "./performance.entity";
 
 @Entity()
 export class Section {
@@ -43,6 +44,9 @@ export class Section {
 
     @OneToMany(() => BigSectionPicture, (bigSectionPicture) => bigSectionPicture.sectionId)
     bigSectionPictures?: BigSectionPicture[];
+
+    @OneToMany(()=>PerformanceEntity, (performance)=>performance.section)
+    performances?: PerformanceEntity[];
 
     @CreateDateColumn({name: 'created_at'})
     createdAt: string;

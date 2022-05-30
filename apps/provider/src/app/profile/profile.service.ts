@@ -10,6 +10,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
 import {Provider} from "../auth/entity/provider.entity";
 import {PutSectionDto} from "./dto/put-section.dto";
+import {PutOrderProfileDto} from "./dto/put-order-profile.dto";
 
 @Injectable()
 export class ProfileService {
@@ -169,5 +170,26 @@ export class ProfileService {
             yIndex: idSections.indexOf(section.sectionId)
         }))
         await this.sectionRepository.save(newIndexes)
+    }
+
+    async updateProfileOrder(profileOrder: PutOrderProfileDto[], user: JwtUser) {
+        const sections = await this.sectionRepository.find({select: ['sectionId'], where: {provider: user.id}})
+        const dbIdSections = sections.map(s => s.sectionId)
+        const bodySections = profileOrder.map(p => p.id_section)
+        console.log(dbIdSections, bodySections)
+        console.log(ProfileService.equals(dbIdSections, bodySections));
+
+    }
+
+    private static equals(a: string[], b: string[]): boolean {
+        if (a.length !== b.length) return false;
+        const uniqueValues = new Set([...a, ...b]);
+        for (const v of uniqueValues) {
+            const aCount = a.filter(e => e === v).length;
+            const bCount = b.filter(e => e === v).length;
+            if (aCount !== bCount) return false;
+        }
+        return true;
+
     }
 }

@@ -4,7 +4,7 @@ import {ApiProperty} from "@nestjs/swagger";
 
 export class PutSectionDto {
     @ApiProperty()
-    @IsUUID()
+    @IsUUID("4")
     @IsNotEmpty()
     public id_section: string;
 

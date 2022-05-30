@@ -1,5 +1,6 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn} from 'typeorm';
 import {Section} from "../../profile/entity/section.entity";
+import {PerformanceEntity} from "../../profile/entity/performance.entity";
 
 @Entity()
 @Unique('unique_provider', ['siren', 'email', 'phoneNumber'])
@@ -46,4 +47,7 @@ export class Provider {
 
   @OneToMany(()=>Section, section => section.provider)
   sections: Section[];
+
+  @OneToMany(()=>PerformanceEntity, performance => performance.provider)
+  performances: PerformanceEntity[];
 }

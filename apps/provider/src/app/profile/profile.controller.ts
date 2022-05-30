@@ -3,9 +3,9 @@ import {
     Controller,
     Delete,
     Inject,
-    Param,
+    Param, ParseArrayPipe,
     Post,
-    Put,
+    Put, Req,
     UploadedFiles,
     UseGuards,
     UseInterceptors
@@ -16,15 +16,16 @@ import {JwtUser, MinimalFile, SectionType} from "@ull/api-interfaces";
 import {ProfileService} from "./profile.service";
 import {UploadSectionDto} from "./dto/upload-section.dto";
 import {PutSectionDto} from "./dto/put-section.dto";
+import {PutOrderProfileDto} from "./dto/put-order-profile.dto";
 
 @Controller()
 @UseInterceptors(
     AnyFilesInterceptor(),
 )
+@UseGuards(LocalAuthGuard)
 export class ProfileController {
     @Inject() profileService: ProfileService
 
-    @UseGuards(LocalAuthGuard)
     @Post('section')
     async uploadSection(@Body() body: UploadSectionDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
         if (body.type !== SectionType.SMALL) {
@@ -38,33 +39,28 @@ export class ProfileController {
         await this.profileService.createSection(body, files, user)
     }
 
-    @UseGuards(LocalAuthGuard)
     @Delete("section/:id")
     async deleteSection(@Param('id') sectionId: string, @User() user: JwtUser) {
         await this.profileService.deleteSection(sectionId, user)
     }
 
-    @UseGuards(LocalAuthGuard)
     @Put("section")
     async putSection(@Body() body: PutSectionDto, @User() user: JwtUser) {
         await this.profileService.putSection(body, user)
     }
 
-    @UseGuards(LocalAuthGuard)
     @Post("section/:id_section/picture")
     async addPicture(@Param('id_section') sectionId: string, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
         await this.profileService.addPicture(sectionId, files, user)
     }
 
-    @UseGuards(LocalAuthGuard)
     @Delete("section/:id_section/picture/:id_picture")
     async deletePicture(@Param('id_section') sectionId: string, @Param('id_picture') pictureId: string, @User() user: JwtUser) {
         await this.profileService.deletePicture(sectionId, pictureId, user)
     }
 
-    @UseGuards(LocalAuthGuard)
-    @Post("section/updateIndex")
-    async updateIndex(@Body() sectionId: string[], @User() user: JwtUser) {
-        await this.profileService.updateIndex(sectionId, user)
+    @Put("profile/order")
+    async updateIndex(@Body(new ParseArrayPipe({ items: PutOrderProfileDto })) profileOrder: PutOrderProfileDto[], @User() user: JwtUser) {
+        await this.profileService.updateProfileOrder(profileOrder, user)
     }
 }
