@@ -11,7 +11,7 @@ import {PreviewAmount} from "./preview-amount.entity";
 import {BigSectionPicture} from "./big-section-picture.entity";
 import {TypeEnumEntity} from "./type-enum.entity";
 import {Provider} from "../../auth/entity/provider.entity";
-import {PerformanceEntity} from "./performance.entity";
+import {PerformanceEntity} from "../../performance/entity/performance.entity";
 
 @Entity()
 export class Section {

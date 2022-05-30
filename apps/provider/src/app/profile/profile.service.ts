@@ -11,6 +11,7 @@ import {Repository} from "typeorm";
 import {Provider} from "../auth/entity/provider.entity";
 import {PutSectionDto} from "./dto/put-section.dto";
 import {PutOrderProfileDto} from "./dto/put-order-profile.dto";
+import {PerformanceEntity} from "../performance/entity/performance.entity";
 
 @Injectable()
 export class ProfileService {
@@ -20,6 +21,7 @@ export class ProfileService {
     @InjectRepository(Provider) providerRepository: Repository<Provider>;
     @InjectRepository(PreviewAmount) previewAmountRepository: Repository<PreviewAmount>;
     @InjectRepository(BigSectionPicture) bigSectionPictureRepository: Repository<BigSectionPicture>;
+    @InjectRepository(PerformanceEntity) performanceRepository: Repository<PerformanceEntity>;
 
     async createSection(body: UploadSectionDto, files: MinimalFile[], user: JwtUser) {
         const section = new Section()
@@ -158,27 +160,48 @@ export class ProfileService {
         await this.bigSectionPictureRepository.delete(picture)
     }
 
-    async updateIndex(idSections: string[], user: JwtUser) {
-        const sections = await this.sectionRepository.find({select: ['sectionId'], where: {provider: user.id}})
-        const dbIdSections = sections.map(s => s.sectionId)
-        console.log(dbIdSections)
-        if (JSON.stringify(dbIdSections) !== JSON.stringify(idSections)) {
-            throw new BadRequestException('Missmatch between sections')
-        }
-        const newIndexes = sections.map((section) => ({
-            sectionId: section.sectionId,
-            yIndex: idSections.indexOf(section.sectionId)
-        }))
-        await this.sectionRepository.save(newIndexes)
-    }
-
     async updateProfileOrder(profileOrder: PutOrderProfileDto[], user: JwtUser) {
-        const sections = await this.sectionRepository.find({select: ['sectionId'], where: {provider: user.id}})
+        // Seems a little too complicated, but didn't find another way to do it
+        const sections = await this.sectionRepository.find({
+            select: ['sectionId', 'yIndex', 'type'],
+            where: {provider: user.id},
+            relations: ['performances']
+        })
         const dbIdSections = sections.map(s => s.sectionId)
         const bodySections = profileOrder.map(p => p.id_section)
-        console.log(dbIdSections, bodySections)
-        console.log(ProfileService.equals(dbIdSections, bodySections));
+        if (!ProfileService.equals(dbIdSections, bodySections)) {
+            throw new BadRequestException('Missmatch between sections')
+        }
 
+        const performances = sections.map(s => s.performances).flat(1)
+        const idPerformances = performances.map(p => p.idPerformance)
+        const bodyPerformances = profileOrder.map(p => p.id_performances).flat(1)
+        if (!ProfileService.equals(idPerformances, bodyPerformances)) {
+            throw new BadRequestException('Missmatch between performances')
+        }
+
+        for (let sectionIndex = 0; sectionIndex < profileOrder.length; sectionIndex++){
+            const section = sections.find(s => s.sectionId === profileOrder[sectionIndex].id_section)
+            section.yIndex = sectionIndex
+
+            for (let performanceIndex = 0; performanceIndex < profileOrder[sectionIndex].id_performances.length; performanceIndex++){
+                const idPerformance = profileOrder[sectionIndex].id_performances[performanceIndex];
+                const performance = performances.find(p => p.idPerformance === idPerformance)
+
+                performance.yIndex = performanceIndex
+                performance.section = section
+
+                if (performance.yIndex > 0 && performance.section.type === SectionType.BIG) {
+                    throw new BadRequestException('You can not add more than 1 performance to big sections')
+                }
+            }
+
+            // Avoid nested tabs
+            delete section.performances
+        }
+
+        await this.sectionRepository.save(sections)
+        await this.performanceRepository.save(performances)
     }
 
     private static equals(a: string[], b: string[]): boolean {
@@ -190,6 +213,5 @@ export class ProfileService {
             if (aCount !== bCount) return false;
         }
         return true;
-
     }
 }

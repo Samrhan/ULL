@@ -5,6 +5,7 @@ import {LocalAuthModule} from "@ull/auth";
 import {ProfileModule} from './profile/profile.module';
 import {StorageModule} from "@ull/storage";
 import {ConfigModule} from "@nestjs/config";
+import { PerformanceModule } from './performance/performance.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import {ConfigModule} from "@nestjs/config";
     StorageModule.forRoot(),
     ConfigModule.forRoot(),
     ProfileModule,
+    PerformanceModule,
   ],
   controllers: [],
   providers: [],

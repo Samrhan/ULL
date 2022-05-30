@@ -8,7 +8,7 @@ import {PreviewAmount} from "./entity/preview-amount.entity";
 import {BigSectionPicture} from "./entity/big-section-picture.entity";
 import {TypeEnumEntity} from "./entity/type-enum.entity";
 import {Provider} from "../auth/entity/provider.entity";
-import {PerformanceEntity} from "./entity/performance.entity";
+import {PerformanceEntity} from "../performance/entity/performance.entity";
 
 @Module({
   controllers: [ProfileController],

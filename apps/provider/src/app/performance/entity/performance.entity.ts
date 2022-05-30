@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
-import {Section} from "./section.entity";
+import {Section} from "../../profile/entity/section.entity";
 import {Provider} from "../../auth/entity/provider.entity";
 
 @Entity({name: 'performance'})
@@ -28,7 +28,7 @@ export class PerformanceEntity {
     priceValue: number;
 
     @Column({name: 'price_unit'})
-    priceUnit: number;
+    priceUnit: string;
 
     @ManyToOne(() => Section, section => section.performances, {nullable: true})
     @JoinColumn({name: 'id_section'})
@@ -41,14 +41,14 @@ export class PerformanceEntity {
     @JoinColumn({name: 'id_provider'})
     provider: Provider;
 
-    @OneToOne(()=>PerformanceEntity, {nullable: true})
+    @OneToOne(() => PerformanceEntity, {nullable: true})
     @JoinColumn({name: 'id_performance_parent'})
     performanceParent?: PerformanceEntity;
 
-    @Column()
+    @Column({default: false})
     deleted: boolean;
 
-    @Column({name: 'deleted_at', type: 'timestamp with time zone'})
+    @Column({name: 'deleted_at', type: 'timestamp', nullable: true}) s
     deletedAt: Date;
 
     @UpdateDateColumn({name: 'updated_at'})
