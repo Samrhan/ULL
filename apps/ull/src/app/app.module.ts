@@ -14,7 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AccueilComponent } from './components/pages/accueil/accueil.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 import { HttpInterceptorService } from './services/httpInterceptor/http-interceptor.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './components/pages/login/login.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
@@ -26,6 +26,7 @@ import { ProfileSectionComponent } from './components/items/profile-section/prof
 import { PurchasableIndicatorComponent } from './components/items/purchasable-indicator/purchasable-indicator.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SettingsComponent } from './components/pages/settings/settings.component';
+import {BsModalService} from "ngx-bootstrap/modal";
 
 @NgModule({
   declarations: [
@@ -53,9 +54,11 @@ import { SettingsComponent } from './components/pages/settings/settings.componen
     BsDropdownModule.forRoot(),
     ReactiveFormsModule,
     TooltipModule,
+    FormsModule,
   ],
   providers: [
     BsDropdownDirective,
+    BsModalService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,

@@ -5,7 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {
   Address,
   EditProviderInfoBody, ProviderCompanyInformation,
-  ProviderProfile, ProviderSectionType
+  ProviderProfile, ProviderSectionType, ReorderProviderProfileBody
 } from "@ull/api-interfaces";
 import {environment} from "../../../environments/environment";
 import {Observable, of, tap} from "rxjs";
@@ -243,7 +243,18 @@ export class UserService {
       reportProgress: true,
       observe: 'events'
     }).pipe(
-      tap(() => {this.invalidateCache()}) // Invalidate the cache when the new info is posted
+      tap({ // Invalidate the cache when the new info is posted
+        next: () => this.invalidateCache()
+      })
     )
+  }
+
+  reorderProfile(body: ReorderProviderProfileBody) : Observable<any> {
+    return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + '/provider_profile/updateOrder', body)
+      .pipe(
+        tap({ // On success, invalidate the cache to redownload the new profile
+          next: () => this.invalidateCache()
+        })
+      );
   }
 }

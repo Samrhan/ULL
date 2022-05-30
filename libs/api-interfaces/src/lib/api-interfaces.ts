@@ -190,3 +190,10 @@ export interface ProviderCompanyInformation {
     area_served: string,
     address: Address
 }
+
+export interface ReorderProviderProfileElement {
+  id_section : string,
+  id_performances : string[]
+}
+
+export type ReorderProviderProfileBody = Array<ReorderProviderProfileElement>
