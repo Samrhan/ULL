@@ -4,8 +4,8 @@ import {HttpClient} from "@angular/common/http";
 
 import {
   Address,
-  EditProviderInfoBody, ProviderCompanyInformation,
-  ProviderProfile, ProviderSectionType, ReorderProviderProfileBody
+  EditProviderInfoBody, Performance, ProviderCompanyInformation,
+  ProviderProfile, ProviderProfileSection, ProviderSectionType, ReorderProviderProfileBody
 } from "@ull/api-interfaces";
 import {environment} from "../../../environments/environment";
 import {Observable, of, tap} from "rxjs";
@@ -253,6 +253,24 @@ export class UserService {
     return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + '/provider_profile/updateOrder', body)
       .pipe(
         tap({ // On success, invalidate the cache to redownload the new profile
+          next: () => this.invalidateCache()
+        })
+      );
+  }
+
+  deleteSection(section: ProviderProfileSection) : Observable<any>{
+    return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + '/section/' + section.id_section)
+      .pipe(
+        tap({
+          next: () => this.invalidateCache()
+        })
+      );
+  }
+
+  deletePerformance(performance: Performance) : Observable<any>{
+    return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + '/performance/' + performance.id_performance)
+      .pipe(
+        tap({
           next: () => this.invalidateCache()
         })
       );

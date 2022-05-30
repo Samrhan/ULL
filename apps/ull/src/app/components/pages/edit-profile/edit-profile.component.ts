@@ -14,7 +14,8 @@ import {
   faArrowRightToBracket,
   faArrowUp,
   faPencil,
-  faTrash
+  faTrash,
+  faBan
 } from "@fortawesome/free-solid-svg-icons";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
@@ -39,6 +40,7 @@ export class EditProfileComponent implements OnInit {
   faTrash = faTrash;
   faArrowRightToBracket = faArrowRightToBracket;
   faArrowRight = faArrowRight;
+  faBan = faBan;
 
   modalRef?: BsModalRef;
 
@@ -141,6 +143,18 @@ export class EditProfileComponent implements OnInit {
       )
     } else {
       return []
+    }
+  }
+
+  deleteSection(section: ProviderProfileSection) {
+    if(section.content.length === 0 && confirm("Cette action est irréversible, voulez-vous vraiment continuer ?")){
+      this.userService.deleteSection(section).subscribe(() => this.fetchProfile());
+    }
+  }
+
+  deletePerformance(performance: Performance) {
+    if(confirm("Cette action est irréversible, voulez-vous vraiment continuer ?\nSupprimer cette prestation ne vous délivre pas des commandes déjà passées.")){
+      this.userService.deletePerformance(performance).subscribe(() => this.fetchProfile());
     }
   }
 }

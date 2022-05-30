@@ -14,7 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AccueilComponent } from './components/pages/accueil/accueil.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 import { HttpInterceptorService } from './services/httpInterceptor/http-interceptor.service';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/pages/login/login.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
@@ -26,7 +26,9 @@ import { ProfileSectionComponent } from './components/items/profile-section/prof
 import { PurchasableIndicatorComponent } from './components/items/purchasable-indicator/purchasable-indicator.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SettingsComponent } from './components/pages/settings/settings.component';
-import {BsModalService} from "ngx-bootstrap/modal";
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { EditSectionComponent } from './components/pages/edit-section/edit-section.component';
+import { EditPerformanceComponent } from './components/pages/edit-performance/edit-performance.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import {BsModalService} from "ngx-bootstrap/modal";
     ProfileSectionComponent,
     PurchasableIndicatorComponent,
     SettingsComponent,
+    EditSectionComponent,
+    EditPerformanceComponent,
   ],
   imports: [
     BrowserModule,

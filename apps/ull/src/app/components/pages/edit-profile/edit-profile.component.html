@@ -22,8 +22,11 @@
             <div class="d-flex justify-content-between align-items-center">
               <fa-icon [icon]="faArrowUp" class="mx-2 cursor-pointer" size="2x" (click)="move(section, profile.services, 'up')" [ngClass]="{'invisible' : idxSection === 0 || !editOrder}"></fa-icon>
               <fa-icon [icon]="faArrowDown" class="mx-2 cursor-pointer" size="2x" (click)="move(section, profile.services, 'down')" [ngClass]="{'invisible' : idxSection === profile.services.length - 1 || !editOrder}"></fa-icon>
-              <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" size="2x" [ngClass]="{'invisible' : editOrder}"></fa-icon>
-              <fa-icon [icon]="faTrash" class="ms-5 cursor-pointer" size="2x" [ngClass]="{'invisible' : editOrder}"></fa-icon>
+              <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" size="2x" [ngClass]="{'invisible' : editOrder}" [routerLink]="['/editSection', section.id_section]"></fa-icon>
+              <fa-stack class="ms-5 cursor-pointer" size="2x" [ngClass]="{'invisible' : editOrder}" (click)="deleteSection(section)">
+                <fa-icon [icon]="faTrash" stackItemSize="1x"></fa-icon>
+                <fa-icon [icon]="faBan" class="text-danger" *ngIf="section.content.length !== 0" stackItemSize="1x" tooltip="Une section doit être vide pour être supprimée." placement="left top"></fa-icon>
+              </fa-stack>
             </div>
           </div>
           <div class="list-group ms-5">
@@ -36,8 +39,8 @@
                   <fa-icon [icon]="faArrowRightToBracket" class="mx-5 cursor-pointer" (click)="openChangeSectionModal(performance, section, template)" [ngClass]="{'invisible' : !editOrder}"></fa-icon>
                   <fa-icon [icon]="faArrowUp" class="mx-2 cursor-pointer" (click)="move(performance, section.content, 'up')" [ngClass]="{'invisible' : idxPerformance === 0 || !editOrder}"></fa-icon>
                   <fa-icon [icon]="faArrowDown" class="mx-2 cursor-pointer" (click)="move(performance, section.content, 'down')" [ngClass]="{'invisible' : idxPerformance === section.content.length - 1 || !editOrder}"></fa-icon>
-                  <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}"></fa-icon>
-                  <fa-icon [icon]="faTrash" class="ms-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}"></fa-icon>
+                  <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}" [routerLink]="['/editPerformance', performance.id_performance]"></fa-icon>
+                  <fa-icon [icon]="faTrash" class="ms-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}" (click)="deletePerformance(performance)"></fa-icon>
                 </div>
               </div>
             </div>
