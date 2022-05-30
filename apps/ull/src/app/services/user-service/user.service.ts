@@ -261,7 +261,7 @@ export class UserService {
   deleteSection(section: ProviderProfileSection) : Observable<any>{
     return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + '/section/' + section.id_section)
       .pipe(
-        tap({
+        tap({ // On success, invalidate the cache to redownload the new profile
           next: () => this.invalidateCache()
         })
       );
@@ -270,7 +270,7 @@ export class UserService {
   deletePerformance(performance: Performance) : Observable<any>{
     return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + '/performance/' + performance.id_performance)
       .pipe(
-        tap({
+        tap({ // On success, invalidate the cache to redownload the new profile
           next: () => this.invalidateCache()
         })
       );
