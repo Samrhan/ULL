@@ -69,4 +69,18 @@ export class AuthenticationService {
         })
       );
   }
+
+  parseJwt (token: string) {
+    return JSON.parse(atob(token.split('.')[1]))
+  };
+
+  getProviderId() : string {
+    const token = localStorage.getItem('user-token');
+    if (token) {
+      const parsedToken = this.parseJwt(token);
+      return parsedToken.sub;
+    } else {
+      return "";
+    }
+  }
 }

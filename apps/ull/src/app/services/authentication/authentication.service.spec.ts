@@ -290,4 +290,27 @@ describe('AuthenticationService', () => {
       expect(router.navigate).not.toHaveBeenCalled();
     })
   })
+
+  describe('parseJWT()',  () => {
+    it('Should properly parse the body of a token', () => {
+      expect(service.parseJwt('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'))
+        .toEqual({
+        "sub": "1234567890",
+        "name": "John Doe",
+        "iat": 1516239022
+      })
+    })
+  });
+
+  describe('getProviderId()', () => {
+    it('Should return an empty string by default', () => {
+      expect(service.getProviderId()).toEqual("")
+    })
+
+    it('Should return the correct value from a token stored in localStorage', () => {
+      localStorage.setItem('user-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+
+      expect(service.getProviderId()).toEqual("1234567890")
+    })
+  })
 });

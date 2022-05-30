@@ -15,6 +15,10 @@ a, a:hover, a:focus, a:active {
   color: inherit;
 }
 
+p, h1, h2, h3, h4, h5, h6 {
+  white-space: pre-wrap;
+}
+
 img {
   object-fit: cover;
 }
@@ -47,6 +51,18 @@ img {
   min-height: 75vh !important;
 }
 
+.max-vh-25 {
+  max-height: 25vh !important;
+}
+
+.max-vh-50 {
+  max-height: 50vh !important;
+}
+
+.max-vh-75 {
+  max-height: 75vh !important;
+}
+
 .vw-25 {
   width: 25vw !important;
 }
@@ -69,4 +85,9 @@ img {
 
 .fs-xl {
   font-size: 3.5rem;
+}
+
+.inner-shadow {
+  -webkit-box-shadow: inset 0px 0px 5px 1px rgba(0,0,0,0.2);
+  box-shadow: inset 0px 0px 5px 1px rgba(0,0,0,0.2);
 }
