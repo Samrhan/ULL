@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Performance, ProviderProfileSection, ProviderSectionType} from "@ull/api-interfaces";
+import {Performance, ProviderProfileSection, SectionType} from "@ull/api-interfaces";
 
 @Component({
   selector: 'ull-profile-section',
@@ -15,10 +15,12 @@ export class ProfileSectionComponent{
     purchasable: false,
     section_description: "",
     section_title: "",
-    type: ProviderSectionType.info
+    type: SectionType.INFO
   };
 
   showAll = false; // Used to extend the small section when clicking the "voir plus" button
+
+  SectionType = SectionType;
 
   constructor() {}
 

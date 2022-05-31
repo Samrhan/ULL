@@ -4,7 +4,7 @@ import {
   Performance,
   ProviderProfile,
   ProviderProfileSection,
-  ProviderSectionType,
+  SectionType,
   ReorderProviderProfileBody
 } from "@ull/api-interfaces";
 
@@ -183,7 +183,7 @@ export class EditProfileComponent implements OnInit {
     if (this.profile?.services){
       return this.profile.services.filter(item =>
         // Only keep sections that aren't of type info, and remove the big sections that are full
-        item.type !== ProviderSectionType.info && !(item.type === ProviderSectionType.big && item.content.length > 0)
+        item.type !== SectionType.INFO && !(item.type === SectionType.BIG && item.content.length > 0)
       )
     } else {
       return []

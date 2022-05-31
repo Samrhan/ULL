@@ -1,11 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AuthenticationService} from "../authentication/authentication.service";
 import {HttpClient} from "@angular/common/http";
 
 import {
-  Address,
-  EditProviderInfoBody, Performance, ProviderCompanyInformation,
-  ProviderProfile, ProviderProfileSection, ProviderSectionType, ReorderProviderProfileBody
+  EditProviderInfoBody,
+  Performance,
+  ProviderCompanyInformation,
+  ProviderProfile,
+  ProviderProfileSection,
+  ReorderProviderProfileBody,
+  SectionType,
+  UpdateSectionBody
 } from "@ull/api-interfaces";
 import {environment} from "../../../environments/environment";
 import {Observable, of, tap} from "rxjs";
@@ -43,7 +48,7 @@ export class UserService {
       services: [
         {
           id_section: "84c9cb02-0a76-4a91-a9f0-9bca7a917725",
-          type: "big",
+          type: SectionType.BIG,
           section_title: "Le bar",
           section_description: "",
           purchasable: true,
@@ -68,7 +73,7 @@ export class UserService {
         },
         {
           id_section: "0f506496-e57b-465a-b10d-87ca2ed19b4f",
-          type: "info",
+          type: SectionType.INFO,
           section_title: "Texte d’information (FAQ, Conditions, etc)",
           section_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \nEtiam id vulputate dui, vel finibus nibh. Aliquam fringilla mi vel fermentum pulvinar. Ut venenatis nisi lorem, sit amet lacinia orci sollicitudin eget. In mattis est ex, eu tristique orci dignissim varius. \n\nPhasellus bibendum, felis vitae rutrum ultrices, velit odio elementum nibh, at ultrices ex lacus at tortor. Proin tincidunt volutpat efficitur. Ut est ante, blandit at nisi bibendum, efficitur sollicitudin ex. Suspendisse potenti. Vestibulum id lectus rutrum, pretium diam ut, euismod risus. Vestibulum mi magna, volutpat vitae viverra eget, consectetur eu enim. Mauris tincidunt rhoncus velit, et pharetra lacus hendrerit eu. \n\nEtiam mattis dolor eu euismod bibendum. Cras ultrices nec dolor gravida venenatis.",
           purchasable: false,
@@ -76,7 +81,7 @@ export class UserService {
         },
         {
           id_section: "b72c8885-8d72-4ab6-a32a-fbbbbbd47c76",
-          type: "medium",
+          type: SectionType.MEDIUM,
           section_title: "Notre carte",
           section_description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id vulputate dui, vel finibus nibh.",
           purchasable: true,
@@ -105,7 +110,7 @@ export class UserService {
         },
         {
           id_section: "d7d00f16-e09d-47e1-8653-94d6f236c287",
-          type: "small",
+          type: SectionType.SMALL,
           section_title: "La carte des pizza",
           section_description: "De bonnes pizza italiennes.",
           purchasable: false,
@@ -220,23 +225,26 @@ export class UserService {
 
   editProfileInfo(newInfo : EditProviderInfoBody) : Observable<any> {
     const formData = new FormData();
-    formData.append('company_name', newInfo.company_name)
-    formData.append('company_description', newInfo.company_description)
-    formData.append('email', newInfo.email)
-    formData.append('phone', newInfo.phone)
-    formData.append('area_served', newInfo.area_served)
-    formData.append('address_number', newInfo.address.number)
-    formData.append('address_street', newInfo.address.street)
-    formData.append('address_city', newInfo.address.city)
-    formData.append('address_postal_code', newInfo.address.postal_code)
-    formData.append('address_complement', newInfo.address.complement)
+    formData.append('company_name', newInfo.company_name);
+    formData.append('company_description', newInfo.company_description);
+    formData.append('email', newInfo.email);
+    formData.append('phone', newInfo.phone);
+    formData.append('area_served', newInfo.area_served);
+    formData.append('address_number', newInfo.address.number);
+    formData.append('address_street', newInfo.address.street);
+    formData.append('address_city', newInfo.address.city);
+    formData.append('address_postal_code', newInfo.address.postal_code);
+
+    if (newInfo.address.complement) {
+      formData.append('address_complement', newInfo.address.complement);
+    }
 
     if(newInfo.profile_picture){
-      formData.append('profile_picture', newInfo.profile_picture)
+      formData.append('profile_picture', newInfo.profile_picture);
     }
 
     if(newInfo.cover_picture){
-      formData.append('cover_picture', newInfo.cover_picture)
+      formData.append('cover_picture', newInfo.cover_picture);
     }
 
     return this.httpClient.post<any>(environment.baseServerURL + environment.providerServiceURL + '/provider_profile', formData, {
@@ -258,6 +266,69 @@ export class UserService {
       );
   }
 
+  addBigSectionPicture(idSection: string, picture: File) : Observable<any>{
+    const data = new FormData();
+    data.append('file', picture);
+
+    return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + `/section/${idSection}/picture`, data, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  removeBigSectionPicture(idSection: string, pictureName: string) : Observable<any>{
+    return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + `/section/${idSection}/picture/${pictureName}`);
+  }
+
+  addSection(section: ProviderProfileSection, pictures: File[]) : Observable<any>{
+    const data = new FormData();
+    data.append('type', section.type);
+    data.append('section_title', section.section_title);
+    data.append('section_description', section.section_description);
+    data.append('purchasable', JSON.stringify(section.purchasable));
+
+    if (section.type === SectionType.SMALL) {
+      data.append('preview_amount', JSON.stringify(section.preview_amount));
+    }
+
+    if (section.type === SectionType.BIG) {
+      for (const picture of pictures) {
+        // Append all the files to the same name to create an array
+        data.append('pictures', picture);
+      }
+    }
+
+    return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + '/section', data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      tap({ // On success, invalidate the cache to redownload the new profile
+        next: () => this.invalidateCache()
+      })
+    );
+  }
+
+  editSection(section: ProviderProfileSection) : Observable<any>{
+    // Cast ProviderProfileSection to UpdateSectionBody
+    const body : UpdateSectionBody = {
+      id_section: section.id_section,
+      purchasable: section.purchasable,
+      section_description: section.section_description,
+      section_title: section.section_title
+    };
+
+    if (section.type === SectionType.SMALL){
+      body.preview_amount = section.preview_amount;
+    }
+
+    return this.httpClient.put(environment.baseServerURL + environment.providerServiceURL + '/section', body)
+      .pipe(
+        tap({ // On success, invalidate the cache to redownload the new profile
+          next: () => this.invalidateCache()
+        })
+      );
+  }
+
   deleteSection(section: ProviderProfileSection) : Observable<any>{
     return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + '/section/' + section.id_section)
       .pipe(
@@ -265,6 +336,45 @@ export class UserService {
           next: () => this.invalidateCache()
         })
       );
+  }
+
+  addPerformance(performance : Performance, idSection : string, picture: File) : Observable<any>{
+    const data = new FormData();
+    data.append('performance_title', performance.performance_title);
+    data.append('performance_description', performance.performance_description);
+    data.append('performance_picture', picture);
+    data.append('price_value', JSON.stringify(performance.price.value));
+    data.append('price_unit', performance.price.unit);
+    data.append('id_section', idSection);
+
+    return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + '/performance', data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      tap({ // On success, invalidate the cache to redownload the new profile
+        next: () => this.invalidateCache()
+      })
+    );
+  }
+
+  editPerformance(performance : Performance, picture?: File) : Observable<any>{
+    const data = new FormData();
+    data.append('performance_id', performance.id_performance);
+    data.append('performance_title', performance.performance_title);
+    data.append('performance_description', performance.performance_description);
+    data.append('price_value', JSON.stringify(performance.price.value));
+    data.append('price_unit', performance.price.unit);
+
+    if (picture) data.append('performance_picture', picture);
+
+    return this.httpClient.put(environment.baseServerURL + environment.providerServiceURL + '/performance', data, {
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      tap({ // On success, invalidate the cache to redownload the new profile
+        next: () => this.invalidateCache()
+      })
+    );
   }
 
   deletePerformance(performance: Performance) : Observable<any>{

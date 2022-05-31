@@ -112,7 +112,6 @@ export interface ChangePasswordProviderBody {
 
 export interface UploadSectionBody {
     type: SectionType,
-    y_index: string,
     section_title: string,
     section_description: string,
     purchasable: string,
@@ -122,7 +121,6 @@ export interface UploadSectionBody {
 
 export interface UpdateSectionBody {
     id_section: string,
-    y_index: number,
     section_title: string,
     section_description: string,
     purchasable: boolean,
@@ -151,22 +149,15 @@ export interface Performance {
     picture: string,
 }
 
-export enum ProviderSectionType {
-    big = "big",
-    medium = "medium",
-    small = "small",
-    info = "info"
-}
-
 export interface ProviderProfileSection {
-    id_section: string,
-    type: ProviderSectionType,
-    section_title: string,
-    section_description: string,
-    purchasable: boolean,
-    content: Performance[],
-    preview_amount?: number, // For "small" sections
-    pictures?: string[] // For "big" sections
+  id_section: string,
+  type: SectionType,
+  section_title: string,
+  section_description: string,
+  purchasable: boolean,
+  content: Performance[],
+  preview_amount ?: number, // For "small" sections
+  pictures ?: string[] // For "big" sections
 }
 
 export interface ProviderProfile {
@@ -197,3 +188,20 @@ export interface ReorderProviderProfileElement {
 }
 
 export type ReorderProviderProfileBody = Array<ReorderProviderProfileElement>
+
+export interface UploadSectionBody {
+  type: SectionType,
+  section_title: string,
+  section_description: string,
+  purchasable: string,
+  preview_amount? : string,
+  pictures?: File[],
+}
+
+export interface UpdateSectionBody {
+  id_section: string,
+  section_title: string,
+  section_description: string,
+  purchasable: boolean,
+  preview_amount? : number,
+}
