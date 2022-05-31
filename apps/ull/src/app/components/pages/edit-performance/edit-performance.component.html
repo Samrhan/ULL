@@ -1,1 +1,18 @@
-<p>edit-performance works!</p>
+<div *ngIf="profile">
+  <ull-navbar [selected]="'none'"
+              [profilePictureUrl]="profile.profile_picture"
+              [companyName]="profile.company_name"
+              [companyDescription]="profile.company_description">
+  </ull-navbar>
+
+  <!-- Content -->
+  <div class="bg-light d-flex justify-content-center min-vh-100">
+    <div class="w-75 mt-3">
+      <!-- Page name -->
+      <h1>Réorganiser votre profil</h1>
+      <small class="text-muted">Cliquez sur les flèches pour modifier l'ordre des sections ou des prestations, et sur les boutons dédiés pour déplacer, supprimer ou éditer.</small>
+      <hr>
+
+    </div>
+  </div>
+</div>

@@ -42,8 +42,8 @@ export class UserService {
       company_name: "Catering premium",
       company_description: "Un service traiteur de qualité",
       area_served: "Région parisienne",
-      cover_picture: "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
-      profile_picture: "../../../../assets/images/cocktails.jpg",
+      cover_picture: "waitress-gff8ebb643_1920.jpg",
+      profile_picture: "cocktails.jpg",
       rating: 4.5,
       services: [
         {
@@ -53,10 +53,12 @@ export class UserService {
           section_description: "",
           purchasable: true,
           pictures: [
-            "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
-            "../../../../assets/images/beer-820011_1920.jpg",
-            "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
-            "../../../../assets/images/beer-820011_1920.jpg"
+            "waitress-gff8ebb643_1920.jpg",
+            "beer-820011_1920.jpg",
+            "beer-820011_1920.jpg",
+            "beer-820011_1920.jpg",
+            "waitress-gff8ebb643_1920.jpg",
+            "beer-820011_1920.jpg"
           ],
           content: [
             {
@@ -67,7 +69,7 @@ export class UserService {
                 value: 1300,
                 unit: "person"
               },
-              picture: "../../../../assets/images/cocktails.jpg",
+              picture: "cocktails.jpg",
             }
           ]
         },
@@ -94,7 +96,7 @@ export class UserService {
                 value: 500,
                 unit: "stack"
               },
-              picture: "../../../../assets/images/cupcakes-gc0620a627_1920.jpg",
+              picture: "cupcakes-gc0620a627_1920.jpg",
             },
             {
               id_performance: "0934496a-ac98-468d-8750-5149de3deb9f",
@@ -104,7 +106,7 @@ export class UserService {
                 value: 500,
                 unit: "stack"
               },
-              picture: "../../../../assets/images/italian-food-2157246__340.png",
+              picture: "italian-food-2157246__340.png",
             }
           ]
         },
@@ -124,7 +126,7 @@ export class UserService {
                 value: 600,
                 unit: "unit"
               },
-              picture: "../../../../assets/images/telechargement.jpeg",
+              picture: "telechargement.jpeg",
             },
             {
               id_performance: "8d370782-d690-4736-ae11-963f83cf20f9",
@@ -134,7 +136,7 @@ export class UserService {
                 value: 1000,
                 unit: "unit"
               },
-              picture: "../../../../assets/images/telechargement_(1).jpeg",
+              picture: "telechargement_(1).jpeg",
             },
             {
               id_performance: "64856a10-b098-4fcf-8ac2-46eccd2e172f",
@@ -144,7 +146,7 @@ export class UserService {
                 value: 1250,
                 unit: "unit"
               },
-              picture: "../../../../assets/images/telechargement_(2).jpeg",
+              picture: "telechargement_(2).jpeg",
             },
             {
               id_performance: "fc378d3d-d447-43d5-a721-88fc4237e4b3",
@@ -154,7 +156,7 @@ export class UserService {
                 value: 800,
                 unit: "unit"
               },
-              picture: "../../../../assets/images/telechargement_(3).jpeg",
+              picture: "telechargement_(3).jpeg",
             },
           ]
         },
@@ -273,11 +275,20 @@ export class UserService {
     return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + `/section/${idSection}/picture`, data, {
       reportProgress: true,
       observe: 'events'
-    });
+    }).pipe(
+      tap({ // On success, invalidate the cache to redownload the new profile
+        next: () => this.invalidateCache()
+      })
+    );
   }
 
   removeBigSectionPicture(idSection: string, pictureName: string) : Observable<any>{
-    return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + `/section/${idSection}/picture/${pictureName}`);
+    return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + `/section/${idSection}/picture/${pictureName}`)
+      .pipe(
+        tap({ // On success, invalidate the cache to redownload the new profile
+          next: () => this.invalidateCache()
+        })
+      );
   }
 
   addSection(section: ProviderProfileSection, pictures: File[]) : Observable<any>{

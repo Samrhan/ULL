@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Performance, ProviderProfileSection, SectionType} from "@ull/api-interfaces";
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'ull-profile-section',
@@ -17,6 +18,8 @@ export class ProfileSectionComponent{
     section_title: "",
     type: SectionType.INFO
   };
+
+  environment = environment;
 
   showAll = false; // Used to extend the small section when clicking the "voir plus" button
 

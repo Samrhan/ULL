@@ -1,1 +1,26 @@
-<p>edit-section works!</p>
+<div *ngIf="profile && section">
+  <ull-navbar [selected]="'none'"
+              [profilePictureUrl]="profile.profile_picture"
+              [companyName]="profile.company_name"
+              [companyDescription]="profile.company_description">
+  </ull-navbar>
+
+  <!-- Content -->
+  <div class="bg-light d-flex justify-content-center min-vh-100">
+    <div class="w-75 mt-3">
+      <!-- Page name -->
+      <h1>Modifier la section</h1>
+      <small class="text-muted">Vous pouvez éditer ici ce que les utilisateurs d'ULL verront dans cette catégorie de votre profil</small>
+      <hr>
+
+      <div *ngIf="section.type === SectionType.BIG" class="mb-3 p-2 rounded border">
+        <div class="d-flex justify-content-start align-items-center overflow-auto py-1">
+          <div *ngFor="let imageUrl of section.pictures" class="d-flex flex-column align-items-start me-2">
+            <img [src]="environment.providerPicturesURL + imageUrl" alt="illustration" class="big-image mb-2">
+            <button class="btn btn-danger rounded" (click)="deletePicture(imageUrl)">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

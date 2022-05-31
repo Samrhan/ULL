@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ProviderProfile} from "@ull/api-interfaces";
+import {UserService} from "../../../services/user-service/user.service";
 
 @Component({
   selector: 'ull-edit-performance',
@@ -6,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-performance.component.scss'],
 })
 export class EditPerformanceComponent implements OnInit {
-  constructor() {}
+  profile : ProviderProfile | undefined;
 
-  ngOnInit(): void {}
+  constructor(
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    this.userService.fetchProviderProfile().subscribe({
+      next: value => this.profile = value
+    });
+  }
 }

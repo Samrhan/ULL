@@ -8,9 +8,9 @@
     <div class="w-75 mt-3">
 
       <div class="card mb-3 rounded border border-dark">
-        <img [src]="profile.cover_picture" class="card-img-top max-vh-50" alt="Image de couverture">
+        <img [src]="environment.providerPicturesURL + profile.cover_picture" class="card-img-top max-vh-50" alt="Image de couverture">
         <div class="profile-picture-container rounded-circle border border-dark shadow-lg ms-5">
-          <img [src]="profile.profile_picture" alt="Photo de profil" class="h-100">
+          <img [src]="environment.providerPicturesURL + profile.profile_picture" alt="Photo de profil" class="h-100">
         </div>
         <div class="card-body mx-5 d-flex flex-wrap justify-content-between align-items-start">
           <div class="col-lg-8">

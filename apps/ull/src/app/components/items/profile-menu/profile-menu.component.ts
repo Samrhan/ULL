@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'ull-profile-menu',
@@ -9,4 +10,6 @@ export class ProfileMenuComponent {
   @Input() profilePictureUrl = "";
   @Input() companyName = "";
   @Input() companyDescription = "";
+
+  environment = environment;
 }
