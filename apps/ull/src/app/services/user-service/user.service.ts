@@ -10,7 +10,7 @@ import {
   ProviderProfileSection,
   ReorderProviderProfileBody,
   SectionType,
-  UpdateSectionBody
+  UpdateSectionBody, UploadSectionBody
 } from "@ull/api-interfaces";
 import {environment} from "../../../environments/environment";
 import {Observable, of, tap} from "rxjs";
@@ -225,6 +225,10 @@ export class UserService {
     }*/
   }
 
+  /**
+   * Updates the company information of the connected user
+   * @param newInfo
+   */
   editProfileInfo(newInfo : EditProviderInfoBody) : Observable<any> {
     const formData = new FormData();
     formData.append('company_name', newInfo.company_name);
@@ -259,6 +263,10 @@ export class UserService {
     )
   }
 
+  /**
+   * Changes the order of sections and performances of the profile of the connected user
+   * @param body
+   */
   reorderProfile(body: ReorderProviderProfileBody) : Observable<any> {
     return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + '/provider_profile/updateOrder', body)
       .pipe(
@@ -268,9 +276,16 @@ export class UserService {
       );
   }
 
-  addBigSectionPicture(idSection: string, picture: File) : Observable<any>{
+  /**
+   * Uploads the provides #pictures to the server and adds them to the section with id #idSection
+   * @param idSection
+   * @param pictures
+   */
+  addBigSectionPictures(idSection: string, pictures: File[]) : Observable<any>{
     const data = new FormData();
-    data.append('file', picture);
+    for (const picture of pictures){
+      data.append('file', picture);
+    }
 
     return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + `/section/${idSection}/picture`, data, {
       reportProgress: true,
@@ -282,6 +297,11 @@ export class UserService {
     );
   }
 
+  /**
+   * Removes the picture with filename #pictureName from the server and from the section #idSection
+   * @param idSection
+   * @param pictureName
+   */
   removeBigSectionPicture(idSection: string, pictureName: string) : Observable<any>{
     return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + `/section/${idSection}/picture/${pictureName}`)
       .pipe(
@@ -291,7 +311,11 @@ export class UserService {
       );
   }
 
-  addSection(section: ProviderProfileSection, pictures: File[]) : Observable<any>{
+  /**
+   * Adds the given section to the profile of the connected user
+   * @param section
+   */
+  addSection(section: UploadSectionBody) : Observable<any>{
     const data = new FormData();
     data.append('type', section.type);
     data.append('section_title', section.section_title);
@@ -303,7 +327,7 @@ export class UserService {
     }
 
     if (section.type === SectionType.BIG) {
-      for (const picture of pictures) {
+      for (const picture of section.pictures || []) {
         // Append all the files to the same name to create an array
         data.append('pictures', picture);
       }
@@ -319,27 +343,24 @@ export class UserService {
     );
   }
 
-  editSection(section: ProviderProfileSection) : Observable<any>{
-    // Cast ProviderProfileSection to UpdateSectionBody
-    const body : UpdateSectionBody = {
-      id_section: section.id_section,
-      purchasable: section.purchasable,
-      section_description: section.section_description,
-      section_title: section.section_title
-    };
-
-    if (section.type === SectionType.SMALL){
-      body.preview_amount = section.preview_amount;
-    }
-
-    return this.httpClient.put(environment.baseServerURL + environment.providerServiceURL + '/section', body)
+  /**
+   * Changes the given information about the given section. Does not update the images (use addBigSectionPictures() and
+   * removeBigSectionPicture())
+   * @param section
+   */
+  editSection(section: UpdateSectionBody) : Observable<any>{
+    return this.httpClient.put(environment.baseServerURL + environment.providerServiceURL + '/section', section)
       .pipe(
         tap({ // On success, invalidate the cache to redownload the new profile
-          next: () => this.invalidateCache()
+          next: () => this.invalidateCache(),
         })
       );
   }
 
+  /**
+   * Deletes the given section from the user's profile
+   * @param section
+   */
   deleteSection(section: ProviderProfileSection) : Observable<any>{
     return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + '/section/' + section.id_section)
       .pipe(
@@ -349,6 +370,12 @@ export class UserService {
       );
   }
 
+  /**
+   * Adds the given performance to the section with id #idSection
+   * @param performance
+   * @param idSection
+   * @param picture
+   */
   addPerformance(performance : Performance, idSection : string, picture: File) : Observable<any>{
     const data = new FormData();
     data.append('performance_title', performance.performance_title);
@@ -368,6 +395,11 @@ export class UserService {
     );
   }
 
+  /**
+   * Edits the given performance.
+   * @param performance
+   * @param picture Optionnal. Add it only if the picture has been changed
+   */
   editPerformance(performance : Performance, picture?: File) : Observable<any>{
     const data = new FormData();
     data.append('performance_id', performance.id_performance);
@@ -388,6 +420,10 @@ export class UserService {
     );
   }
 
+  /**
+   * Delete the given performance from the user's profile.
+   * @param performance
+   */
   deletePerformance(performance: Performance) : Observable<any>{
     return this.httpClient.delete(environment.baseServerURL + environment.providerServiceURL + '/performance/' + performance.id_performance)
       .pipe(

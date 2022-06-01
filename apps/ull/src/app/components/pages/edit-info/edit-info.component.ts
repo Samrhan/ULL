@@ -139,7 +139,7 @@ export class EditInfoComponent implements OnInit {
       // We only return events of type Response to subscribe().
       map(event => { // React every time an event is emitted
         switch (event.type) {
-          case HttpEventType.UploadProgress: // If it's an updata about the upload progress, update the upload bar and do nothing
+          case HttpEventType.UploadProgress: // If it's an update about the upload progress, update the upload bar and do nothing
             this.uploadProgress = Math.round(event.loaded * 100 / event.total);
             return;
           case HttpEventType.Response: // If it's a response, pass it to the next handler

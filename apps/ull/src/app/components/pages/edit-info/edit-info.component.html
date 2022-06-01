@@ -36,17 +36,17 @@
           <!-- Text informations about the company -->
           <div class="ms-5 d-flex flex-column flex-grow-1">
             <!-- Company name -->
-            <div class="mb-3 border rounded p-2 w-50 mb-3">
+            <div class="mb-3 border rounded p-2 w-50">
               <label for="companyName" class="w-100">Nom de l'entreprise</label>
               <input id="companyName" type="text" [formControlName]="'company_name'" required class="inner-shadow rounded p-2 w-100 fs-4 border-danger" [ngClass]="{'border-0' : validInput('company_name')}">
             </div>
             <!-- Company description -->
-            <div class="mb-3 border rounded p-2 w-100 mb-3">
+            <div class="mb-3 border rounded p-2 w-100">
               <label for="companyDescription" class="w-100">Description de l'entreprise (2000 caractères)</label>
               <textarea rows="4" maxlength="2000" style="resize: none;" id="companyDescription" type="text" [formControlName]="'company_description'" required class="inner-shadow rounded border-0 p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('company_description')}"></textarea>
             </div>
             <!-- Company serviced area -->
-            <div class="mb-3 border rounded p-2 w-100 mb-3">
+            <div class="mb-3 border rounded p-2 w-100">
               <label for="area_served" class="w-100">Zone désservie</label>
               <input id="area_served" type="text" [formControlName]="'area_served'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('area_served')}">
             </div>
