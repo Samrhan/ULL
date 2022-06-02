@@ -14,7 +14,6 @@ export class AuthController {
   @Post('register')
   @UsePipes(new ValidationPipe({transform: true, disableErrorMessages: false}))
   async register(@Body() registerDto: RegisterDto) {
-    this.logger.log('New Request')
     await this.authService.registerProvider(registerDto)
   }
 }

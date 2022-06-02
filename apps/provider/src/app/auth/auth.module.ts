@@ -4,7 +4,7 @@ import {AuthController} from './auth.controller';
 import {HttpModule} from "@nestjs/axios";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {Provider} from "./entity/provider.entity";
+import {Provider} from "../profile/entity/provider.entity";
 import {RabbitMQModule} from "@golevelup/nestjs-rabbitmq";
 import {RabbitMQConfig} from "@ull/config";
 
@@ -23,7 +23,7 @@ import {RabbitMQConfig} from "@ull/config";
           },
         ],
         channels: {
-          'provider': {
+          'provider-auth': {
             prefetchCount: 15,
             default: true,
           },

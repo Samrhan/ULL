@@ -2,7 +2,7 @@ import {Test, TestingModule} from '@nestjs/testing';
 import {AuthService} from './auth.service';
 import {Repository} from "typeorm";
 import {getRepositoryToken} from "@nestjs/typeorm";
-import {Provider} from "./entity/provider.entity";
+import {Provider} from "../profile/entity/provider.entity";
 import {HttpModule} from "@nestjs/axios";
 import {ConfigModule} from "@nestjs/config";
 import {of, throwError} from "rxjs";

@@ -4,7 +4,7 @@ import {AuthService} from "./auth.service";
 import {HttpModule} from "@nestjs/axios";
 import {ConfigModule} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {Provider} from "./entity/provider.entity";
+import {Provider} from "../profile/entity/provider.entity";
 import {DatabaseModule} from "../shared/database/database.module";
 
 describe('AuthController', () => {

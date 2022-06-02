@@ -11,10 +11,10 @@ export class StorageService {
 
 
   async upload(file: MinimalFile, user: JwtUser): Promise<string> {
-    const fileName = `${user.userType}/${user.id}/${uuidv4()}-${file.originalname}`
+    const fileName = `${uuidv4()}-${file.originalname}`
     await this.storage
       .bucket(BUCKET_NAME)
-      .file(fileName)
+      .file(`${user.userType}/${user.id}/${fileName}`)
       .save(file.buffer)
     return fileName
   }
