@@ -29,7 +29,7 @@ export class ProviderService {
     @RabbitRPC({
         exchange: 'provider',
         routingKey: 'register',
-        queue: 'provider'
+        queue: 'provider-auth',
     })
     async registerProvider(registerMessage: RegisterProviderMessage) {
         const {password, ...user} = {
@@ -94,5 +94,17 @@ export class ProviderService {
         const user = await this.providerAccountRepository.findOne(reqUser.id)
 
         await this.mailerService.sendMail(user.email, 'Changement de mot de passe', `Token : ${user.resetPasswordToken}`)
+    }
+
+    @RabbitRPC({
+        exchange: 'provider',
+        routingKey: 'change-email',
+        queue: 'provider-profile'
+    })
+    async changeEmail(message: { id: string, email: string }) {
+        const provider = await this.providerAccountRepository.findOne(message.id, {select: ["email", "idProvider"]})
+        provider.email = message.email
+        await this.providerAccountRepository.save(provider)
+        return provider
     }
 }

@@ -1,8 +1,8 @@
 import {
     BadRequestException,
     Body,
-    Controller, Inject,
-    Post,
+    Controller, Delete, Get, Inject, Param,
+    Post, Put,
     UploadedFiles,
     UseGuards,
     UseInterceptors
@@ -12,6 +12,7 @@ import {AnyFilesInterceptor} from "@nestjs/platform-express";
 import {JwtUser, MinimalFile} from "@ull/api-interfaces";
 import {LocalAuthGuard, User} from "@ull/auth";
 import {PerformanceService} from "./performance.service";
+import {PutPerformanceDto} from "./dto/put-performance.dto";
 
 @Controller('performance')
 @UseInterceptors(
@@ -27,7 +28,22 @@ export class PerformanceController {
             throw new BadRequestException('Missing file')
         }
 
-        return await this.performanceService.createPerformance(performance, file[0], user)
+        await this.performanceService.createPerformance(performance, file[0], user)
+    }
+
+    @Put()
+    async updatePerformance(@Body() performance: PutPerformanceDto, @UploadedFiles() file: MinimalFile[], @User() user: JwtUser) {
+        await this.performanceService.update(performance, file[0], user)
+    }
+
+    @Delete(':id')
+    async deletePerformance(@Param('id') performanceId: string, @User() user: JwtUser) {
+        await this.performanceService.delete(performanceId, user)
+    }
+
+    @Get(':id')
+    async getPerformance(@Param('id') performanceId: string) {
+        return await this.performanceService.get(performanceId)
     }
 
 }

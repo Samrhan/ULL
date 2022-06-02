@@ -1,4 +1,4 @@
-import {SectionType, UserType} from "./api-enums";
+import {PriceUnit, SectionType, UserType} from "./api-enums";
 
 export interface RegisterProviderMessage {
     idProvider: string,
@@ -57,12 +57,13 @@ export interface EnactResetPasswordProviderBody {
     new_password: string,
     reset_token: string
 }
+
 export interface Address {
-    number : string,
-    street : string,
-    city : string,
-    postal_code : string,
-    complement : string
+    number: string,
+    street: string,
+    city: string,
+    postal_code: string,
+    complement?: string
 }
 
 export interface RegisterCustomerMessage {
@@ -115,7 +116,7 @@ export interface UploadSectionBody {
     section_title: string,
     section_description: string,
     purchasable: string,
-    preview_amount? : string,
+    preview_amount?: string,
     pictures?: File[],
 }
 
@@ -125,17 +126,18 @@ export interface UpdateSectionBody {
     section_title: string,
     section_description: string,
     purchasable: boolean,
-    preview_amount? : number,
+    preview_amount?: number,
 }
+
 export interface EditProviderInfoBody {
-    company_name : string,
-    company_description : string,
-    email : string,
-    phone : string,
-    area_served : string,
-    address : Address,
-    profile_picture ?: File,
-    cover_picture ?: File
+    company_name: string,
+    company_description: string,
+    email: string,
+    phone: string,
+    area_served: string,
+    address: Address,
+    profile_picture?: File,
+    cover_picture?: File
 }
 
 export interface Performance {
@@ -144,7 +146,7 @@ export interface Performance {
     performance_description: string
     price: {
         value: number,
-        unit: "absolute" | "person" | "stack"
+        unit: PriceUnit
     },
     picture: string,
 }
@@ -163,8 +165,8 @@ export interface ProviderProfileSection {
     section_description: string,
     purchasable: boolean,
     content: Performance[],
-    preview_amount ?: number, // For "small" sections
-    pictures ?: string[] // For "big" sections
+    preview_amount?: number, // For "small" sections
+    pictures?: string[] // For "big" sections
 }
 
 export interface ProviderProfile {
@@ -179,12 +181,12 @@ export interface ProviderProfile {
 }
 
 export interface ProviderCompanyInformation {
-    company_name : string,
-    company_description : string,
-    email : string,
-    phone : string,
-    profile_picture : string,
-    cover_picture : string,
-    area_served : string,
-    address : Address
+    company_name: string,
+    company_description: string,
+    email: string,
+    phone: string,
+    profile_picture: string,
+    cover_picture: string,
+    area_served: string,
+    address: Address
 }

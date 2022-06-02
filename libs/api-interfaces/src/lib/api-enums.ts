@@ -11,7 +11,7 @@ export enum UserType {
 }
 
 export enum PriceUnit {
-    ABSOLUTE = 'absolute',
-    PERSON = 'person',
-    STACK = 'stack',
+    absolute = 'absolute',
+    person = 'person',
+    stack = 'stack',
 }

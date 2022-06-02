@@ -8,7 +8,7 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {Section} from "../../profile/entity/section.entity";
-import {Provider} from "../../auth/entity/provider.entity";
+import {Provider} from "../../profile/entity/provider.entity";
 
 @Entity({name: 'performance'})
 export class PerformanceEntity {
@@ -48,7 +48,7 @@ export class PerformanceEntity {
     @Column({default: false})
     deleted: boolean;
 
-    @Column({name: 'deleted_at', type: 'timestamp', nullable: true}) s
+    @Column({name: 'deleted_at', type: 'timestamp without time zone', nullable: true})
     deletedAt: Date;
 
     @UpdateDateColumn({name: 'updated_at'})

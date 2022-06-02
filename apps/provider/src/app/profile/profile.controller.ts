@@ -1,7 +1,7 @@
 import {
     Body,
     Controller,
-    Delete,
+    Delete, Get,
     Inject,
     Param, ParseArrayPipe,
     Post,
@@ -12,11 +12,12 @@ import {
 } from '@nestjs/common';
 import {AnyFilesInterceptor} from "@nestjs/platform-express";
 import {LocalAuthGuard, User} from "@ull/auth";
-import {JwtUser, MinimalFile, SectionType} from "@ull/api-interfaces";
+import {JwtUser, MinimalFile, ProviderCompanyInformation, SectionType} from "@ull/api-interfaces";
 import {ProfileService} from "./profile.service";
 import {UploadSectionDto} from "./dto/upload-section.dto";
 import {PutSectionDto} from "./dto/put-section.dto";
 import {PutOrderProfileDto} from "./dto/put-order-profile.dto";
+import {UpdateProfileDto} from "./dto/put-profile.dto";
 
 @Controller()
 @UseInterceptors(
@@ -60,7 +61,22 @@ export class ProfileController {
     }
 
     @Put("profile/order")
-    async updateIndex(@Body(new ParseArrayPipe({ items: PutOrderProfileDto })) profileOrder: PutOrderProfileDto[], @User() user: JwtUser) {
+    async updateIndex(@Body(new ParseArrayPipe({items: PutOrderProfileDto})) profileOrder: PutOrderProfileDto[], @User() user: JwtUser) {
         await this.profileService.updateProfileOrder(profileOrder, user)
+    }
+
+    @Get('profile/:id')
+    async getProfile(@Param('id') profileId: string) {
+        return await this.profileService.getProfile(profileId)
+    }
+
+    @Put('profile')
+    async updateProfile(@Body() updateProfile: UpdateProfileDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
+        return await this.profileService.updateProfile(updateProfile, files, user)
+    }
+
+    @Get('info')
+    async getInfos(@User() user: JwtUser): Promise<ProviderCompanyInformation> {
+        return await this.profileService.getInfo(user);
     }
 }

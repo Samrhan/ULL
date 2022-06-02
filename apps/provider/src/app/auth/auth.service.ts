@@ -3,15 +3,13 @@ import {HttpService} from "@nestjs/axios";
 import {ConfigService} from "@nestjs/config";
 import {firstValueFrom} from "rxjs";
 import {RegisterDto} from "./dto/register.dto";
-import {Provider} from "./entity/provider.entity";
+import {Provider} from "../profile/entity/provider.entity";
 import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {v4 as uuidv4} from 'uuid';
 import {AmqpConnection} from "@golevelup/nestjs-rabbitmq";
 import {RegisterProviderMessage} from "@ull/api-interfaces";
-
-const DEFAULT_PROFILE_PIC = 'default'
-const DEFAULT_COVER_PIC = 'default'
+import {DEFAULT_COVER_PIC_PROVIDER, DEFAULT_PROFILE_PIC_PROVIDER} from "@ull/global-constants";
 
 @Injectable()
 export class AuthService {
@@ -62,8 +60,8 @@ export class AuthService {
     provider.siren = registerDto.siren;
     provider.email = registerDto.email;
     provider.phoneNumber = registerDto.phone_number;
-    provider.profilePicture = registerDto.profile_picture || DEFAULT_PROFILE_PIC;
-    provider.coverPicture = registerDto.cover_picture || DEFAULT_COVER_PIC;
+    provider.profilePicture = registerDto.profile_picture || DEFAULT_PROFILE_PIC_PROVIDER;
+    provider.coverPicture = registerDto.cover_picture || DEFAULT_COVER_PIC_PROVIDER;
     provider.areaServed = registerDto.area_served  || '';
 
     try {

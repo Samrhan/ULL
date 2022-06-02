@@ -1,6 +1,16 @@
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn} from 'typeorm';
-import {Section} from "../../profile/entity/section.entity";
+import {
+    Column,
+    CreateDateColumn,
+    Entity, JoinColumn,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    Unique,
+    UpdateDateColumn
+} from 'typeorm';
+import {Section} from "./section.entity";
 import {PerformanceEntity} from "../../performance/entity/performance.entity";
+import {Address} from "./address.entity";
 
 @Entity()
 @Unique('unique_provider', ['siren', 'email', 'phoneNumber'])
@@ -33,6 +43,10 @@ export class Provider {
     @Column({name: 'area_served'})
     areaServed: string;
 
+    @OneToOne(() => Address)
+    @JoinColumn({name: 'address_id'})
+    address: Address
+
     @Column({default: false})
     deleted: boolean;
 
@@ -42,7 +56,7 @@ export class Provider {
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt: Date;
 
-    @Column({name: 'deleted_at', type: 'timestamp with time zone', nullable: true})
+    @Column({name: 'deleted_at', type: 'timestamp without time zone', nullable: true})
     deletedAt?: string;
 
     @OneToMany(() => Section, section => section.provider)

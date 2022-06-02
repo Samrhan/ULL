@@ -1,6 +1,16 @@
 import {BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {StorageService} from "@ull/storage";
-import {JwtUser, MinimalFile, SectionType} from "@ull/api-interfaces";
+import {
+    JwtUser,
+    MinimalFile,
+    Performance,
+    PriceUnit, ProviderCompanyInformation,
+    ProviderProfile,
+    ProviderProfileSection,
+    ProviderSectionType,
+    SectionType,
+    Address as IAddress
+} from "@ull/api-interfaces";
 import {ConfigService} from "@nestjs/config";
 import {UploadSectionDto} from "./dto/upload-section.dto";
 import {Section} from "./entity/section.entity";
@@ -8,20 +18,26 @@ import {PreviewAmount} from "./entity/preview-amount.entity";
 import {BigSectionPicture} from "./entity/big-section-picture.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
-import {Provider} from "../auth/entity/provider.entity";
+import {Provider} from "./entity/provider.entity";
 import {PutSectionDto} from "./dto/put-section.dto";
 import {PutOrderProfileDto} from "./dto/put-order-profile.dto";
 import {PerformanceEntity} from "../performance/entity/performance.entity";
+import {Address} from "./entity/address.entity";
+import {UpdateProfileDto} from "./dto/put-profile.dto";
+import {AmqpConnection} from "@golevelup/nestjs-rabbitmq";
+import {DEFAULT_COVER_PIC_PROVIDER, DEFAULT_PROFILE_PIC_PROVIDER} from "@ull/global-constants";
 
 @Injectable()
 export class ProfileService {
     @Inject() storageService: StorageService;
     @Inject() configService: ConfigService;
+    @Inject() amqpConnection: AmqpConnection
     @InjectRepository(Section) sectionRepository: Repository<Section>;
     @InjectRepository(Provider) providerRepository: Repository<Provider>;
     @InjectRepository(PreviewAmount) previewAmountRepository: Repository<PreviewAmount>;
     @InjectRepository(BigSectionPicture) bigSectionPictureRepository: Repository<BigSectionPicture>;
     @InjectRepository(PerformanceEntity) performanceRepository: Repository<PerformanceEntity>;
+    @InjectRepository(Address) addressRepository: Repository<Address>;
 
     async createSection(body: UploadSectionDto, files: MinimalFile[], user: JwtUser) {
         const section = new Section()
@@ -162,11 +178,16 @@ export class ProfileService {
 
     async updateProfileOrder(profileOrder: PutOrderProfileDto[], user: JwtUser) {
         // Seems a little too complicated, but didn't find another way to do it
-        const sections = await this.sectionRepository.find({
-            select: ['sectionId', 'yIndex', 'type'],
-            where: {provider: user.id},
-            relations: ['performances']
-        })
+
+        const sections = await this.sectionRepository.createQueryBuilder('section')
+            .select(['section.sectionId', 'section.yIndex', 'section.type', 'performances.idPerformance'])
+            .leftJoinAndSelect('section.performances', 'performances', 'performances.deleted = :deleted', {deleted: false})
+            .leftJoin('section.provider', 'provider')
+            .where('provider.id = :providerId', {
+                providerId: user.id
+            })
+            .getMany()
+
         const dbIdSections = sections.map(s => s.sectionId)
         const bodySections = profileOrder.map(p => p.id_section)
         if (!ProfileService.equals(dbIdSections, bodySections)) {
@@ -176,15 +197,16 @@ export class ProfileService {
         const performances = sections.map(s => s.performances).flat(1)
         const idPerformances = performances.map(p => p.idPerformance)
         const bodyPerformances = profileOrder.map(p => p.id_performances).flat(1)
+
         if (!ProfileService.equals(idPerformances, bodyPerformances)) {
             throw new BadRequestException('Missmatch between performances')
         }
 
-        for (let sectionIndex = 0; sectionIndex < profileOrder.length; sectionIndex++){
+        for (let sectionIndex = 0; sectionIndex < profileOrder.length; sectionIndex++) {
             const section = sections.find(s => s.sectionId === profileOrder[sectionIndex].id_section)
             section.yIndex = sectionIndex
 
-            for (let performanceIndex = 0; performanceIndex < profileOrder[sectionIndex].id_performances.length; performanceIndex++){
+            for (let performanceIndex = 0; performanceIndex < profileOrder[sectionIndex].id_performances.length; performanceIndex++) {
                 const idPerformance = profileOrder[sectionIndex].id_performances[performanceIndex];
                 const performance = performances.find(p => p.idPerformance === idPerformance)
 
@@ -213,5 +235,114 @@ export class ProfileService {
             if (aCount !== bCount) return false;
         }
         return true;
+    }
+
+    async getProfile(providerId: string): Promise<ProviderProfile> {
+        const queryProfile = await this.providerRepository.createQueryBuilder('provider')
+            .leftJoinAndSelect('provider.sections', 'sections')
+            .leftJoinAndSelect('sections.performances', 'performances', 'performances.deleted = :deleted', {deleted: false})
+            .leftJoinAndSelect('sections.bigSectionPictures', 'bigSectionPictures')
+            .leftJoinAndSelect('sections.previewAmount', 'previewAmount')
+            .where('provider.id = :providerId', {providerId})
+            .getOne()
+        if (!queryProfile) {
+            throw new NotFoundException('Profile not found')
+        }
+        return <ProviderProfile>{
+            id_provider: queryProfile.id,
+            company_name: queryProfile.companyName,
+            company_description: queryProfile.companyDescription,
+            area_served: queryProfile.areaServed,
+            cover_picture: queryProfile.coverPicture,
+            profile_picture: queryProfile.profilePicture,
+            rating: 0,
+            services: queryProfile.sections.sort((a, b) => a.yIndex - b.yIndex).map<ProviderProfileSection>(s => ({
+                id_section: s.sectionId,
+                section_title: s.sectionTitle,
+                section_description: s.sectionDescription,
+                type: ProviderSectionType[s.type],
+                purchasable: s.purchasable,
+                preview_amount: s.previewAmount.amount,
+                content: s.performances.sort((a, b) => a.yIndex - b.yIndex).map<Performance>(p => ({
+                    id_performance: p.idPerformance,
+                    performance_title: p.performanceTitle,
+                    performance_description: p.performanceDescription,
+                    price: {
+                        value: p.priceValue,
+                        unit: PriceUnit[p.priceUnit],
+                    },
+                    picture: p.performancePicture,
+                })),
+            }))
+        }
+    }
+
+    async getInfo(user: JwtUser): Promise<ProviderCompanyInformation> {
+        const provider = await this.providerRepository.findOneOrFail(user.id, {relations: ['address']})
+        return <ProviderCompanyInformation>{
+            company_name: provider.companyName,
+            company_description: provider.companyDescription,
+            email: provider.email,
+            phone: provider.phoneNumber,
+            profile_picture: provider.profilePicture,
+            cover_picture: provider.coverPicture,
+            area_served: provider.areaServed,
+            address: ProfileService.convertAddress(provider.address)
+        }
+    }
+
+    private static convertAddress(address: Address): IAddress {
+        return {
+            number: address?.number,
+            street: address?.street,
+            city: address?.city,
+            postal_code: address?.postalCode,
+            complement: address?.complement
+        }
+    }
+
+    async updateProfile(updateProfile: UpdateProfileDto, files: MinimalFile[], user: JwtUser) {
+        const provider = await this.providerRepository.findOneOrFail(user.id, {relations: ['address']})
+
+        provider.companyName = updateProfile.company_name
+        provider.companyDescription = updateProfile.company_description
+        if (provider.email.toLowerCase() !== updateProfile.email.toLowerCase()) {
+            provider.email = updateProfile.email.toLowerCase()
+            await this.amqpConnection.request({
+                exchange: 'provider',
+                routingKey: 'change-email',
+                payload: {id: user.id, email: provider.email},
+                timeout: 10000,
+            });
+        }
+        provider.phoneNumber = updateProfile.phone
+        provider.areaServed = updateProfile.area_served
+        if (!provider.address) {
+            provider.address = new Address()
+        }
+        provider.address.number = updateProfile.address_number;
+        provider.address.street = updateProfile.address_street;
+        provider.address.postalCode = updateProfile.address_postal_code;
+        provider.address.city = updateProfile.address_city;
+        provider.address.complement = updateProfile.address_complement;
+
+        for(const file of files){
+            switch (file.fieldname) {
+                case 'profile_picture':
+                    if (provider.profilePicture !== DEFAULT_PROFILE_PIC_PROVIDER) {
+                        await this.storageService.delete(provider.profilePicture, user)
+                    }
+                    provider.profilePicture = await this.storageService.upload(file, user)
+                    break;
+                case 'cover_picture':
+                    if (provider.coverPicture !== DEFAULT_COVER_PIC_PROVIDER) {
+                        await this.storageService.delete(provider.coverPicture, user)
+                    }
+                    provider.coverPicture = await this.storageService.upload(file, user)
+                    break;
+            }
+        }
+        provider.address = await this.addressRepository.save(provider.address)
+        await this.providerRepository.save(provider)
     }
 }
