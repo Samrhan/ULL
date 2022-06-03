@@ -17,7 +17,7 @@
         <small class="text-muted">Ces informations sont visibles des utilisateurs et permettent de les orienter dans leur recherche.</small>
 
         <!-- Big cover picture with file input on click -->
-        <label for="coverPicture" type="button" class="w-100 vh-50 rounded border border-dark bg-img my-3 d-flex justify-content-center align-items-center" [style]="'background-image : url(' + coverPictureUrl + ');'">
+        <label for="coverPicture" type="button" class="w-100 vh-50 rounded border border-dark bg-img my-3 d-flex justify-content-center align-items-center" [style]="'background-image : url(' + environment.providerPicturesURL + coverPictureUrl + ');'">
           <fa-icon [icon]="faCamera" class="p-3 rounded-start fs-2 bg-transparent-dark text-white"></fa-icon>
           <span class="p-3 rounded-end fs-2 bg-transparent-dark text-white">Changer la photo de couverture</span>
           <input id="coverPicture" hidden type="file" (change)="onCoverPictureSelected('coverPicture', $event)">
@@ -27,7 +27,7 @@
         <div class="d-flex my-3 align-items-center">
           <!-- Left colum -->
           <!-- Small profile picture with file input on click -->
-          <label for="profilePicture" type="button" class="rounded-circle border border-dark bg-img square-div d-flex justify-content-center align-items-center" [style]="'background-image : url(' + profilePictureUrl + ');'">
+          <label for="profilePicture" type="button" class="rounded-circle border border-dark bg-img square-div d-flex justify-content-center align-items-center" [style]="'background-image : url(' + environment.providerPicturesURL + profilePictureUrl + ');'">
             <fa-icon [icon]="faCamera" class="p-4 rounded-circle bg-transparent-dark text-white d-inline-block" size="3x"></fa-icon>
             <input id="profilePicture" hidden type="file" (change)="onCoverPictureSelected('profilePicture', $event)">
           </label>

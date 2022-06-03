@@ -6,6 +6,7 @@ import {map} from "rxjs";
 import {HttpEventType} from "@angular/common/http";
 
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'ull-edit-info',
@@ -14,6 +15,8 @@ import {faCamera} from "@fortawesome/free-solid-svg-icons";
 })
 export class EditInfoComponent implements OnInit {
   faCamera = faCamera
+
+  environment = environment;
 
   coverPictureUrl = '';
   profilePictureUrl = '';

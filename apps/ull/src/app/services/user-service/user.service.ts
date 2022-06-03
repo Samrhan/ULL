@@ -173,7 +173,7 @@ export class UserService {
       return of(JSON.parse(cachedProfile));
     } else {
       const idProvider = this.authenticationService.getProviderId();
-      return this.httpClient.get<ProviderProfile>(environment.baseServerURL + environment.providerServiceURL + '/provider_profile/' + idProvider)
+      return this.httpClient.get<ProviderProfile>(environment.baseServerURL + environment.providerServiceURL + '/profile/' + idProvider)
         .pipe(
           tap({
             next: payload => sessionStorage.setItem('profile', JSON.stringify(payload))
@@ -197,8 +197,8 @@ export class UserService {
       email: "lorem@ipsum.com",
       phone : "0601020304",
       area_served: "Région parisienne",
-      cover_picture: "../../../../assets/images/waitress-gff8ebb643_1920.jpg",
-      profile_picture: "../../../../assets/images/cocktails.jpg",
+      cover_picture: "waitress-gff8ebb643_1920.jpg",
+      profile_picture: "cocktails.jpg",
       address: {
         number: "1",
         street: "Rue de la paix",
@@ -216,7 +216,7 @@ export class UserService {
     if (cachedInfo){
       return of(JSON.parse(cachedInfo));
     } else {
-      return this.httpClient.get<ProviderCompanyInformation>(environment.baseServerURL + environment.providerServiceURL + '/provider_info')
+      return this.httpClient.get<ProviderCompanyInformation>(environment.baseServerURL + environment.providerServiceURL + '/info')
         .pipe(
           tap({
             next: payload => sessionStorage.setItem('company-info', JSON.stringify(payload))
@@ -253,7 +253,7 @@ export class UserService {
       formData.append('cover_picture', newInfo.cover_picture);
     }
 
-    return this.httpClient.post<any>(environment.baseServerURL + environment.providerServiceURL + '/provider_profile', formData, {
+    return this.httpClient.put<any>(environment.baseServerURL + environment.providerServiceURL + '/profile', formData, {
       reportProgress: true,
       observe: 'events'
     }).pipe(
@@ -268,7 +268,7 @@ export class UserService {
    * @param body
    */
   reorderProfile(body: ReorderProviderProfileBody) : Observable<any> {
-    return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + '/provider_profile/updateOrder', body)
+    return this.httpClient.post(environment.baseServerURL + environment.providerServiceURL + '/profile/order', body)
       .pipe(
         tap({ // On success, invalidate the cache to redownload the new profile
           next: () => this.invalidateCache()
