@@ -4,7 +4,7 @@
               [companyName]="profile.company_name"
               [companyDescription]="profile.company_description">
   </ull-navbar>
-  <div class="bg-light d-flex justify-content-center">
+  <div class="bg-light d-flex justify-content-center min-vh-100">
     <div class="w-75 mt-3">
 
       <div class="card mb-3 rounded border border-dark">
@@ -18,7 +18,7 @@
             <p class="card-text fs-2 fw-normal">{{profile.company_description}}</p>
             <p class="card-text fs-4"><small class="text-muted">{{profile.area_served}}</small></p>
           </div>
-          <div class="d-flex fs-1">
+          <div class="d-flex fs-1" *ngIf="profile.rating > 0">
             <fa-icon [icon]="faStar" class="me-2"></fa-icon>
             <p>{{profile.rating}}</p>
           </div>

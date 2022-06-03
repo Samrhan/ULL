@@ -35,7 +35,7 @@ export class EditInfoComponent implements OnInit {
     ])),
     phone: new FormControl('', Validators.compose([
       Validators.required,
-      Validators.pattern('^[0-9]{10}$'),
+      Validators.pattern('^[+]33[0-9]{9}$'),
     ])),
     area_served: new FormControl('', Validators.required),
     number: new FormControl('', Validators.required),
@@ -52,6 +52,10 @@ export class EditInfoComponent implements OnInit {
 
   ngOnInit() {
     // Force fetch the values at load
+    this.fetchData();
+  }
+
+  fetchData() {
     this.userService.fetchProviderCompanyInfo(true).subscribe({
       next: value => {
         this.info = value
@@ -67,8 +71,8 @@ export class EditInfoComponent implements OnInit {
         this.updateInfoForm.get("postal_code")?.setValue(value.address.postal_code);
         this.updateInfoForm.get("complement")?.setValue(value.address.complement);
 
-        this.profilePictureUrl = value.profile_picture;
-        this.coverPictureUrl = value.cover_picture;
+        this.profilePictureUrl = environment.providerPicturesURL + value.profile_picture;
+        this.coverPictureUrl = environment.providerPicturesURL + value.cover_picture;
       }
     })
   }
@@ -81,7 +85,7 @@ export class EditInfoComponent implements OnInit {
    * @param targetVariable
    * @param event
    */
-  onCoverPictureSelected(targetVariable : string, event: Event) {
+  onPictureSelected(targetVariable : string, event: Event) {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       if (targetVariable === "coverPicture") {
@@ -103,7 +107,7 @@ export class EditInfoComponent implements OnInit {
   }
 
   /**
-   * Creates a FileReader to read #file as URL. When the reader has finished, calls #affectationCallback with reader.result
+   * Creates a FileReader to read #file as URL. When the reader has finished, calls #affectationCallback with `reader.result`
    * as parameter.
    * @param file
    * @param affectationCallback
@@ -156,6 +160,7 @@ export class EditInfoComponent implements OnInit {
           this.uploadSuccess = true;
           this.uploadInProgress = false;
           setTimeout(() => this.uploadSuccess = false, 3000);
+          this.fetchData();
         }
       },
       // Error handler : alert() the user

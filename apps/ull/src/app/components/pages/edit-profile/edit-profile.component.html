@@ -7,7 +7,7 @@
 
   <!-- Content -->
   <div class="bg-light d-flex justify-content-center min-vh-100">
-    <div class="w-75 mt-3">
+    <div class="w-75 mt-3" *ngIf="profile.services.length > 0; else emptyProfile">
       <!-- Page name -->
       <h1>Réorganiser votre profil</h1>
       <small class="text-muted">Cliquez sur les flèches pour modifier l'ordre des sections ou des prestations, et sur les boutons dédiés pour déplacer, supprimer ou éditer.</small>
@@ -92,6 +92,13 @@
         </div>
       </div>
     </div>
+    <ng-template #emptyProfile>
+      <div class="w-75 mt-3">
+        <h1 class="text-decoration-line-through">Réorganiser votre profil</h1>
+        <p>Votre profil est vide, commencez par ajouter des prestations et des sections.</p>
+        <hr>
+      </div>
+    </ng-template>
   </div>
 </div>
 

@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import { environment } from '../../../../environments/environment';
+import {AuthenticationService} from "../../../services/authentication/authentication.service";
 
 @Component({
   selector: 'ull-profile-menu',
@@ -12,4 +13,12 @@ export class ProfileMenuComponent {
   @Input() companyDescription = "";
 
   environment = environment;
+
+  constructor(
+    private authService: AuthenticationService
+  ) {}
+
+  disconnect() {
+    this.authService.disconnect();
+  }
 }
