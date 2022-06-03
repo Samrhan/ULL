@@ -15,3 +15,11 @@ export enum PriceUnit {
     person = 'person',
     stack = 'stack',
 }
+
+export enum ProjectState {
+    draft = 'draft',
+    pending_validation = 'pending_validation',
+    replacement = 'replacement',
+    pending_payment = 'pending_payment',
+    paid = 'paid',
+}

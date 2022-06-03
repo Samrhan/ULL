@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {BadRequestException, Injectable} from '@nestjs/common';
 import {Storage} from '@google-cloud/storage'
 import {JwtUser, MinimalFile} from "@ull/api-interfaces";
 import {v4 as uuidv4} from 'uuid';
@@ -11,6 +11,9 @@ export class StorageService {
 
 
   async upload(file: MinimalFile, user: JwtUser): Promise<string> {
+    if(file.size > 10 * 1024 * 1024) {
+        throw new BadRequestException('File too big')
+    }
     const fileName = `${uuidv4()}-${file.originalname}`
     await this.storage
       .bucket(BUCKET_NAME)
