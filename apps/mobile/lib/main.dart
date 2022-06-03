@@ -11,6 +11,8 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/screens/authentication.dart';
+import 'package:mobile/screens/mainScreen.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
@@ -126,79 +128,9 @@ class SignInDemoState extends State<SignInDemo> {
         ],
       );
     } else {
-      return Column(
-        children: [
-          ClipPath(
-          clipper: SkewCut(),
-            child:Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/2+100,
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: <Color>[
-                        Color(0xFF894c56),
-                        Color(0xFFa80d0d)
-                      ]
-                  )
-              ),
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Image.asset("asset/logo.png",width: 200),
-                  const Text('Une toute petite étape avant de débuter',
-                  style: TextStyle(
-                      fontSize: 35,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center),
-                  /*ElevatedButton(
-                    onPressed: _handleSignIn,
-                    child: const Text('SIGN IN'),
-                  ),*/
-                ],
-              ),
-            )
-          ),
-          Container(
-            height: 100,
-          ),
-          Container(
-            width: 300,
-            decoration: ShapeDecoration(
-              color: Colors.white,
-              shape: SmoothRectangleBorder(
-                borderRadius: SmoothBorderRadius(
-                  cornerRadius: 10,
-                  cornerSmoothing: 0.5,
-                ),
-              ),
-              shadows: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: MaterialButton(
-              onPressed: _handleSignIn,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Image.asset("asset/google.png",width: 30),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  const Text("Continuer avec Google",
-                    style: TextStyle(color: Colors.grey,fontSize: 20),)
-                ],
-              ),),
-          )
-
-        ],
+      return MaterialApp(
+        home :AuthenticationPage()
+        //home : MainScreen()
       );
     }
   }
