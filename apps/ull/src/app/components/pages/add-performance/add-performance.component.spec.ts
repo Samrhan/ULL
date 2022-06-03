@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditProfileComponent } from './edit-profile.component';
+import { AddPerformanceComponent } from './add-performance.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {RouterTestingModule} from "@angular/router/testing";
+import {BsModalService} from "ngx-bootstrap/modal";
 import {AccueilComponent} from "../accueil/accueil.component";
+import {ProfileMenuComponent} from "../../items/profile-menu/profile-menu.component";
+import {NavbarComponent} from "../../items/navbar/navbar.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {AuthenticationService} from "../../../services/authentication/authentication.service";
-import {EditInfoComponent} from "../edit-info/edit-info.component";
-import {NavbarComponent} from "../../items/navbar/navbar.component";
-import {ProfileMenuComponent} from "../../items/profile-menu/profile-menu.component";
-import {BsModalService} from "ngx-bootstrap/modal";
 
-describe('EditProfileComponent', () => {
-  let component: EditProfileComponent;
-  let fixture: ComponentFixture<EditProfileComponent>;
+describe('AddPerformanceComponent', () => {
+  let component: AddPerformanceComponent;
+  let fixture: ComponentFixture<AddPerformanceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,7 +32,7 @@ describe('EditProfileComponent', () => {
         BsModalService
       ],
       declarations: [
-        EditProfileComponent,
+        AddPerformanceComponent,
         NavbarComponent,
         ProfileMenuComponent
       ]
@@ -41,7 +40,7 @@ describe('EditProfileComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditProfileComponent);
+    fixture = TestBed.createComponent(AddPerformanceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

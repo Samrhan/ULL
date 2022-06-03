@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditProfileComponent } from './edit-profile.component';
+import { AddSectionComponent } from './add-section.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {RouterTestingModule} from "@angular/router/testing";
 import {AccueilComponent} from "../accueil/accueil.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {AuthenticationService} from "../../../services/authentication/authentication.service";
-import {EditInfoComponent} from "../edit-info/edit-info.component";
+import {BsModalService} from "ngx-bootstrap/modal";
 import {NavbarComponent} from "../../items/navbar/navbar.component";
 import {ProfileMenuComponent} from "../../items/profile-menu/profile-menu.component";
-import {BsModalService} from "ngx-bootstrap/modal";
 
-describe('EditProfileComponent', () => {
-  let component: EditProfileComponent;
-  let fixture: ComponentFixture<EditProfileComponent>;
+describe('AddSectionComponent', () => {
+  let component: AddSectionComponent;
+  let fixture: ComponentFixture<AddSectionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,7 +32,7 @@ describe('EditProfileComponent', () => {
         BsModalService
       ],
       declarations: [
-        EditProfileComponent,
+        AddSectionComponent,
         NavbarComponent,
         ProfileMenuComponent
       ]
@@ -41,7 +40,7 @@ describe('EditProfileComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditProfileComponent);
+    fixture = TestBed.createComponent(AddSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

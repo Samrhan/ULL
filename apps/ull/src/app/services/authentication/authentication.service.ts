@@ -48,6 +48,11 @@ export class AuthenticationService {
       );
   }
 
+  disconnect(): void {
+    localStorage.removeItem('user-token');
+    location.reload();
+  }
+
   requestResetPassword(body: RequestResetPasswordProviderBody): Observable<any>{
     return this.httpClient.post(environment.baseServerURL + environment.authenticationServiceURL + "/forgottenPassword", body);
   }
@@ -78,7 +83,7 @@ export class AuthenticationService {
     const token = localStorage.getItem('user-token');
     if (token) {
       const parsedToken = this.parseJwt(token);
-      return parsedToken.sub;
+      return parsedToken.sub || parsedToken.id;
     } else {
       return "";
     }

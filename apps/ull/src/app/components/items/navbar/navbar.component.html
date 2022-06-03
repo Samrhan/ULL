@@ -23,7 +23,7 @@
       <li class="nav-item d-flex flex-column align-items-center justify-content-between cursor-pointer btn-group"
           [ngClass]="{'border-bottom': selected === 'Vous'}" dropdown dropdownToggle>
           <div class="rounded-circle border border-white bg-white square-div">
-            <img [src]="profilePictureUrl" alt="Profile picture" class="h-100 w-100"/>
+            <img [src]="environment.providerPicturesURL + profilePictureUrl" alt="Profile picture" class="h-100 w-100"/>
           </div>
           <a class="nav-link active">Vous</a>
           <ull-profile-menu class="dropdown-menu dropdown-menu-right" *dropdownMenu role="menu"

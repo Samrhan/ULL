@@ -43,8 +43,9 @@ export class LoginComponent {
       email: values['email'],
       password: values['password'],
     }).subscribe({
+      next: () => {},
       error: err => {
-        if (err.status === 400) {
+        if (err.status === 401) {
           this.invalidCredentialsFlag = true;
           this.loginForm.get('password')?.reset();
           setTimeout(() => {

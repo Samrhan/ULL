@@ -7,7 +7,6 @@ import {
     PriceUnit, ProviderCompanyInformation,
     ProviderProfile,
     ProviderProfileSection,
-    ProviderSectionType,
     SectionType,
     Address as IAddress
 } from "@ull/api-interfaces";
@@ -260,7 +259,7 @@ export class ProfileService {
                 id_section: s.sectionId,
                 section_title: s.sectionTitle,
                 section_description: s.sectionDescription,
-                type: ProviderSectionType[s.type],
+                type: SectionType[s.type],
                 purchasable: s.purchasable,
                 preview_amount: s.previewAmount.amount,
                 content: s.performances.sort((a, b) => a.yIndex - b.yIndex).map<Performance>(p => ({
