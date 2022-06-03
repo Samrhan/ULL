@@ -161,6 +161,7 @@ export class EditProfileComponent implements OnInit {
    * @param template
    */
   openChangeSectionModal(performance: Performance, section : ProviderProfileSection, template: TemplateRef<any>) {
+    this.selectedSection = section;
     this.performanceToDisplaceName = performance.performance_title;
     this.modalRef = this.modalService.show(template);
     this.changeSectionCallback = (newSection : ProviderProfileSection) => this.changeSection(performance, section, newSection)

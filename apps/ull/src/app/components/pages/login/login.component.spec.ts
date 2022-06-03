@@ -100,13 +100,13 @@ describe('LoginComponent', () => {
       });
     })
 
-    it('Should set the wrong credential flag on 400 error, and reset it after a while', fakeAsync(() => {
+    it('Should set the wrong credential flag on 401 error, and reset it after a while', fakeAsync(() => {
       component.loginForm.get("email")?.setValue("1");
       component.loginForm.get("password")?.setValue("2");
       component.login();
 
       const req = httpTestingController.expectOne(environment.baseServerURL + environment.authenticationServiceURL + '/login');
-      const mockErrorResponse = { status: 400, statusText: 'Bad Request' };
+      const mockErrorResponse = { status: 401, statusText: 'Bad Request' };
       req.flush(mockErrorResponse, mockErrorResponse);
 
       expect(component.invalidCredentialsFlag).toBeTruthy();

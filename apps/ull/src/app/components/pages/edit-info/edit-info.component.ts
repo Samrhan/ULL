@@ -98,10 +98,10 @@ export class EditInfoComponent implements OnInit {
     } else {
       if (targetVariable === "coverPicture") {
         this.newCoverPicture = undefined;
-        this.coverPictureUrl = this.info?.cover_picture || '';
+        this.coverPictureUrl = environment.providerPicturesURL + this.info?.cover_picture || '';
       } else if (targetVariable === "profilePicture") {
         this.newProfilePicture = undefined;
-        this.profilePictureUrl = this.info?.profile_picture || '';
+        this.profilePictureUrl = environment.providerPicturesURL + this.info?.profile_picture || '';
       }
     }
   }

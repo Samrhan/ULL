@@ -60,7 +60,7 @@
                   <fa-icon [icon]="faArrowUp" class="mx-2 cursor-pointer" (click)="move(performance, section.content, 'up')" [ngClass]="{'invisible' : idxPerformance === 0 || !editOrder}"></fa-icon>
                   <fa-icon [icon]="faArrowDown" class="mx-2 cursor-pointer" (click)="move(performance, section.content, 'down')" [ngClass]="{'invisible' : idxPerformance === section.content.length - 1 || !editOrder}"></fa-icon>
                   <!-- Edit and delete buttons -->
-                  <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}" [routerLink]="['/editPerformance', performance.id_performance]"></fa-icon>
+                  <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}" [routerLink]="['/editPerformance', section.id_section, performance.id_performance]"></fa-icon>
                   <fa-icon [icon]="faTrash" class="ms-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}" (click)="deletePerformance(performance)"></fa-icon>
                 </div>
 

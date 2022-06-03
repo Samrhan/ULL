@@ -11,6 +11,7 @@ import {ProfileComponent} from "../../pages/profile/profile.component";
 import {AuthGuardService} from "../../../services/auth-guard/auth-guard.service";
 import {EditInfoComponent} from "../../pages/edit-info/edit-info.component";
 import {EditProfileComponent} from "../../pages/edit-profile/edit-profile.component";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('ProfileMenuComponent', () => {
   let component: ProfileMenuComponent;
@@ -20,6 +21,7 @@ describe('ProfileMenuComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ProfileMenuComponent],
       imports: [
+        HttpClientTestingModule,
         RouterTestingModule.withRoutes([
           { path: '', component: AccueilComponent},
           { path: 'register', component: RegisterComponent, canActivate: [AuthPreventService]},

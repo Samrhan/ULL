@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'editInfo', component: EditInfoComponent, canActivate: [AuthGuardService]},
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService]},
   { path: 'editSection/:idSection', component: EditSectionComponent, canActivate: [AuthGuardService]},
-  { path: 'editPerformance/:idPerformance', component: EditPerformanceComponent, canActivate: [AuthGuardService]},
+  { path: 'editPerformance/:idSection/:idPerformance', component: EditPerformanceComponent, canActivate: [AuthGuardService]},
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService]},
   // Redirection par défaut
   { path: '**', redirectTo: 'login'}
