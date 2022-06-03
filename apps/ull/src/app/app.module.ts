@@ -29,6 +29,8 @@ import { SettingsComponent } from './components/pages/settings/settings.componen
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { EditSectionComponent } from './components/pages/edit-section/edit-section.component';
 import { EditPerformanceComponent } from './components/pages/edit-performance/edit-performance.component';
+import { AddSectionComponent } from './components/pages/add-section/add-section.component';
+import { AddPerformanceComponent } from './components/pages/add-performance/add-performance.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { EditPerformanceComponent } from './components/pages/edit-performance/ed
     SettingsComponent,
     EditSectionComponent,
     EditPerformanceComponent,
+    AddSectionComponent,
+    AddPerformanceComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,7 +6,7 @@
   </ull-navbar>
 
   <!-- Content -->
-  <div class="bg-light d-flex justify-content-center min-vh-100">
+  <div class="bg-light d-flex justify-content-center min-vh-100 pb-5">
     <div class="w-75 mt-3" *ngIf="profile.services.length > 0; else emptyProfile">
       <!-- Page name -->
       <h1>Réorganiser votre profil</h1>
@@ -66,8 +66,17 @@
 
               </div>
             </div>
-          </div>
 
+            <!-- Add performance button -->
+            <div class="list-group-item d-flex justify-content-end align-items-center shadow-sm" *ngIf="!editOrder && sectionsWithAvailableSpace().includes(section)">
+              <fa-icon [icon]="faPlus" class="bg-secondary circle-icon cursor-pointer" size="2x" [routerLink]="['/addPerformance/', section.id_section]"></fa-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add section button -->
+        <div class="list-group-item d-flex justify-content-center align-items-center py-4 shadow-sm" *ngIf="!editOrder">
+          <fa-icon [icon]="faPlus" class="bg-secondary circle-icon cursor-pointer" size="2x" [routerLink]="'/addSection'"></fa-icon>
         </div>
       </div>
 

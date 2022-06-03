@@ -1,34 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import {Performance, ProviderProfile, ProviderProfileSection} from "@ull/api-interfaces";
+import {Performance, ProviderProfile} from "@ull/api-interfaces";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user-service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {environment} from '../../../../environments/environment';
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
 import {map} from "rxjs";
 import {HttpEventType} from "@angular/common/http";
 
 @Component({
-  selector: 'ull-edit-performance',
-  templateUrl: './edit-performance.component.html',
-  styleUrls: ['./edit-performance.component.scss'],
+  selector: 'ull-add-performance',
+  templateUrl: './add-performance.component.html',
+  styleUrls: ['./add-performance.component.scss'],
 })
-export class EditPerformanceComponent implements OnInit {
+export class AddPerformanceComponent implements OnInit {
   profile : ProviderProfile | undefined;
-  performance : Performance | undefined;
 
   environment = environment;
   faCamera = faCamera;
 
-  updatePerformanceForm: FormGroup = this.formBuilder.group({
+  addPerformanceForm: FormGroup = this.formBuilder.group({
     performance_title: new FormControl('', Validators.required),
     performance_description: new FormControl('', Validators.maxLength(2000)),
-    performance_price_value: new FormControl('', Validators.compose([ // Price handled in float format in interface, and cast to cents for API call
+    performance_price_value: new FormControl('1', Validators.compose([ // Price handled in float format in interface, and cast to cents for API call
       Validators.required,
       Validators.min(0),
       Validators.max(100000) // Max performance price : 100 000€
     ])),
-    performance_price_unit: new FormControl('', Validators.required),
+    performance_price_unit: new FormControl('absolute', Validators.required),
   });
 
   pictureUrl = "";
@@ -51,26 +50,8 @@ export class EditPerformanceComponent implements OnInit {
     this.userService.fetchProviderProfile().subscribe({
       next: value => {
         this.profile = value
-
-        try {
-          this.performance = value.services
-            .filter((value : ProviderProfileSection) => value.id_section === this.route.snapshot.params['idSection'])[0]
-            .content
-            .filter((value : Performance) => value.id_performance === this.route.snapshot.params['idPerformance'])[0]
-        } catch (_) {
-          this.router.navigateByUrl('/profile');
-        }
-
-        if(this.performance){
-          this.updatePerformanceForm.get("performance_title")?.setValue(this.performance.performance_title);
-          this.updatePerformanceForm.get("performance_description")?.setValue(this.performance.performance_description);
-          this.updatePerformanceForm.get("performance_price_value")?.setValue(this.performance.price.value / 100);
-          this.updatePerformanceForm.get("performance_price_unit")?.setValue(this.performance.price.unit);
-
-          this.pictureUrl = environment.providerPicturesURL + this.performance.picture;
-        }
       }
-    });
+    })
   }
 
   /**
@@ -78,7 +59,7 @@ export class EditPerformanceComponent implements OnInit {
    * @param name
    */
   validInput(name: string) {
-    const control: AbstractControl | null = this.updatePerformanceForm.get(name);
+    const control: AbstractControl | null = this.addPerformanceForm.get(name);
     if (control){
       return !(control.invalid && (control.dirty || control.touched))
     } else {
@@ -93,7 +74,7 @@ export class EditPerformanceComponent implements OnInit {
       this.replaceDefaultPictureUrl(this.newPicture)
     } else {
       this.newPicture = undefined;
-      this.pictureUrl = environment.providerPicturesURL + this.performance?.picture || '';
+      this.pictureUrl = '';
     }
   }
 
@@ -107,12 +88,12 @@ export class EditPerformanceComponent implements OnInit {
   uploadInProgress  = false;
   saveChanges() {
     this.uploadInProgress = true;
-    const values = this.updatePerformanceForm.value;
+    const values = this.addPerformanceForm.value;
 
-    if (this.performance){
-      this.userService.editPerformance({
+    if (this.newPicture){
+      this.userService.addPerformance({
+        id_section: this.route.snapshot.params['idSection'],
         performance_description: values.performance_description,
-        performance_id: this.performance.id_performance,
         performance_picture: this.newPicture,
         performance_title: values.performance_title,
         price_unit: values.performance_price_unit,

@@ -15,7 +15,8 @@ import {
   faArrowUp,
   faPencil,
   faTrash,
-  faBan
+  faBan,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 
@@ -45,6 +46,7 @@ export class EditProfileComponent implements OnInit {
   faArrowRightToBracket = faArrowRightToBracket;
   faArrowRight = faArrowRight;
   faBan = faBan;
+  faPlus = faPlus;
 
   modalRef?: BsModalRef;
 
