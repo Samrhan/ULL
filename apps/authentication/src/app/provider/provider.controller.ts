@@ -3,8 +3,9 @@ import {ProviderService} from "./provider.service";
 import {LoginDto} from "./dto/login.dto";
 import {JwtOauthGuard} from "../auth/jwt-oauth.guard";
 import {ChangePasswordDto} from "./dto/change-password.dto";
-import {User} from "@ull/auth";
-import {JwtUser} from "@ull/api-interfaces";
+import {User, UserGuard} from "@ull/auth";
+import {JwtUser, UserType} from "@ull/api-interfaces";
+import {ResetPasswordDto} from "./dto/reset-password.dto";
 
 @Controller('')
 export class ProviderController {
@@ -15,14 +16,19 @@ export class ProviderController {
     return await this.providerService.login(login)
   }
 
-  @Post("changePassword")
-  async changePassword(@Body() changePasswordDto: ChangePasswordDto) {
-    return await this.providerService.changePassword(changePasswordDto)
+  @Post("reset_password")
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return await this.providerService.resetPassword(resetPasswordDto)
   }
 
-  @UseGuards(JwtOauthGuard)
-  @Post("resetPassword")
-  async resetPassword(@User() user: JwtUser) {
-    return await this.providerService.resetPassword(user)
+  @UseGuards(JwtOauthGuard, UserGuard(UserType.PROVIDER))
+  @Post("change_password")
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @User() user: JwtUser) {
+    return await this.providerService.changePassword(changePasswordDto, user)
+  }
+
+  @Post("forgotten_password")
+  async forgottenPassword(@Body('email') email: string) {
+    return await this.providerService.forgottenPassword(email)
   }
 }
