@@ -16,6 +16,7 @@ import {EditSectionComponent} from "./components/pages/edit-section/edit-section
 import {EditPerformanceComponent} from "./components/pages/edit-performance/edit-performance.component";
 import {AddSectionComponent} from "./components/pages/add-section/add-section.component";
 import {AddPerformanceComponent} from "./components/pages/add-performance/add-performance.component";
+import {ReservationsComponent} from "./components/pages/reservations/reservations.component";
 
 const routes: Routes = [
   { path: '', component: AccueilComponent},
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'editPerformance/:idSection/:idPerformance', component: EditPerformanceComponent, canActivate: [AuthGuardService]},
   { path: 'addSection', component: AddSectionComponent, canActivate: [AuthGuardService]},
   { path: 'addPerformance/:idSection', component: AddPerformanceComponent, canActivate: [AuthGuardService]},
+  { path: 'reservations', component: ReservationsComponent, canActivate: [AuthGuardService]},
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService]},
   // Redirection par défaut
   { path: '**', redirectTo: 'login'}

@@ -1,0 +1,27 @@
+<div *ngIf="profile">
+  <ull-navbar [selected]="'Réservations'"
+              [profilePictureUrl]="profile.profile_picture"
+              [companyName]="profile.company_name"
+              [companyDescription]="profile.company_description">
+  </ull-navbar>
+  <div class="bg-light d-flex justify-content-center min-vh-100">
+    <div class="w-75 mt-3 d-flex flex-column align-items-center">
+      <h1>Réservations</h1>
+
+      <!-- Buttons to select the type of reservations showed -->
+      <div class="d-flex w-100 justify-content-center align-items-center">
+        <hr class="flex-grow-1">
+        <p class="border border-2 rounded m-0 p-3 cursor-pointer secondary-hover" [ngClass]="{'bg-secondary' : view === 'accepted'}" (click)="view = 'accepted'">Réservations à venir</p>
+        <hr class="flex-grow-1">
+        <p class="border border-2 rounded m-0 p-3 cursor-pointer secondary-hover" [ngClass]="{'bg-secondary' : view === 'requested'}" (click)="view = 'requested'">Réservations demandées</p>
+        <hr class="flex-grow-1">
+      </div>
+
+      <!-- Content -->
+      <div class="mt-3 w-100">
+        <ull-reservations-list *ngIf="view === 'accepted'"></ull-reservations-list>
+        <ull-requested-reservations-list *ngIf="view === 'requested'"></ull-requested-reservations-list>
+      </div>
+    </div>
+  </div>
+</div>
