@@ -1,8 +1,13 @@
 import {
     BadRequestException,
     Body,
-    Controller, Delete, Get, Inject, Param,
-    Post, Put,
+    Controller,
+    Delete,
+    Get,
+    Inject,
+    Param,
+    Post,
+    Put,
     UploadedFiles,
     UseGuards,
     UseInterceptors

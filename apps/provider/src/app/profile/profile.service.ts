@@ -1,14 +1,15 @@
 import {BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {StorageService} from "@ull/storage";
 import {
+    Address as IAddress,
     JwtUser,
     MinimalFile,
     Performance,
-    PriceUnit, ProviderCompanyInformation,
+    PriceUnit,
+    ProviderCompanyInformation,
     ProviderProfile,
     ProviderProfileSection,
-    SectionType,
-    Address as IAddress
+    SectionType
 } from "@ull/api-interfaces";
 import {ConfigService} from "@nestjs/config";
 import {UploadSectionDto} from "./dto/upload-section.dto";

@@ -1,11 +1,13 @@
 import {
-    Column, CreateDateColumn,
+    Column,
+    CreateDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
     OneToMany,
     OneToOne,
-    PrimaryGeneratedColumn, UpdateDateColumn
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
 } from "typeorm";
 import {PreviewAmount} from "./preview-amount.entity";
 import {BigSectionPicture} from "./big-section-picture.entity";

@@ -1,6 +1,6 @@
 import {Body, Controller, Inject, Post} from '@nestjs/common';
 import {CustomerService} from "./customer.service";
-import {OAuthDto} from "../auth/dto/oauth.dto";
+import {OAuthDto} from "./dto/oauth.dto";
 
 @Controller('')
 export class CustomerController {
