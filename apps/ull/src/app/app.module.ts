@@ -31,6 +31,12 @@ import { EditSectionComponent } from './components/pages/edit-section/edit-secti
 import { EditPerformanceComponent } from './components/pages/edit-performance/edit-performance.component';
 import { AddSectionComponent } from './components/pages/add-section/add-section.component';
 import { AddPerformanceComponent } from './components/pages/add-performance/add-performance.component';
+import { ReservationsComponent } from './components/pages/reservations/reservations.component';
+import { OrderedPerformanceComponent } from './components/items/ordered-performance/ordered-performance.component';
+import { ReservationsListComponent } from './components/items/reservations-list/reservations-list.component';
+import { RequestedReservationsListComponent } from './components/items/requested-reservations-list/requested-reservations-list.component';
+import { EditCategorizationComponent } from './components/pages/edit-categorization/edit-categorization.component';
+import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 
 @NgModule({
   declarations: [
@@ -51,6 +57,11 @@ import { AddPerformanceComponent } from './components/pages/add-performance/add-
     EditPerformanceComponent,
     AddSectionComponent,
     AddPerformanceComponent,
+    ReservationsComponent,
+    OrderedPerformanceComponent,
+    ReservationsListComponent,
+    RequestedReservationsListComponent,
+    EditCategorizationComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +74,7 @@ import { AddPerformanceComponent } from './components/pages/add-performance/add-
     ReactiveFormsModule,
     TooltipModule,
     FormsModule,
+    TypeaheadModule.forRoot(),
   ],
   providers: [
     BsDropdownDirective,
