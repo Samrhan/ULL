@@ -1,4 +1,4 @@
-import {PriceUnit, SectionType, UserType} from "./api-enums";
+import {PriceUnit, SectionType, UserType, ProjectState, ReservationState} from "./api-enums";
 
 export interface RegisterProviderMessage {
     idProvider: string,
@@ -87,6 +87,8 @@ export interface Performance {
         unit: PriceUnit
     },
     picture: string,
+    provider_id ?: string,
+    deleted ?: boolean
 }
 
 export interface ProviderProfileSection {
@@ -162,6 +164,38 @@ export interface UpdatePerformanceBody {
   performance_picture?: File,
   price_value: number,
   price_unit: PriceUnit,
+}
+
+export interface Project {
+  project_id: string,
+  name: string,
+  customer_display_name: string,
+  project_date: Date,
+  description: string,
+  image: string,
+  amount_of_people: number,
+  state: ProjectState,
+  address: Address
+}
+
+export interface ReservationIdentifier {
+  performance_id: string,
+  project_id: string,
+}
+
+export interface Reservation {
+  project: Project,
+  performance : Performance,
+  quantity : number,
+  state : ReservationState,
+  replacement_id ?: number,
+  provider_id : string
+}
+
+export interface AnswerReservationRequestBody {
+  performance_id: string,
+  project_id: string,
+  accepted: boolean
 }
 
 export interface Category {
