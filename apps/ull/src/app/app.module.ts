@@ -35,6 +35,8 @@ import { ReservationsComponent } from './components/pages/reservations/reservati
 import { OrderedPerformanceComponent } from './components/items/ordered-performance/ordered-performance.component';
 import { ReservationsListComponent } from './components/items/reservations-list/reservations-list.component';
 import { RequestedReservationsListComponent } from './components/items/requested-reservations-list/requested-reservations-list.component';
+import { EditCategorizationComponent } from './components/pages/edit-categorization/edit-categorization.component';
+import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { RequestedReservationsListComponent } from './components/items/requested
     OrderedPerformanceComponent,
     ReservationsListComponent,
     RequestedReservationsListComponent,
+    EditCategorizationComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ import { RequestedReservationsListComponent } from './components/items/requested
     ReactiveFormsModule,
     TooltipModule,
     FormsModule,
+    TypeaheadModule.forRoot(),
   ],
   providers: [
     BsDropdownDirective,
