@@ -196,6 +196,7 @@ export interface AnswerReservationRequestBody {
   performance_id: string,
   project_id: string,
   accepted: boolean
+}
 
 export interface Category {
   name: string,
