@@ -1,15 +1,15 @@
 import {BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {StorageService} from "@ull/storage";
 import {
+    Address as IAddress,
     JwtUser,
     MinimalFile,
     Performance,
-    PriceUnit, ProviderCompanyInformation,
+    PriceUnit,
+    ProviderCompanyInformation,
     ProviderProfile,
     ProviderProfileSection,
-    ProviderSectionType,
-    SectionType,
-    Address as IAddress
+    SectionType
 } from "@ull/api-interfaces";
 import {ConfigService} from "@nestjs/config";
 import {UploadSectionDto} from "./dto/upload-section.dto";
@@ -260,7 +260,7 @@ export class ProfileService {
                 id_section: s.sectionId,
                 section_title: s.sectionTitle,
                 section_description: s.sectionDescription,
-                type: ProviderSectionType[s.type],
+                type: SectionType[s.type],
                 purchasable: s.purchasable,
                 preview_amount: s.previewAmount.amount,
                 content: s.performances.sort((a, b) => a.yIndex - b.yIndex).map<Performance>(p => ({

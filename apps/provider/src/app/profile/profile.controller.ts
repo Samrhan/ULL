@@ -1,17 +1,19 @@
 import {
     Body,
     Controller,
-    Delete, Get,
+    Delete,
+    Get,
     Inject,
-    Param, ParseArrayPipe,
+    Param,
+    ParseArrayPipe,
     Post,
-    Put, Req,
+    Put,
     UploadedFiles,
     UseGuards,
     UseInterceptors
 } from '@nestjs/common';
 import {AnyFilesInterceptor} from "@nestjs/platform-express";
-import {LocalAuthGuard, User} from "@ull/auth";
+import {LocalAuthGuard, User, UserGuard} from "@ull/auth";
 import {JwtUser, MinimalFile, ProviderCompanyInformation, SectionType} from "@ull/api-interfaces";
 import {ProfileService} from "./profile.service";
 import {UploadSectionDto} from "./dto/upload-section.dto";
@@ -23,7 +25,7 @@ import {UpdateProfileDto} from "./dto/put-profile.dto";
 @UseInterceptors(
     AnyFilesInterceptor(),
 )
-@UseGuards(LocalAuthGuard)
+@UseGuards(LocalAuthGuard, UserGuard('provider'))
 export class ProfileController {
     @Inject() profileService: ProfileService
 

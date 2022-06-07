@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
-import { PerformanceController } from './performance.controller';
-import { PerformanceService } from './performance.service';
+import {Module} from '@nestjs/common';
+import {PerformanceController} from './performance.controller';
+import {PerformanceService} from './performance.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Section} from "../profile/entity/section.entity";
 import {BigSectionPicture} from "../profile/entity/big-section-picture.entity";

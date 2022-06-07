@@ -1,9 +1,4 @@
-import {
-    IsBoolean, IsBooleanString, IsEnum,
-    IsNotEmpty, IsNumber, IsNumberString,
-    IsOptional,
-    IsString,
-} from 'class-validator';
+import {IsBooleanString, IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsString,} from 'class-validator';
 import {ApiProperty} from "@nestjs/swagger";
 import {SectionType} from "@ull/api-interfaces";
 

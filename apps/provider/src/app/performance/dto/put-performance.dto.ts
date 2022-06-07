@@ -1,8 +1,4 @@
-import {
-    IsEnum,
-    IsNotEmpty, IsNumberString,
-    IsString, IsUUID,
-} from 'class-validator';
+import {IsEnum, IsNotEmpty, IsNumberString, IsString, IsUUID,} from 'class-validator';
 import {ApiProperty} from "@nestjs/swagger";
 import {PriceUnit} from "@ull/api-interfaces";
 

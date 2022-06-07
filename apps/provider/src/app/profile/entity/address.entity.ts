@@ -1,5 +1,4 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
-import {Section} from "./section.entity";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity()
 export class Address {
@@ -15,7 +14,7 @@ export class Address {
     @Column()
     city: string;
 
-    @Column({name: 'postal_coder'})
+    @Column({name: 'postal_code'})
     postalCode: string;
 
     @Column({nullable: true})

@@ -5,7 +5,7 @@ import {AmqpConnection} from "@golevelup/nestjs-rabbitmq";
 export class AuthService {
     @Inject() amqpConnection!: AmqpConnection;
 
-    async validateUser(token: string): Promise<any> {
+    async validateUser(token: string): Promise<{ id: string, userType: string }> {
         const user = await this.amqpConnection.request<{ id: string, userType: string }>({
             exchange: 'auth',
             routingKey: 'check',

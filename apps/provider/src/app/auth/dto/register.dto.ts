@@ -1,12 +1,12 @@
 import {
-  IsEmail,
-  IsNotEmpty,
-  IsNumberString,
-  IsOptional,
-  IsPhoneNumber,
-  IsString,
-  Length,
-  Matches
+    IsEmail,
+    IsNotEmpty,
+    IsNumberString,
+    IsOptional,
+    IsPhoneNumber,
+    IsString,
+    Length,
+    Matches
 } from 'class-validator';
 import {PASSWORD_REGEX} from '@ull/global-constants';
 import {ApiProperty} from "@nestjs/swagger";
@@ -45,7 +45,7 @@ export class RegisterDto {
   @IsString()
   @IsPhoneNumber({region: 'FR'} as never)
   @IsNotEmpty()
-  public phone_number: string;
+  public phone: string;
 
   @ApiProperty({nullable: true})
   @IsString()

@@ -13,10 +13,6 @@ export interface RegisterCustomerMessage {
     email: string,
 }
 
-export interface CheckUser {
-    id: string;
-}
-
 export interface JwtUser {
     id: string,
     userType: UserType,
@@ -32,10 +28,6 @@ export interface MinimalFile {
     size: number
 }
 
-export interface CheckUser {
-    id: string;
-}
-
 export interface RegisterProviderRequestBody {
     company_name: string,
     email: string,
@@ -56,6 +48,11 @@ export interface RequestResetPasswordProviderBody {
 export interface EnactResetPasswordProviderBody {
     new_password: string,
     reset_token: string
+}
+
+export interface ChangePasswordProviderBody {
+  old_password: string,
+  new_password: string
 }
 
 export interface Address {
@@ -66,67 +63,8 @@ export interface Address {
     complement?: string
 }
 
-export interface RegisterCustomerMessage {
-    oauth_sub: string,
-    lastname: string,
-    firstname: string,
-    email: string,
-}
-
 export interface CheckUser {
     id: string;
-}
-
-
-export interface RegisterProviderRequestBody {
-    company_name: string,
-    email: string,
-    password: string,
-    phone: string,
-    siren: string
-}
-
-export interface LoginProviderRequestBody {
-    email: string,
-    password: string
-}
-
-export interface RequestResetPasswordProviderBody {
-    email: string
-}
-
-export interface EnactResetPasswordProviderBody {
-    new_password: string,
-    reset_token: string
-}
-
-export interface ChangePasswordProviderBody {
-    old_password: string,
-    new_password: string
-}
-
-export interface ChangePasswordProviderBody {
-    old_password: string,
-    new_password: string
-}
-
-export interface UploadSectionBody {
-    type: SectionType,
-    y_index: string,
-    section_title: string,
-    section_description: string,
-    purchasable: string,
-    preview_amount?: string,
-    pictures?: File[],
-}
-
-export interface UpdateSectionBody {
-    id_section: string,
-    y_index: number,
-    section_title: string,
-    section_description: string,
-    purchasable: boolean,
-    preview_amount?: number,
 }
 
 export interface EditProviderInfoBody {
@@ -151,22 +89,15 @@ export interface Performance {
     picture: string,
 }
 
-export enum ProviderSectionType {
-    big = "big",
-    medium = "medium",
-    small = "small",
-    info = "info"
-}
-
 export interface ProviderProfileSection {
-    id_section: string,
-    type: ProviderSectionType,
-    section_title: string,
-    section_description: string,
-    purchasable: boolean,
-    content: Performance[],
-    preview_amount?: number, // For "small" sections
-    pictures?: string[] // For "big" sections
+  id_section: string,
+  type: SectionType,
+  section_title: string,
+  section_description: string,
+  purchasable: boolean,
+  content: Performance[],
+  preview_amount ?: number, // For "small" sections
+  pictures ?: string[] // For "big" sections
 }
 
 export interface ProviderProfile {
@@ -189,4 +120,46 @@ export interface ProviderCompanyInformation {
     cover_picture: string,
     area_served: string,
     address: Address
+}
+
+export interface ReorderProviderProfileElement {
+  id_section : string,
+  id_performances : string[]
+}
+
+export type ReorderProviderProfileBody = Array<ReorderProviderProfileElement>
+
+export interface UploadSectionBody {
+  type: SectionType,
+  section_title: string,
+  section_description: string,
+  purchasable: string,
+  preview_amount? : string,
+  pictures?: File[],
+}
+
+export interface UpdateSectionBody {
+  id_section: string,
+  section_title: string,
+  section_description: string,
+  purchasable: boolean,
+  preview_amount? : number,
+}
+
+export interface CreatePerformanceBody {
+  performance_title: string,
+  performance_description: string,
+  performance_picture: File,
+  price_value: number,
+  price_unit: PriceUnit,
+  id_section: string,
+}
+
+export interface UpdatePerformanceBody {
+  performance_id: string,
+  performance_title: string,
+  performance_description: string,
+  performance_picture?: File,
+  price_value: number,
+  price_unit: PriceUnit,
 }

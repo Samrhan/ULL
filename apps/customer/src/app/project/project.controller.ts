@@ -1,4 +1,4 @@
-import {Body, Controller, Inject, Post, UploadedFiles, UseGuards, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Get, Inject, Param, Post, UploadedFiles, UseGuards, UseInterceptors} from '@nestjs/common';
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {LocalAuthGuard, User} from "@ull/auth";
 import {JwtUser, MinimalFile} from "@ull/api-interfaces";
@@ -15,6 +15,11 @@ export class ProjectController {
 
     @Post()
     async createProject(@Body() body: CreateProjectDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
-        this.projectService.createProject(body, files[0], user)
+        await this.projectService.createProject(body, files[0], user)
+    }
+
+    @Get(':id')
+    async getProjectDetail(@Param('id') projectId: string){
+        await this.projectService.getProjectDetail(projectId)
     }
 }

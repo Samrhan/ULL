@@ -59,7 +59,7 @@ export class AuthService {
     provider.companyDescription = registerDto.company_description || '';
     provider.siren = registerDto.siren;
     provider.email = registerDto.email;
-    provider.phoneNumber = registerDto.phone_number;
+    provider.phoneNumber = registerDto.phone;
     provider.profilePicture = registerDto.profile_picture || DEFAULT_PROFILE_PIC_PROVIDER;
     provider.coverPicture = registerDto.cover_picture || DEFAULT_COVER_PIC_PROVIDER;
     provider.areaServed = registerDto.area_served  || '';

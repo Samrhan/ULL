@@ -20,7 +20,7 @@ export class RegisterComponent {
     }, {validator: this.validatePassword}),
     phone: new FormControl('', Validators.compose([
       Validators.required,
-      Validators.pattern('^[0-9]{10}$'),
+      Validators.pattern('^[+]33[0-9]{9}$'),
     ])),
     siren: new FormControl('', Validators.compose([
       Validators.required,
@@ -43,7 +43,7 @@ export class RegisterComponent {
     ],
     phone: [
       {type: 'required', message: 'Veuillez entrer le numéro de téléphone de votre entreprise'},
-      {type: 'pattern', message: `Veuillez écrire un numéro de téléphone valide`}
+      {type: 'pattern', message: `Veuillez écrire un numéro de téléphone au format +33`}
     ],
     siren: [
       {type: 'required', message: 'Veuillez entrer le SIREN de votre entreprise'},
