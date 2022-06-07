@@ -163,3 +163,8 @@ export interface UpdatePerformanceBody {
   price_value: number,
   price_unit: PriceUnit,
 }
+
+export interface Category {
+  name: string,
+  picture: string,
+}

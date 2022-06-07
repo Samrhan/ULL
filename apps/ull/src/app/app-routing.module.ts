@@ -16,6 +16,7 @@ import {EditSectionComponent} from "./components/pages/edit-section/edit-section
 import {EditPerformanceComponent} from "./components/pages/edit-performance/edit-performance.component";
 import {AddSectionComponent} from "./components/pages/add-section/add-section.component";
 import {AddPerformanceComponent} from "./components/pages/add-performance/add-performance.component";
+import {EditCategorizationComponent} from "./components/pages/edit-categorization/edit-categorization.component";
 
 const routes: Routes = [
   { path: '', component: AccueilComponent},
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'resetPassword', component: ResetPasswordComponent, canActivate: [AuthPreventService]},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   { path: 'editInfo', component: EditInfoComponent, canActivate: [AuthGuardService]},
+  { path: 'editCategorization', component: EditCategorizationComponent, canActivate: [AuthGuardService]},
   { path: 'editProfile', component: EditProfileComponent, canActivate: [AuthGuardService]},
   { path: 'editSection/:idSection', component: EditSectionComponent, canActivate: [AuthGuardService]},
   { path: 'editPerformance/:idSection/:idPerformance', component: EditPerformanceComponent, canActivate: [AuthGuardService]},

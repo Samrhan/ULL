@@ -31,6 +31,8 @@ import { EditSectionComponent } from './components/pages/edit-section/edit-secti
 import { EditPerformanceComponent } from './components/pages/edit-performance/edit-performance.component';
 import { AddSectionComponent } from './components/pages/add-section/add-section.component';
 import { AddPerformanceComponent } from './components/pages/add-performance/add-performance.component';
+import { EditCategorizationComponent } from './components/pages/edit-categorization/edit-categorization.component';
+import {TypeaheadModule} from "ngx-bootstrap/typeahead";
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import { AddPerformanceComponent } from './components/pages/add-performance/add-
     EditPerformanceComponent,
     AddSectionComponent,
     AddPerformanceComponent,
+    EditCategorizationComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,7 @@ import { AddPerformanceComponent } from './components/pages/add-performance/add-
     ReactiveFormsModule,
     TooltipModule,
     FormsModule,
+    TypeaheadModule.forRoot(),
   ],
   providers: [
     BsDropdownDirective,
