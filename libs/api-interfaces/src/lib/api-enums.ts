@@ -17,11 +17,11 @@ export enum PriceUnit {
 }
 
 export enum ProjectState {
-  draft = 'draft',
-  pending_validation = 'pending_validation',
-  replacement = 'replacement',
-  pending_payment = 'pending_payment',
-  paid = 'paid',
+    draft = 'draft',
+    pending_validation = 'pending_validation',
+    replacement = 'replacement',
+    pending_payment = 'pending_payment',
+    paid = 'paid',
 }
 
 export enum ReservationState {
