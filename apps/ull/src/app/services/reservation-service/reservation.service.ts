@@ -4,12 +4,12 @@ import {HttpClient} from "@angular/common/http";
 import {Observable, of, tap} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {
-  AnswerReservationRequestBody,
-  PriceUnit,
-  ProjectState,
-  Reservation,
-  ReservationIdentifier,
-  ReservationState
+    AnswerReservationRequestBody,
+    PriceUnit,
+    ProjectState,
+    Reservation,
+    ReservationIdentifier,
+    ReservationState
 } from "@ull/api-interfaces";
 
 @Injectable({
@@ -149,7 +149,7 @@ export class ReservationService {
         },
         provider_id: "5f51f2b9-55d4-4b92-8288-49a3dfbec9cb",
         quantity: 1,
-        state: ReservationState.PAYED
+        state: ReservationState.PAID
       });
     }
 
