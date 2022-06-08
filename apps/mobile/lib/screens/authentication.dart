@@ -28,7 +28,6 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
           type: MaterialType.transparency,
           child: Column(
             children: [
-              if(_currentAccount == null)
                 ClipPath(
                     clipper: SkewCut(),
                     child: Container(
@@ -57,7 +56,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
                           const Text('Une toute petite étape avant de débuter',
                               style: TextStyle(
                                   fontSize: 35,
-                                  color: Colors.white,
+                                  color: Color(0xff832232),
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center),
 

@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/screens/authentication.dart';
+import 'package:mobile/screens/bottomNavBar.dart';
 import 'package:mobile/services/authentication.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/screens/category.dart';
+import 'package:mobile/screens/profile.dart';
+import 'package:mobile/screens/mainEvent.dart';
 
 class MainScreen extends StatelessWidget{
   MainScreen(GoogleSignInAccount? _currentAccount, {Key? key}) : super(key: key){
@@ -18,11 +22,17 @@ class MainScreen extends StatelessWidget{
   GoogleSignInAccount? _currentAccount;
 
 
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child : EventBar(_currentAccount)
+    return MaterialApp(
+        home :Scaffold(
+          bottomNavigationBar: BottomNavBar(0,_currentAccount),
+          body: ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
+            child: EventBar(_currentAccount),
+          )
+        )
     );
   }
 }
@@ -87,7 +97,7 @@ class _EventBarState extends State<EventBar>{
               ),
               child: Column(
                 children : [
-              Row(
+                  Row(
                   children: [
                     Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -216,16 +226,25 @@ class _EventBarState extends State<EventBar>{
                             )
                         ],
                     ),
-                    Container(
-                      width : 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image :DecorationImage(image :
-                          getProfileImage(),fit: BoxFit.fill
+                    MaterialButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Profile(_currentUser)),
+                          );
+                        },
+                        child :Container(
+                          width : 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image :DecorationImage(image :
+                            getProfileImage(),fit: BoxFit.fill
+                            ),
+                          )
                         ),
-                      )
-                    ),
+                    )
+
                   ],
                 ),
                   Container(
@@ -264,60 +283,70 @@ class _EventBarState extends State<EventBar>{
               style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)
             )
           ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-              Container(width: MediaQuery
-                .of(context)
-                .size
-                .width/7*3,
-                height: MediaQuery
-                    .of(context)
-                    .size.height/7,
-                decoration: ShapeDecoration(
-                  shape: SmoothRectangleBorder(
-                    borderRadius: SmoothBorderRadius(
-                    cornerRadius: 10,
-                    cornerSmoothing: 0.5,
-                    ),
-                  ),
-                  image: DecorationImage(image: AssetImage("asset/traiteur.jpg"),fit: BoxFit.cover)
-                ),
-                alignment: Alignment.center,
-                child: const Text("Traiteur",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        shadows: <Shadow>[
-                          Shadow(offset: Offset(2, 2),blurRadius:3)
-                        ])),
-              ),
-              Container(width: MediaQuery
-                  .of(context)
-                  .size
-                  .width/7*3,
-                height: MediaQuery
-                    .of(context)
-                    .size.height/7,
-                decoration: ShapeDecoration(
-                    shape: SmoothRectangleBorder(
-                      borderRadius: SmoothBorderRadius(
-                        cornerRadius: 10,
-                        cornerSmoothing: 0.5,
+          Padding(
+            padding: EdgeInsets.fromLTRB(0,  0, 20, 0),
+            child : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MaterialButton(onPressed:(){
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Category(_currentUser,dropDownValue)),
+                      );
+                    },
+                    child : Container(width: MediaQuery
+                      .of(context)
+                      .size
+                      .width/7*3,
+                      height: MediaQuery
+                          .of(context)
+                          .size.height/7,
+                        decoration: ShapeDecoration(
+                        shape: SmoothRectangleBorder(
+                          borderRadius: SmoothBorderRadius(
+                          cornerRadius: 10,
+                          cornerSmoothing: 0.5,
+                          ),
+                        ),
+                        image: DecorationImage(image: AssetImage("asset/traiteur.jpg"),fit: BoxFit.cover)
                       ),
-                    ),
-                    image: DecorationImage(image: AssetImage("asset/musique.jpg"),fit: BoxFit.cover)
-                ),
-                alignment: Alignment.center,
-                child: const Text("Musique",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        shadows: <Shadow>[
-                          Shadow(offset: Offset(2, 2),blurRadius:3)
-                        ])),
-              )
-            ],
+                      alignment: Alignment.center,
+                      child: const Text("Traiteur",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            shadows: <Shadow>[
+                              Shadow(offset: Offset(2, 2),blurRadius:3)
+                            ])),
+                    )
+                  ),
+                Container(width: MediaQuery
+                    .of(context)
+                    .size
+                    .width/7*3,
+                  height: MediaQuery
+                      .of(context)
+                      .size.height/7,
+                  decoration: ShapeDecoration(
+                      shape: SmoothRectangleBorder(
+                        borderRadius: SmoothBorderRadius(
+                          cornerRadius: 10,
+                          cornerSmoothing: 0.5,
+                        ),
+                      ),
+                      image: DecorationImage(image: AssetImage("asset/musique.jpg"),fit: BoxFit.cover)
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text("Musique",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          shadows: <Shadow>[
+                            Shadow(offset: Offset(2, 2),blurRadius:3)
+                          ])),
+                )
+              ],
+            )
           ),
           Padding(padding: EdgeInsets.fromLTRB(0,15,0,10),
             child : Row(
@@ -577,18 +606,7 @@ class _EventBarState extends State<EventBar>{
               ),
               const Icon(Icons.keyboard_arrow_right,size: 50,)
             ],
-          ),
-          MaterialButton(onPressed: (){
-            setState((){
-              Authentication().signOut();
-              _currentUser=null;
-            });
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ULL()),
-            );
-            }
-              ,child: Text("Déco"))
+          )
         ],
       )
     );
@@ -605,6 +623,8 @@ class _EventBarState extends State<EventBar>{
       return const AssetImage("asset/JW.jpg");
     }
   }
+
+
 
 }
 

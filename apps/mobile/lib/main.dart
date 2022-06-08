@@ -14,7 +14,7 @@ import 'package:mobile/screens/mainScreen.dart';
 void main() {
   runApp(
     const MaterialApp(
-      title: 'Google Sign In',
+      title: 'ULL',
       home: ULL(),
     ),
   );
