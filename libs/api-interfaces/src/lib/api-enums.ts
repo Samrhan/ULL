@@ -29,7 +29,7 @@ export enum ReservationState {
   PENDING = 'pending',
   ACCEPTED = 'accepted',
   REJECTED = 'rejected',
-  PAYED = 'payed',
+  PAID = 'paid',
   CUSTOMER_CANCELLED = 'customer_cancelled',
   PROVIDER_CANCELLED = 'provider_cancelled',
 }

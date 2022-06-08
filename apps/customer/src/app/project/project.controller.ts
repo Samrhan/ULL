@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {LocalAuthGuard, User, UserGuard} from "@ull/auth";
-import {JwtUser, MinimalFile} from "@ull/api-interfaces";
+import {JwtUser, MinimalFile, Project as IProject} from "@ull/api-interfaces";
 import {AnyFilesInterceptor} from "@nestjs/platform-express";
 import {ProjectService} from "./project.service";
 import {EditProjectDto} from "./dto/edit-project.entity";
@@ -45,7 +45,7 @@ export class ProjectController {
     }
 
     @Get(':id')
-    async getProjectDetail(@Param('id') projectId: string){
+    async getProjectDetail(@Param('id') projectId: string): Promise<IProject>{
         return await this.projectService.getProjectDetail(projectId)
     }
 }

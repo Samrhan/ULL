@@ -48,7 +48,7 @@ export class PerformanceController {
 
     @Get(':id')
     async getPerformance(@Param('id') performanceId: string) {
-        return await this.performanceService.get(performanceId)
+        return await this.performanceService.getPerformance(performanceId)
     }
 
 }

@@ -1,4 +1,4 @@
-import {PriceUnit, SectionType, UserType, ProjectState, ReservationState} from "./api-enums";
+import {PriceUnit, ProjectState, ReservationState, SectionType, UserType} from "./api-enums";
 
 export interface RegisterProviderMessage {
     idProvider: string,
@@ -170,7 +170,7 @@ export interface Project {
   project_id: string,
   name: string,
   customer_display_name: string,
-  project_date: Date,
+  project_date: string,
   description: string,
   image: string,
   amount_of_people: number,
@@ -189,7 +189,6 @@ export interface Reservation {
   quantity : number,
   state : ReservationState,
   replacement_id ?: number,
-  provider_id : string
 }
 
 export interface AnswerReservationRequestBody {
