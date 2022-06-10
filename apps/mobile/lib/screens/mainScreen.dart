@@ -230,7 +230,11 @@ class _EventBarState extends State<EventBar>{
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Profile(_currentUser)),
+                            PageRouteBuilder(
+                              pageBuilder: (context,a1,a2) => Profile(_currentUser),
+                              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                              transitionDuration: const Duration(milliseconds: 0),
+                            ),
                           );
                         },
                         child :Container(
@@ -291,7 +295,11 @@ class _EventBarState extends State<EventBar>{
                   MaterialButton(onPressed:(){
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Category(_currentUser,dropDownValue)),
+                        PageRouteBuilder(
+                          pageBuilder: (context,a1,a2) => Category(_currentUser,dropDownValue),
+                          transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                          transitionDuration: const Duration(milliseconds: 0),
+                      ),
                       );
                     },
                     child : Container(width: MediaQuery

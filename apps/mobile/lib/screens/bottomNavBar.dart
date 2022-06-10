@@ -47,25 +47,41 @@ class BottomNavBar extends StatelessWidget{
         if(index==0){ //événement
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MainScreen(_currentAccount)),
+            PageRouteBuilder(
+              pageBuilder: (context,a1,a2) => MainScreen(_currentAccount),
+              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+              transitionDuration: const Duration(milliseconds: 0),
+            ),
           );
         }
         if(index==1){ //événement
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MainEvent(_currentAccount)),
+            PageRouteBuilder(
+              pageBuilder: (context,a1,a2) => MainEvent(_currentAccount),
+              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+              transitionDuration: const Duration(milliseconds: 0)
+            ),
           );
         }
         if(index==2){//favoris
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MainFavorite(_currentAccount)),
+            PageRouteBuilder(
+              pageBuilder: (context,a1,a2) => MainFavorite(_currentAccount),
+              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+              transitionDuration: const Duration(milliseconds: 0),
+            ),
           );
         }
         if(index==3){//messages
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MessageScreen(_currentAccount)),
+            PageRouteBuilder(
+              pageBuilder: (context,a1,a2) => MessageScreen(_currentAccount),
+              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+              transitionDuration: const Duration(milliseconds: 0),
+            ),
           );
         }
       },
