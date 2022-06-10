@@ -13,12 +13,14 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({transform: true}));
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
   app.enableCors({
     origin: (origin, callback) => {
       callback(null, true)
     },
     credentials: true
   });
+
   const port = process.env.PORT_CUSTOMER || 3333;
   await app.listen(port);
   Logger.log(

@@ -6,6 +6,7 @@ import {map} from "rxjs";
 import {HttpEventType} from "@angular/common/http";
 
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'ull-edit-info',
@@ -14,6 +15,8 @@ import {faCamera} from "@fortawesome/free-solid-svg-icons";
 })
 export class EditInfoComponent implements OnInit {
   faCamera = faCamera
+
+  environment = environment;
 
   coverPictureUrl = '';
   profilePictureUrl = '';
@@ -32,7 +35,7 @@ export class EditInfoComponent implements OnInit {
     ])),
     phone: new FormControl('', Validators.compose([
       Validators.required,
-      Validators.pattern('^[0-9]{10}$'),
+      Validators.pattern('^[+]33[0-9]{9}$'),
     ])),
     area_served: new FormControl('', Validators.required),
     number: new FormControl('', Validators.required),
@@ -49,6 +52,10 @@ export class EditInfoComponent implements OnInit {
 
   ngOnInit() {
     // Force fetch the values at load
+    this.fetchData();
+  }
+
+  fetchData() {
     this.userService.fetchProviderCompanyInfo(true).subscribe({
       next: value => {
         this.info = value
@@ -64,8 +71,8 @@ export class EditInfoComponent implements OnInit {
         this.updateInfoForm.get("postal_code")?.setValue(value.address.postal_code);
         this.updateInfoForm.get("complement")?.setValue(value.address.complement);
 
-        this.profilePictureUrl = value.profile_picture;
-        this.coverPictureUrl = value.cover_picture;
+        this.profilePictureUrl = environment.providerPicturesURL + value.profile_picture;
+        this.coverPictureUrl = environment.providerPicturesURL + value.cover_picture;
       }
     })
   }
@@ -78,7 +85,7 @@ export class EditInfoComponent implements OnInit {
    * @param targetVariable
    * @param event
    */
-  onCoverPictureSelected(targetVariable : string, event: Event) {
+  onPictureSelected(targetVariable : string, event: Event) {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       if (targetVariable === "coverPicture") {
@@ -91,16 +98,16 @@ export class EditInfoComponent implements OnInit {
     } else {
       if (targetVariable === "coverPicture") {
         this.newCoverPicture = undefined;
-        this.coverPictureUrl = this.info?.cover_picture || '';
+        this.coverPictureUrl = environment.providerPicturesURL + this.info?.cover_picture || '';
       } else if (targetVariable === "profilePicture") {
         this.newProfilePicture = undefined;
-        this.profilePictureUrl = this.info?.profile_picture || '';
+        this.profilePictureUrl = environment.providerPicturesURL + this.info?.profile_picture || '';
       }
     }
   }
 
   /**
-   * Creates a FileReader to read #file as URL. When the reader has finished, calls #affectationCallback with reader.result
+   * Creates a FileReader to read #file as URL. When the reader has finished, calls #affectationCallback with `reader.result`
    * as parameter.
    * @param file
    * @param affectationCallback
@@ -139,7 +146,7 @@ export class EditInfoComponent implements OnInit {
       // We only return events of type Response to subscribe().
       map(event => { // React every time an event is emitted
         switch (event.type) {
-          case HttpEventType.UploadProgress: // If it's an updata about the upload progress, update the upload bar and do nothing
+          case HttpEventType.UploadProgress: // If it's an update about the upload progress, update the upload bar and do nothing
             this.uploadProgress = Math.round(event.loaded * 100 / event.total);
             return;
           case HttpEventType.Response: // If it's a response, pass it to the next handler
@@ -153,6 +160,7 @@ export class EditInfoComponent implements OnInit {
           this.uploadSuccess = true;
           this.uploadInProgress = false;
           setTimeout(() => this.uploadSuccess = false, 3000);
+          this.fetchData();
         }
       },
       // Error handler : alert() the user

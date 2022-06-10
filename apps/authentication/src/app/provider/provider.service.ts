@@ -1,4 +1,4 @@
-import {ForbiddenException, Inject, Injectable, Logger, UnauthorizedException} from '@nestjs/common';
+import {ForbiddenException, Inject, Injectable, Logger, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {ProviderAccount} from "./provider-account.entity";
 import {Repository} from "typeorm";
@@ -11,6 +11,7 @@ import {AuthService} from "../auth/auth.service";
 import {ChangePasswordDto} from "./dto/change-password.dto";
 import {v4 as uuidv4} from 'uuid';
 import {MailerService} from "@ull/mailer";
+import {ResetPasswordDto} from "./dto/reset-password.dto";
 
 const SALT_OR_ROUNDS = 10
 
@@ -62,24 +63,15 @@ export class ProviderService {
         }
     }
 
-    async getUserByMail(email: string): Promise<ProviderAccount | undefined> {
-        return await this.providerAccountRepository.findOne({email})
-    }
 
-    async changePassword(changePasswordDto: ChangePasswordDto): Promise<{ access_token: string, token_type: string }> {
-        let user = await this.getUserByMail(changePasswordDto.email);
-        if (!user?.resetPasswordToken || user.resetPasswordToken !== changePasswordDto.token) {
-            throw new UnauthorizedException()
-        }
-        if (changePasswordDto.old_password === changePasswordDto.new_password) {
-            throw new ForbiddenException('Old and new password must me different')
-        }
-        if (!await bcrypt.compare(changePasswordDto.old_password, user.password)) {
-            throw new ForbiddenException('Old password is not matching your password')
+    async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<{ access_token: string, token_type: string }> {
+        let user = await this.providerAccountRepository.findOne({resetPasswordToken: resetPasswordDto.token})
+        if (!user) {
+            throw new NotFoundException('Token not found')
         }
         user = await this.providerAccountRepository.save({
             ...user,
-            password: await bcrypt.hash(changePasswordDto.new_password, SALT_OR_ROUNDS),
+            password: await bcrypt.hash(resetPasswordDto.new_password, SALT_OR_ROUNDS),
             jti: uuidv4(),
             resetPasswordToken: null
         })
@@ -89,11 +81,31 @@ export class ProviderService {
         }
     }
 
-    async resetPassword(reqUser: JwtUser) {
-        await this.providerAccountRepository.save({idProvider: reqUser.id, resetPasswordToken: uuidv4()})
-        const user = await this.providerAccountRepository.findOne(reqUser.id)
+    async forgottenPassword(email: string) {
+        const user = await this.providerAccountRepository.findOne({email})
+        if (!user) {
+            return;
+        }
+        user.resetPasswordToken = uuidv4();
+        await this.providerAccountRepository.save(user)
 
         await this.mailerService.sendMail(user.email, 'Changement de mot de passe', `Token : ${user.resetPasswordToken}`)
+    }
+
+
+    async changePassword(changePasswordDto: ChangePasswordDto, jwtUser: JwtUser) {
+        const user = await this.providerAccountRepository.findOne(jwtUser.id)
+        if (!await bcrypt.compare(changePasswordDto.old_password, user.password)) {
+            throw new ForbiddenException('Old password isn\'t matching')
+        }
+        user.password = await bcrypt.hash(changePasswordDto.new_password, SALT_OR_ROUNDS)
+        user.jti = uuidv4()
+        user.resetPasswordToken = null
+        await this.providerAccountRepository.save(user)
+        return {
+            access_token: this.authService.getJwt({id: user.idProvider, userType: UserType.PROVIDER, jti: user.jti}),
+            token_type: 'Bearer',
+        }
     }
 
     @RabbitRPC({

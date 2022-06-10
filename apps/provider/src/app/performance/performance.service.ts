@@ -7,7 +7,7 @@ import {
     NotFoundException
 } from '@nestjs/common';
 import {CreatePerformanceDto} from './dto/create-performance.dto';
-import {JwtUser, MinimalFile, SectionType} from "@ull/api-interfaces";
+import {JwtUser, MinimalFile, Performance, PriceUnit, SectionType} from "@ull/api-interfaces";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Section} from "../profile/entity/section.entity";
 import {Repository} from "typeorm";
@@ -15,6 +15,7 @@ import {PerformanceEntity} from "./entity/performance.entity";
 import {Provider} from "../profile/entity/provider.entity";
 import {StorageService} from "@ull/storage";
 import {PutPerformanceDto} from "./dto/put-performance.dto";
+import {RabbitRPC} from "@golevelup/nestjs-rabbitmq";
 
 @Injectable()
 export class PerformanceService {
@@ -59,10 +60,10 @@ export class PerformanceService {
 
     async update(performance: PutPerformanceDto, minimalFile: MinimalFile, user: JwtUser) {
         const oldPerformance = await this.performanceRepository.findOne(performance.performance_id, {relations: ['section', 'provider']})
-        if(!oldPerformance){
+        if (!oldPerformance) {
             throw new NotFoundException('Performance not found')
         }
-        if(oldPerformance.deleted){
+        if (oldPerformance.deleted) {
             throw new ConflictException('Performance is already replaced by another one')
         }
         const newPerformance = {...oldPerformance};
@@ -86,13 +87,13 @@ export class PerformanceService {
     async delete(performanceId: string, user: JwtUser) {
         const performance = await this.performanceRepository.findOne(performanceId, {relations: ['provider']})
 
-        if(!performance){
+        if (!performance) {
             throw new NotFoundException('Performance not found')
         }
-        if(performance.provider.id !== user.id){
+        if (performance.provider.id !== user.id) {
             throw new ForbiddenException('You are not allowed to delete this performance')
         }
-        if(performance.deleted){
+        if (performance.deleted) {
             throw new BadRequestException('Performance is already deleted')
         }
 
@@ -103,20 +104,39 @@ export class PerformanceService {
         await this.performanceRepository.save(performance)
     }
 
-    async get(performanceId: string) {
+    async getPerformance(performanceId: string): Promise<Performance> {
         const performance = await this.performanceRepository.findOne(performanceId, {relations: ['provider']})
-        if(!performance){
+        if (!performance) {
             throw new NotFoundException('Performance not found')
         }
         return {
-            performance_id: performance.idPerformance,
+            id_performance: performance.idPerformance,
             provider_id: performance.provider.id,
             performance_title: performance.performanceTitle,
             performance_description: performance.performanceDescription,
-            performance_picture: performance.performancePicture,
-            price_value: performance.priceValue,
-            price_unit: performance.priceUnit,
+            picture: performance.performancePicture,
+            price: {
+                value: performance.priceValue,
+                unit: PriceUnit[performance.priceUnit],
+            },
             deleted: performance.deleted,
+        }
+    }
+
+    @RabbitRPC({
+        exchange: 'reservation',
+        routingKey: 'check-reservation',
+        queue: 'provider-reservation'
+    })
+    async checkPerformance(message: { id: string }) {
+        try {
+            const performance = await this.getPerformance(message.id)
+            return {
+                state: !performance.deleted,
+                value: performance
+            }
+        } catch {
+            return {state: false}
         }
     }
 }

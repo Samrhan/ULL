@@ -1,8 +1,13 @@
 import {
     BadRequestException,
     Body,
-    Controller, Delete, Get, Inject, Param,
-    Post, Put,
+    Controller,
+    Delete,
+    Get,
+    Inject,
+    Param,
+    Post,
+    Put,
     UploadedFiles,
     UseGuards,
     UseInterceptors
@@ -43,7 +48,7 @@ export class PerformanceController {
 
     @Get(':id')
     async getPerformance(@Param('id') performanceId: string) {
-        return await this.performanceService.get(performanceId)
+        return await this.performanceService.getPerformance(performanceId)
     }
 
 }

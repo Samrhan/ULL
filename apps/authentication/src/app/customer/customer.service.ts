@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@nestjs/common';
-import {OAuthDto} from "../auth/dto/oauth.dto";
+import {OAuthDto} from "./dto/oauth.dto";
 import {firstValueFrom} from "rxjs";
 import {RegisterCustomerMessage, UserType} from "@ull/api-interfaces";
 import {HttpService} from "@nestjs/axios";

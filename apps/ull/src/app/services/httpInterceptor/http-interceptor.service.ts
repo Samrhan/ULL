@@ -28,7 +28,10 @@ export class HttpInterceptorService implements HttpInterceptor {
           catchError((err) => { // Use catchError and throwError to propagate other kinds of errors
             if (err.status === 401) {
               HttpInterceptorService.deleteUserToken();
-              this.reloadPage();
+              if(!req.url.includes("login")){
+                this.reloadPage();
+                console.log("Invalid token, disconnecting user.")
+              }
             }
             return throwError(() => err);
           })
