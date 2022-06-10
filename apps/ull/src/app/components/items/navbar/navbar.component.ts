@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import { environment } from '../../../../environments/environment';
 
 import {faCalendar, faDollar, faMessage} from "@fortawesome/free-solid-svg-icons";
 
@@ -17,5 +18,5 @@ export class NavbarComponent{
   faDollar = faDollar;
   faMessage = faMessage;
 
-  console = console;
+  environment = environment;
 }

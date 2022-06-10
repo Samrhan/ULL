@@ -23,3 +23,13 @@ export enum ProjectState {
     pending_payment = 'pending_payment',
     paid = 'paid',
 }
+
+export enum ReservationState {
+  ADDED = 'added',
+  PENDING = 'pending',
+  ACCEPTED = 'accepted',
+  REJECTED = 'rejected',
+  PAID = 'paid',
+  CUSTOMER_CANCELLED = 'customer_cancelled',
+  PROVIDER_CANCELLED = 'provider_cancelled',
+}

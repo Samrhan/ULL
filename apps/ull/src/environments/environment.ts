@@ -10,7 +10,10 @@ export const environment = {
   customerServiceURL: "3336/api",
   accountingServiceURL: "3332/api",
   discoveryServiceURL: "3337/api",
-  providerServiceURL: "3335/api"
+  providerServiceURL: "3335/api",
+  reservationServiceURL: "3334/api",
+
+  providerPicturesURL: "../../../../assets/images/"
 };
 
 /*

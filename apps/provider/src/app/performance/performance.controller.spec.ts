@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PerformanceController } from './performance.controller';
+import {Test, TestingModule} from '@nestjs/testing';
+import {PerformanceController} from './performance.controller';
 
 describe('PerformanceController', () => {
   let controller: PerformanceController;

@@ -1,0 +1,87 @@
+<div *ngIf="profile && section">
+  <ull-navbar [selected]="'none'"
+              [profilePictureUrl]="profile.profile_picture"
+              [companyName]="profile.company_name"
+              [companyDescription]="profile.company_description">
+  </ull-navbar>
+
+  <!-- Content -->
+  <div class="bg-light d-flex justify-content-center min-vh-100">
+    <div class="w-75 mt-3">
+      <!-- Page name -->
+      <h1>Modifier la section</h1>
+      <small class="text-muted">Vous pouvez éditer ici ce que les utilisateurs d'ULL verront dans cette catégorie de votre profil</small>
+      <hr>
+
+      <!-- Picture caroussel for big sections -->
+      <div *ngIf="section.type === SectionType.BIG" class="mb-3 p-2 rounded border">
+        <div class="d-flex justify-content-start align-items-center overflow-auto py-1">
+          <!-- Pictures already present -->
+          <div *ngFor="let imageUrl of section.pictures" class="d-flex flex-column align-items-start me-2">
+            <img [src]="environment.providerPicturesURL + imageUrl" alt="illustration" class="big-image mb-2" [ngClass]="{'gray-overlay' : picturesToDelete.includes(imageUrl)}">
+            <button class="btn btn-success rounded" (click)="undeletePicture(imageUrl)" *ngIf="picturesToDelete.includes(imageUrl); else deletePictureButton">Rétablir</button>
+            <ng-template #deletePictureButton>
+              <button class="btn btn-danger rounded" (click)="deletePicture(imageUrl)">Supprimer</button>
+            </ng-template>
+          </div>
+
+          <!-- Added pictures not yet sent -->
+          <div *ngFor="let image of newPictures" class="d-flex flex-column align-items-start me-2">
+            <img [src]="image.url" alt="illustration" class="big-image mb-2">
+            <button class="btn btn-danger rounded" (click)="cancelAddPicture(image)">Supprimer</button>
+          </div>
+        </div>
+
+        <!-- Add picture button -->
+        <label for="addSectionPicture" type="button" class="btn btn-primary rounded my-2">
+          <p class="m-0">Ajouter une image</p>
+          <input id="addSectionPicture" hidden type="file" (change)="addPicture($event)">
+        </label>
+      </div>
+
+      <!-- Edit section values form -->
+      <form [formGroup]="updateSectionForm" (ngSubmit)="saveChanges()" class="mb-5 p-2 border rounded">
+
+        <!-- All values -->
+        <div class="d-flex justify-content-around flex-wrap">
+          <!-- Title -->
+          <div class="mb-3 p-2 flex-grow-1 w-100">
+            <label for="sectionTitle" class="w-100 fs-4 fw-bold">Titre de la section</label>
+            <input type="text" id="sectionTitle" [formControlName]="'section_title'" required class="inner-shadow rounded p-2 w-100 fs-4 border-danger" [ngClass]="{'border-0' : validInput('section_title')}">
+          </div>
+          <!-- Description -->
+          <div class="mb-3 p-2 flex-grow-1 w-100" *ngIf="section.type !== SectionType.BIG">
+            <label for="sectionDescription" class="w-100 fs-4 fw-bold">Description de la section (max. 2000 caractères)</label>
+            <textarea rows="4" maxlength="2000" style="resize: none;" type="text" id="sectionDescription" [formControlName]="'section_description'" class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('section_description')}"></textarea>
+          </div>
+          <!-- Is the section purchasable -->
+          <div class="mb-3 p-2 w-25 d-flex align-items-center" *ngIf="section.type !== SectionType.INFO">
+            <input type="checkbox" id="purchasable" [formControlName]="'purchasable'" class="m-2">
+            <label for="purchasable" class="w-100">Les utilisateurs peuvent réserver les prestations de cette section.<br><small class="text-muted">Modifier cette valeur ne supprimera pas les prestations déjà réservées de cette section.</small></label>
+          </div>
+          <!-- If the section is small, how many performances to show by default -->
+          <div class="mb-3 p-2 w-25" *ngIf="section.type === SectionType.SMALL">
+            <label for="previewAmount" class="w-100">Nombre de prestations à afficher par défaut</label>
+            <input type="number" min="1" max="5" id="previewAmount" [formControlName]="'preview_amount'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('preview_amount')}">
+          </div>
+        </div>
+
+        <!-- Buttons at the bottom -->
+        <div class="d-flex justify-content-center align-items-center flex-wrap">
+          <!-- Cancel button ; just navigate back to editProfile since no change has been committed -->
+          <button type="button" class="btn btn-outline-primary px-3 rounded me-5" [routerLink]="'/editProfile'">Annuler</button>
+          <!-- Confirm button -->
+          <button type="submit" class="btn btn-primary px-3 rounded d-flex align-items-center" [disabled]="!updateSectionForm.valid || uploadPicturesInProgress">
+            <div *ngIf="uploadPicturesInProgress" class="spinner-border me-2" role="status"></div> <!-- Spinner while upload is in progress -->
+            Sauvegarder
+          </button>
+        </div>
+
+        <!-- Display the progress of the upload while it is going on -->
+        <div *ngIf="uploadPicturesInProgress" class="d-flex justify-content-center mt-2">
+          <small class="fst-italic">Envoi des données en cours : {{uploadProgress}}%</small>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

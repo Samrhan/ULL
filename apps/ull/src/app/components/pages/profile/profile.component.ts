@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../services/user-service/user.service";
 import {ProviderProfile} from "@ull/api-interfaces";
+import { environment } from '../../../../environments/environment';
 
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 
@@ -11,6 +12,8 @@ import {faStar} from "@fortawesome/free-solid-svg-icons";
 })
 export class ProfileComponent implements OnInit {
   faStar = faStar
+
+  environment = environment
 
   constructor(
     private userService: UserService
