@@ -10,6 +10,9 @@ services:
       - .env
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
+    depends_on:
+      - rabbitmq
+      - postgres-authentication
   customer:
     image: ull/customer
     build:
@@ -19,6 +22,9 @@ services:
       - .env
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
+    depends_on:
+      - rabbitmq
+      - postgres-customer
   postgres-authentication:
     image: postgres:14-alpine
     ports:
