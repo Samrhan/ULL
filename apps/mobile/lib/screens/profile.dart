@@ -30,7 +30,11 @@ class Profile extends StatelessWidget{
                         Authentication().signOut();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ULL()),
+                          PageRouteBuilder(
+                            pageBuilder: (context,a1,a2) => const ULL(),
+                            transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                            transitionDuration: const Duration(milliseconds: 0),
+                          ),
                         );
                       }
                       ,child: Text("Déco")
