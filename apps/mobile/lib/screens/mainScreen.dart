@@ -5,13 +5,13 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile/screens/authentication.dart';
-import 'package:mobile/screens/bottomNavBar.dart';
-import 'package:mobile/services/authentication.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/screens/category.dart';
-import 'package:mobile/screens/profile.dart';
-import 'package:mobile/screens/mainEvent.dart';
+import 'package:ULL/screens/authentication.dart';
+import 'package:ULL/screens/bottomNavBar.dart';
+import 'package:ULL/services/authentication.dart';
+import 'package:ULL/main.dart';
+import 'package:ULL/screens/category.dart';
+import 'package:ULL/screens/profile.dart';
+import 'package:ULL/screens/mainEvent.dart';
 
 class MainScreen extends StatelessWidget{
   MainScreen(GoogleSignInAccount? _currentAccount, {Key? key}) : super(key: key){

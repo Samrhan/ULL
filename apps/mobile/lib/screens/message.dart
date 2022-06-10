@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobile/screens/bottomNavBar.dart';
+import 'package:ULL/screens/bottomNavBar.dart';
 
 class MessageScreen extends StatelessWidget{
   MessageScreen(GoogleSignInAccount? _currentAccount, {Key? key}){

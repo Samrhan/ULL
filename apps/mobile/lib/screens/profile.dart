@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/screens/bottomNavBar.dart';
-import 'package:mobile/services/authentication.dart';
+import 'package:ULL/main.dart';
+import 'package:ULL/screens/bottomNavBar.dart';
+import 'package:ULL/services/authentication.dart';
 
 
 class Profile extends StatelessWidget{

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/mainFavorite.dart';
-import 'package:mobile/screens/mainScreen.dart';
-import 'package:mobile/screens/mainEvent.dart';
+import 'package:ULL/screens/mainFavorite.dart';
+import 'package:ULL/screens/mainScreen.dart';
+import 'package:ULL/screens/mainEvent.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobile/screens/message.dart';
+import 'package:ULL/screens/message.dart';
 
 
 

@@ -8,8 +8,8 @@ import 'dart:async';
 import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/authentication.dart';
-import 'package:mobile/screens/mainScreen.dart';
+import 'package:ULL/screens/authentication.dart';
+import 'package:ULL/screens/mainScreen.dart';
 
 void main() {
   runApp(

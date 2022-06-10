@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/bottomNavBar.dart';
-import 'package:mobile/screens/mainScreen.dart';
+import 'package:ULL/screens/bottomNavBar.dart';
+import 'package:ULL/screens/mainScreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class MainEvent extends StatelessWidget{

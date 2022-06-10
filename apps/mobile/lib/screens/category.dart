@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobile/screens/bottomNavBar.dart';
+import 'package:ULL/screens/bottomNavBar.dart';
 
 class Category extends StatelessWidget{
   Category(GoogleSignInAccount? _currentAccount,var event,{Key? key}){
