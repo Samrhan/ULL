@@ -9,7 +9,7 @@ export const environment = {
   chatServiceURL: "3337/api",
   customerServiceURL: "3336/api",
   accountingServiceURL: "3332/api",
-  discoveryServiceURL: "3337/api",
+  discoveryServiceURL: "3338/api",
   providerServiceURL: "3335/api",
   reservationServiceURL: "3334/api",
 

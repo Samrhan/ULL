@@ -104,8 +104,9 @@
     <ng-template #emptyProfile>
       <div class="w-75 mt-3">
         <h1 class="text-decoration-line-through">Réorganiser votre profil</h1>
-        <p>Votre profil est vide, commencez par ajouter des prestations et des sections.</p>
+        <p>Votre profil est vide, commencez par y ajouter une section.</p>
         <hr>
+        <button [routerLink]="'/addSection'" class="btn btn-primary rounded w-100">Ajouter une section</button>
       </div>
     </ng-template>
   </div>
