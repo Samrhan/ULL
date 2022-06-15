@@ -11,7 +11,7 @@ import {AppModule} from './app/app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({transform: true}));
-  const globalPrefix = 'api';
+  const globalPrefix = 'api/customer';
   app.setGlobalPrefix(globalPrefix);
 
   app.enableCors({

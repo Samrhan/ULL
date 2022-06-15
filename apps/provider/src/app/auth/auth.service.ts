@@ -1,4 +1,4 @@
-import {BadRequestException, ConflictException, Inject, Injectable} from '@nestjs/common';
+import {BadRequestException, ConflictException, Inject, Injectable, Logger} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {ConfigService} from "@nestjs/config";
 import {firstValueFrom} from "rxjs";
@@ -13,7 +13,7 @@ import {DEFAULT_COVER_PIC_PROVIDER, DEFAULT_PROFILE_PIC_PROVIDER} from "@ull/glo
 
 @Injectable()
 export class AuthService {
-
+  logger = new Logger('AuthService');
 
   @Inject() amqpConnection: AmqpConnection
   @Inject() configService: ConfigService
@@ -68,6 +68,7 @@ export class AuthService {
       await this.registerProviderAuthService({idProvider: provider.id, password: registerDto.password, email: registerDto.email});
       await this.providerRepository.save(provider);
     } catch (e) {
+      this.logger.error(e)
       throw new ConflictException('Siren, mail or phone are already used in another account.');
     }
   }
