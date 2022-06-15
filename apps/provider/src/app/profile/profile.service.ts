@@ -45,19 +45,15 @@ export class ProfileService {
         section.sectionTitle = body.section_title
         section.sectionDescription = body.section_description
         section.purchasable = body.purchasable === 'true'
-        section.yIndex = body.y_index
+
+        const maxYIndex = await this.sectionRepository.findOne({
+            select: ['yIndex'],
+            where: {provider: user.id},
+            order: {yIndex: 'DESC'}
+        })
+
+        section.yIndex = maxYIndex ? maxYIndex.yIndex + 1 : 0
         section.provider = await this.providerRepository.findOne(user.id)
-
-        const checkYIndex = await this.sectionRepository.find({
-            where: {
-                provider: section.provider,
-                yIndex: body.y_index
-            }
-        });
-
-        if (checkYIndex.length > 0) {
-            throw new BadRequestException('Y index already used')
-        }
 
         const insertedSection = await this.sectionRepository.save(section)
         if (body.preview_amount) {
@@ -113,18 +109,6 @@ export class ProfileService {
         section.sectionTitle = body.section_title
         section.sectionDescription = body.section_description
         section.purchasable = body.purchasable === 'true'
-        section.yIndex = body.y_index
-
-        const checkYIndex = await this.sectionRepository.find({
-            where: {
-                provider: section.provider,
-                yIndex: body.y_index
-            }
-        });
-
-        if (checkYIndex.length > 0) {
-            throw new BadRequestException('Y index already taken')
-        }
 
         await this.sectionRepository.save(section)
 

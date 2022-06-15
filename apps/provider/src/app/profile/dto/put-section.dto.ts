@@ -9,11 +9,6 @@ export class PutSectionDto {
     public id_section: string;
 
     @ApiProperty()
-    @IsNumber()
-    @IsNotEmpty()
-    public y_index: number;
-
-    @ApiProperty()
     @IsString()
     @IsNotEmpty()
     public section_title: string;

@@ -25,6 +25,12 @@ export class ReservationController {
         return await this.reservationService.getAllReservation(projectId, user)
     }
 
+
+    @Get('requested_provider_reservations')
+    async getRequestedProviderReservation(@User() user: JwtUser) {
+        return await this.reservationService.getRequestProviderReservations(user)
+    }
+
     @UseGuards(UserGuard(UserType.PROVIDER))
     @Get('provider_reservations')
     async getProviderReservations(@User() user: JwtUser) {
