@@ -12,8 +12,7 @@ import {HttpEventType} from "@angular/common/http";
   templateUrl: './add-section.component.html',
   styleUrls: ['./add-section.component.scss'],
 })
-export class AddSectionComponent implements OnInit {
-  profile : ProviderProfile | undefined;
+export class AddSectionComponent{
 
   SectionType = SectionType
   environment = environment;
@@ -44,14 +43,6 @@ export class AddSectionComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {}
-
-  ngOnInit() {
-    this.userService.fetchProviderProfile().subscribe({
-      next: value => {
-        this.profile = value;
-      }
-    });
-  }
 
   addPicture(event: Event){
     const target = event.target as HTMLInputElement;
@@ -89,14 +80,14 @@ export class AddSectionComponent implements OnInit {
       type: values.section_type
     }
     switch (values.section_type){
-      case SectionType.BIG:
+      case SectionType.big:
         body.pictures = this.newPictures.map(val => val.file);
         body.section_description = "";
         break;
-      case SectionType.SMALL:
+      case SectionType.small:
         body.preview_amount = values.preview_amount
         break;
-      case SectionType.INFO:
+      case SectionType.info:
         body.purchasable = "false";
     }
     this.userService.addSection(body)

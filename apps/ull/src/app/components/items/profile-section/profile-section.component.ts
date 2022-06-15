@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Performance, ProviderProfileSection, SectionType} from "@ull/api-interfaces";
 import { environment } from '../../../../environments/environment';
+import {AuthenticationService} from "../../../services/authentication/authentication.service";
 
 @Component({
   selector: 'ull-profile-section',
@@ -16,8 +17,9 @@ export class ProfileSectionComponent{
     purchasable: false,
     section_description: "",
     section_title: "",
-    type: SectionType.INFO
+    type: SectionType.info
   };
+  providerId = "";
 
   environment = environment;
 
@@ -25,7 +27,11 @@ export class ProfileSectionComponent{
 
   SectionType = SectionType;
 
-  constructor() {}
+  constructor(
+    private authService: AuthenticationService
+  ) {
+    this.providerId = this.authService.getProviderId();
+  }
 
   /**
    * Converts the given price into decimal form and adds the quantifier at the end

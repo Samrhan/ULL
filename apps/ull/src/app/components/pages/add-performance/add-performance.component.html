@@ -1,74 +1,68 @@
-<div *ngIf="profile">
-  <ull-navbar [selected]="'none'"
-              [profilePictureUrl]="profile.profile_picture"
-              [companyName]="profile.company_name"
-              [companyDescription]="profile.company_description">
-  </ull-navbar>
+<ull-navbar [selected]="'none'"></ull-navbar>
 
-  <!-- Content -->
-  <div class="bg-light d-flex justify-content-center min-vh-100">
-    <div class="w-75 mt-3">
-      <!-- Page name -->
-      <h1>Ajouter une prestation</h1>
-      <small class="text-muted">Vous pouvez ici ajouter une prestation que les utilisateurs d'ULL pourront réserver</small>
-      <hr>
+<!-- Content -->
+<div class="bg-light d-flex justify-content-center min-vh-100">
+  <div class="w-75 mt-3">
+    <!-- Page name -->
+    <h1>Ajouter une prestation</h1>
+    <small class="text-muted">Vous pouvez ici ajouter une prestation que les utilisateurs d'ULL pourront réserver</small>
+    <hr>
 
-      <!-- Edit section values form -->
-      <form [formGroup]="addPerformanceForm" (ngSubmit)="saveChanges()" class="mb-5 p-2 border rounded">
-        <div class="d-flex justify-content-between align-items-center">
-          <!-- Picture with file input on click -->
-          <label for="coverPicture" type="button" class="square-div rounded bg-img my-3 d-flex justify-content-center align-items-center border border-danger" [style]="'background-image : url(' + pictureUrl + ');'" [ngClass]="{'border-0' : newPicture}">
-            <fa-icon [icon]="faCamera" class="p-4 rounded-circle bg-transparent-dark text-white d-inline-block" size="3x"></fa-icon>
-            <input id="coverPicture" hidden type="file" (change)="onPictureSelected($event)">
-          </label>
+    <!-- Edit section values form -->
+    <form [formGroup]="addPerformanceForm" (ngSubmit)="saveChanges()" class="mb-5 p-2 border rounded">
+      <div class="d-flex justify-content-between align-items-center">
+        <!-- Picture with file input on click -->
+        <label for="coverPicture" type="button" class="square-div rounded bg-img my-3 d-flex justify-content-center align-items-center border border-danger" [style]="'background-image : url(' + pictureUrl + ');'" [ngClass]="{'border-0' : newPicture}">
+          <fa-icon [icon]="faCamera" class="p-4 rounded-circle bg-transparent-dark text-white d-inline-block" size="3x"></fa-icon>
+          <input id="coverPicture" hidden type="file" (change)="onPictureSelected($event)">
+        </label>
 
-          <div class="ms-4 d-flex justify-content-around flex-wrap">
-            <!-- Title -->
-            <div class="mb-3 p-2 flex-grow-1 w-100">
-              <label for="performance_title" class="w-100 fs-4 fw-bold">Titre de la prestation</label>
-              <input type="text" id="performance_title" [formControlName]="'performance_title'" required class="inner-shadow rounded p-2 w-100 fs-4 border-danger" [ngClass]="{'border-0' : validInput('performance_title')}">
-            </div>
-            <!-- Description -->
-            <div class="mb-3 p-2 flex-grow-1 w-100">
-              <label for="performance_description" class="w-100 fs-4">Description de la prestation (max. 2000 caractères)</label>
-              <textarea rows="4" maxlength="2000" style="resize: none;" type="text" id="performance_description" [formControlName]="'performance_description'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('performance_description')}"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-around">
-          <!-- Price -->
+        <div class="ms-4 d-flex justify-content-around flex-wrap">
+          <!-- Title -->
           <div class="mb-3 p-2 flex-grow-1 w-100">
-            <label for="performance_price_value" class="w-100 fs-4">Prix de la prestation (en euros)</label>
-            <input type="number" min="0" max="100000" id="performance_price_value" [formControlName]="'performance_price_value'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('performance_price_value')}">
+            <label for="performance_title" class="w-100 fs-4 fw-bold">Titre de la prestation</label>
+            <input type="text" id="performance_title" [formControlName]="'performance_title'" required class="inner-shadow rounded p-2 w-100 fs-4 border-danger" [ngClass]="{'border-0' : validInput('performance_title')}">
           </div>
-          <!-- Price type -->
+          <!-- Description -->
           <div class="mb-3 p-2 flex-grow-1 w-100">
-            <label for="performance_price_unit" class="w-100 fs-4">Type de facturation pour la prestation</label>
-            <select id="performance_price_unit" [formControlName]="'performance_price_unit'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('performance_price_unit')}">
-              <option *ngFor="let item of priceUnitTranslation" [ngValue]="item.type">
-                {{ item.text }}
-              </option>
-            </select>
+            <label for="performance_description" class="w-100 fs-4">Description de la prestation (max. 2000 caractères)</label>
+            <textarea rows="4" maxlength="2000" style="resize: none;" type="text" id="performance_description" [formControlName]="'performance_description'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('performance_description')}"></textarea>
           </div>
         </div>
+      </div>
 
-        <!-- Buttons at the bottom -->
-        <div class="d-flex justify-content-center align-items-center flex-wrap">
-          <!-- Cancel button ; just navigate back to editProfile since no change has been committed -->
-          <button type="button" class="btn btn-outline-primary px-3 rounded me-5" [routerLink]="'/editProfile'">Annuler</button>
-          <!-- Confirm button -->
-          <button type="submit" class="btn btn-primary px-3 rounded d-flex align-items-center" [disabled]="!addPerformanceForm.valid || uploadInProgress || !newPicture">
-            <div *ngIf="uploadInProgress" class="spinner-border me-2" role="status"></div> <!-- Spinner while upload is in progress -->
-            Ajouter la prestation
-          </button>
+      <div class="d-flex justify-content-around">
+        <!-- Price -->
+        <div class="mb-3 p-2 flex-grow-1 w-100">
+          <label for="performance_price_value" class="w-100 fs-4">Prix de la prestation (en euros)</label>
+          <input type="number" min="0" max="100000" id="performance_price_value" [formControlName]="'performance_price_value'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('performance_price_value')}">
         </div>
+        <!-- Price type -->
+        <div class="mb-3 p-2 flex-grow-1 w-100">
+          <label for="performance_price_unit" class="w-100 fs-4">Type de facturation pour la prestation</label>
+          <select id="performance_price_unit" [formControlName]="'performance_price_unit'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('performance_price_unit')}">
+            <option *ngFor="let item of priceUnitTranslation" [ngValue]="item.type">
+              {{ item.text }}
+            </option>
+          </select>
+        </div>
+      </div>
 
-        <!-- Display the progress of the upload while it is going on -->
-        <div *ngIf="uploadInProgress" class="d-flex justify-content-center mt-2">
-          <small class="fst-italic">Envoi des données en cours : {{uploadProgress}}%</small>
-        </div>
-      </form>
-    </div>
+      <!-- Buttons at the bottom -->
+      <div class="d-flex justify-content-center align-items-center flex-wrap">
+        <!-- Cancel button ; just navigate back to editProfile since no change has been committed -->
+        <button type="button" class="btn btn-outline-primary px-3 rounded me-5" [routerLink]="'/editProfile'">Annuler</button>
+        <!-- Confirm button -->
+        <button type="submit" class="btn btn-primary px-3 rounded d-flex align-items-center" [disabled]="!addPerformanceForm.valid || uploadInProgress || !newPicture">
+          <div *ngIf="uploadInProgress" class="spinner-border me-2" role="status"></div> <!-- Spinner while upload is in progress -->
+          Ajouter la prestation
+        </button>
+      </div>
+
+      <!-- Display the progress of the upload while it is going on -->
+      <div *ngIf="uploadInProgress" class="d-flex justify-content-center mt-2">
+        <small class="fst-italic">Envoi des données en cours : {{uploadProgress}}%</small>
+      </div>
+    </form>
   </div>
 </div>
