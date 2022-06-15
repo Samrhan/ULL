@@ -11,7 +11,7 @@ services:
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
       - RABBITMQ_URI=amqp://localhost:5672
-      - TYPEORM_AUTHENTICATION_URI=postgres://postgres@localhost:5432/authentication
+      - TYPEORM_AUTHENTICATION_URI=postgres://postgres@localhost:5433/authentication
     ports:
       - "3333:3333"
     networks:
@@ -26,7 +26,7 @@ services:
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
       - RABBITMQ_URI=amqp://localhost:5672
-      - TYPEORM_CUSTOMER_URI=postgres://postgres@localhost:5432/customer
+      - TYPEORM_CUSTOMER_URI=postgres://postgres@localhost:5436/customer
     ports:
       - "3335:3335"
     networks:
@@ -41,7 +41,7 @@ services:
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
       - RABBITMQ_URI=amqp://localhost:5672
-      - TYPEORM_PROVIDER_URI=postgres://postgres@localhost:5432/provider
+      - TYPEORM_PROVIDER_URI=postgres://postgres@localhost:5437/provider
     ports:
       - "3338:3338"
     networks:
