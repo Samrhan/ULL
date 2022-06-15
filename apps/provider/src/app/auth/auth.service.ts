@@ -10,7 +10,6 @@ import {v4 as uuidv4} from 'uuid';
 import {AmqpConnection} from "@golevelup/nestjs-rabbitmq";
 import {RegisterProviderMessage} from "@ull/api-interfaces";
 import {DEFAULT_COVER_PIC_PROVIDER, DEFAULT_PROFILE_PIC_PROVIDER} from "@ull/global-constants";
-import {logger} from "nx/src/utils/logger";
 
 @Injectable()
 export class AuthService {
@@ -69,7 +68,7 @@ export class AuthService {
       await this.registerProviderAuthService({idProvider: provider.id, password: registerDto.password, email: registerDto.email});
       await this.providerRepository.save(provider);
     } catch (e) {
-      logger.error(e)
+      this.logger.error(e)
       throw new ConflictException('Siren, mail or phone are already used in another account.');
     }
   }
