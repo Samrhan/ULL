@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   authentication:
     image: ull/authentication
@@ -10,13 +8,8 @@ services:
       - .env
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
-      - RABBITMQ_URI=amqp://rabbitmq:5672
-      - TYPEORM_AUTHENTICATION_URI=postgres://postgres@postgres-authentication:5432/authentication
-      - WAIT_HOSTS=rabbitmq:5672
-      - WAIT_HOSTS_TIMEOUT:60
-    depends_on:
-      - rabbitmq
-      - postgres-authentication
+      - RABBITMQ_URI=amqp://localhost:5672
+      - TYPEORM_AUTHENTICATION_URI=postgres://postgres@localhost:5432/authentication
     ports:
       - "3333:3333"
   customer:
@@ -28,13 +21,8 @@ services:
       - .env
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
-      - RABBITMQ_URI=amqp://rabbitmq:5672
-      - TYPEORM_CUSTOMER_URI=postgres://postgres@postgres-customer:5432/customer
-      - WAIT_HOSTS=rabbitmq:5672
-      - WAIT_HOSTS_TIMEOUT:60
-    depends_on:
-      - rabbitmq
-      - postgres-customer
+      - RABBITMQ_URI=amqp://localhost:5672
+      - TYPEORM_CUSTOMER_URI=postgres://postgres@localhost:5432/customer
     ports:
       - "3335:3335"
   provider:
@@ -46,82 +34,7 @@ services:
       - .env
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
-      - RABBITMQ_URI=amqp://rabbitmq:5672
-      - TYPEORM_PROVIDER_URI=postgres://postgres@postgres-provider:5432/provider
-      - WAIT_HOSTS=rabbitmq:5672
-      - WAIT_HOSTS_TIMEOUT:60
-    depends_on:
-      - rabbitmq
-      - postgres-provider
+      - RABBITMQ_URI=amqp://localhost:5672
+      - TYPEORM_PROVIDER_URI=postgres://postgres@localhost:5432/provider
     ports:
       - "3338:3338"
-  postgres-authentication:
-    image: postgres:14-alpine
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: authentication
-      POSTGRES_HOST_AUTH_METHOD: trust
-  postgres-reservation:
-    image: postgres:14-alpine
-    ports:
-      - "5434:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: reservation
-      POSTGRES_HOST_AUTH_METHOD: trust
-  postgres-provider:
-    image: postgres:14-alpine
-    ports:
-      - "5435:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: provider
-      POSTGRES_HOST_AUTH_METHOD: trust
-  postgres-customer:
-    image: postgres:14-alpine
-    ports:
-      - "5436:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: customer
-      POSTGRES_HOST_AUTH_METHOD: trust
-  postgres-chat:
-    image: postgres:14-alpine
-    ports:
-      - "5437:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: chat
-      POSTGRES_HOST_AUTH_METHOD: trust
-  postgres-discovery:
-    image: postgres:14-alpine
-    ports:
-      - "5438:5432"
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: discovery
-      POSTGRES_HOST_AUTH_METHOD: trust
-  rabbitmq:
-    image: rabbitmq:3.8.25-management-alpine
-    container_name: 'rabbitmq'
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - rabbitmq_go_net
-
-networks:
-  rabbitmq_go_net:
-    driver: bridge
-
