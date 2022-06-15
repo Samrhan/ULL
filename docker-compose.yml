@@ -1,6 +1,13 @@
 version: "3"
 
 services:
+  front:
+    image: ull/front
+    build:
+      context: ./
+      dockerfile: ./apps/ull/Dockerfile
+    ports:
+      - "3000:80"
   authentication:
     image: ull/authentication
     build:
