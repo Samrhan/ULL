@@ -76,10 +76,8 @@ services:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
-      - rabbitmq_go_net
+      - database_postgres
 
 networks:
-  rabbitmq_go_net:
-    driver: bridge
   database_postgres:
     driver: bridge
