@@ -1,4 +1,4 @@
-<div class="card mb-3 px-5 py-3 rounded border border-dark" *ngIf="section">
+<div class="card mb-3 p-5   rounded border border-dark" *ngIf="section">
   <!-- Big profile section -->
   <div *ngIf="section.type === SectionType.big">
     <!-- Title header -->
@@ -15,7 +15,7 @@
     </div>
     <!-- Section description & price -->
     <div class="d-flex justify-content-between align-content-center" *ngIf="section.content[0]">
-      <p class="fs-3">{{section.content[0].performance_title}}</p>
+      <p class="fs-3 max-w-75">{{section.content[0].performance_title}}</p>
       <p class="fs-3">{{formatPrice(section.content[0].price)}}</p>
     </div>
     <p class="text-muted fs-5" *ngIf="section.content[0]">{{section.content[0].performance_description}}</p>
@@ -37,7 +37,7 @@
         <!-- Performance details -->
         <div class="flex-grow-1 me-5">
           <div class="d-flex justify-content-between align-content-center">
-            <p class="fs-3 w-75">{{performance.performance_title}}</p>
+            <p class="fs-3 max-w-75">{{performance.performance_title}}</p>
             <p class="fs-3">{{formatPrice(performance.price)}}</p>
           </div>
           <p class="text-muted fs-5">{{performance.performance_description}}</p>
@@ -68,7 +68,7 @@
         <!-- Performance details -->
         <div class="flex-grow-1 me-5">
           <div class="d-flex justify-content-between align-content-center">
-            <p class="fs-3">{{performance.performance_title}}</p>
+            <p class="fs-3 max-w-75">{{performance.performance_title}}</p>
             <p class="fs-3">{{formatPrice(performance.price)}}</p>
           </div>
           <p class="text-muted fs-5">{{performance.performance_description}}</p>
