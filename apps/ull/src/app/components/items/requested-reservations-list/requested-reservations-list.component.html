@@ -1,0 +1,9 @@
+<div class="w-100 d-flex justify-content-end align-items-center">
+  <input type="checkbox" id="filterPendingRequests" [(ngModel)]="filterPendingRequests" (change)="savePref()">
+  <label for="filterPendingRequests" class="ms-2">Restreindre l'affichage aux réservations sur lesquelles vous ne vous êtes pas prononcé.</label>
+</div>
+<div class="list-group">
+  <div *ngFor="let reservation of reservationList">
+    <ull-ordered-performance class="list-group-item" [reservation]="reservation" *ngIf="!filterPendingRequests || reservation.state === ReservationState.PENDING"></ull-ordered-performance>
+  </div>
+</div>

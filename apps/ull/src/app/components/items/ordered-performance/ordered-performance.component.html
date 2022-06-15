@@ -1,0 +1,68 @@
+<div *ngIf="reservation">
+  <div class="d-flex justify-content-between">
+    <h3>{{reservation.performance.performance_title}}</h3>
+    <p class="alert-warning m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.PENDING">Cette réservation requiert votre attention</p>
+    <p class="alert-success m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.ACCEPTED">Vous avez accepté cette réservation</p>
+    <p class="alert-danger m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.REJECTED">Vous avez refusé cette réservation</p>
+    <p class="alert-danger m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.CUSTOMER_CANCELLED || reservation.state === ReservationState.PROVIDER_CANCELLED">Cette prestation a été annulée</p>
+  </div>
+  <h5>{{reservation.project.name}} - {{formatDate(reservation.project.project_date)}}</h5>
+  <p>{{reservation.project.customer_display_name}}</p>
+  <div class="d-flex justify-content-between">
+    <small class="text-muted">{{reservation.project.address.city}} ({{reservation.project.address.postal_code}})</small>
+    <small class="text-decoration-underline cursor-pointer" (click)="openModal(detailsModal)">Détails ></small>
+  </div>
+
+  <ng-template #detailsModal>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Détails de la réservation</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5>Prestation</h5>
+      <div class="list-group">
+        <p class="list-group-item m-0">{{reservation.performance.performance_title}}</p>
+        <p class="list-group-item m-0">Quantité désirée : {{reservation.quantity}}</p>
+      </div>
+      <hr>
+
+      <h5>Projet</h5>
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row" colspan="2">{{reservation.project.name}}</th>
+          </tr>
+          <tr>
+            <th scope="row">Client</th>
+            <td>{{reservation.project.customer_display_name}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Nombre de participants</th>
+            <td>{{reservation.project.amount_of_people}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Date de l'événement</th>
+            <td>{{formatDate(reservation.project.project_date)}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Adresse de l'événement</th>
+            <td>{{reservation.project.address.number}} {{reservation.project.address.street}}, {{reservation.project.address.city}} ({{reservation.project.address.postal_code}})</td>
+          </tr>
+          <tr class="border-bottom-0">
+            <th scope="row" colspan="2">Description du projet par le client</th>
+          </tr>
+          <tr class="border-top-0">
+            <td colspan="2">{{reservation.project.description}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-around align-items-center" *ngIf="reservation.state === ReservationState.PENDING">
+        <button class="btn btn-danger rounded" (click)="acceptReservation(false)">Refuser cette réservation</button>
+        <button class="btn btn-success rounded" (click)="acceptReservation(true)">Accepter cette réservation</button>
+      </div>
+    </div>
+  </ng-template>
+</div>

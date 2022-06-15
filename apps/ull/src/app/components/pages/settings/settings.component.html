@@ -1,0 +1,50 @@
+<div *ngIf="info">
+  <ull-navbar [selected]="'none'"></ull-navbar>
+
+  <div class="bg-light d-flex justify-content-center min-vh-100">
+    <div class="w-75 mt-3">
+      <!-- Info form -->
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="mb-5">
+
+        <div class="container-fluid border rounded">
+          <h1>Changer de mot de passe</h1>
+          <small class="text-muted">Nous avons également besoin de votre ancien mot de passe pour confirmer votre identité.</small>
+          <!-- First line of the grid -->
+          <div class="row">
+            <!-- Old password -->
+            <div class="col mb-3 p-2 m-2">
+              <label for="old_password" class="w-100">Ancien mot de passe</label>
+              <input id="old_password" type="password" formControlName="old_password" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('old_password')}">
+            </div>
+            <!-- New password -->
+            <div class="col mb-3 p-2 m-2">
+              <label for="new_password" class="w-100">Nouveau mot de passe (min. 8 caractères)<fa-icon (click)="seePassword = !seePassword" [icon]="seePassword ? faEyeSlash : faEye" class="ms-2 cursor-pointer"></fa-icon></label>
+              <input id="new_password" [type]="seePassword ? 'text' : 'password'" formControlName="new_password" required autocomplete="new-password" class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('new_password')}">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col mb-3 p-2 d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary px-3 rounded" [disabled]="!passwordForm.valid">Changer le mot de passe</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display alert on success -->
+        <div *ngIf="changeSuccess" class="d-flex justify-content-center mt-2">
+          <div class="alert alert-success text-center">
+            <p class="m-0">Les modifications ont bien été enregistrées</p>
+          </div>
+        </div>
+
+        <!-- Display alert on failure -->
+        <div *ngIf="changeFailure" class="d-flex justify-content-center mt-2">
+          <div class="alert alert-danger text-center">
+            <p class="m-0">Impossible de modifier le mot de passe. Assurez-vous que l'ancien mot de passe est correct.</p>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

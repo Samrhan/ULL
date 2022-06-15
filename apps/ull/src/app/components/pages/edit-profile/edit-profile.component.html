@@ -1,0 +1,138 @@
+<div *ngIf="profile">
+  <ull-navbar [selected]="'none'"></ull-navbar>
+
+  <!-- Content -->
+  <div class="bg-light d-flex justify-content-center min-vh-100 pb-5">
+    <div class="w-75 mt-3" *ngIf="profile.services.length > 0; else emptyProfile">
+      <!-- Page name -->
+      <h1>Réorganiser votre profil</h1>
+      <small class="text-muted">Cliquez sur les flèches pour modifier l'ordre des sections ou des prestations, et sur les boutons dédiés pour déplacer, supprimer ou éditer.</small>
+      <hr>
+
+      <!-- List of sections -->
+      <div class="list-group mb-3">
+        <div *ngFor="let section of profile.services; let idxSection = index" class="list-group-item d-flex flex-column w-100 shadow-sm">
+
+          <!-- Each section contains its row of information and the list of its performances (if any) -->
+          <!-- Section description -->
+          <div class="d-flex w-100 justify-content-between align-items-center">
+            <!-- Section's title, type and number of performances -->
+            <div class="d-flex align-items-center">
+              <h3>{{section.section_title}}</h3>
+              <span class="ms-3 bg-secondary rounded-pill px-2">{{sectionNames[section.type]}}</span>
+              <!-- Only show the number of performances tag if it's >0 -->
+              <span class="ms-3 bg-secondary rounded-pill px-2" *ngIf="section.content.length > 0">{{section.content.length}} prestation{{section.content.length > 1 ? 's' : ''}}</span>
+            </div>
+            <!-- Section's buttons -->
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- By default, only "edit" and "delete" buttons are shown. Another button in the page triggers "reorder mode" where the arrows show up and the default buttons are hidden -->
+              <!-- Reorder buttons -->
+              <fa-icon [icon]="faArrowUp" class="mx-2 cursor-pointer" size="2x" (click)="move(section, profile.services, 'up')" [ngClass]="{'invisible' : idxSection === 0 || !editOrder}"></fa-icon>
+              <fa-icon [icon]="faArrowDown" class="mx-2 cursor-pointer" size="2x" (click)="move(section, profile.services, 'down')" [ngClass]="{'invisible' : idxSection === profile.services.length - 1 || !editOrder}"></fa-icon>
+              <!-- Default buttons -->
+              <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" size="2x" [ngClass]="{'invisible' : editOrder}" [routerLink]="['/editSection', section.id_section]"></fa-icon>
+              <fa-stack class="ms-5 cursor-pointer" size="2x" [ngClass]="{'invisible' : editOrder}" (click)="deleteSection(section)"> <!-- Stack to cross the delete button when the content isn't empty -->
+                <fa-icon [icon]="faTrash" stackItemSize="1x"></fa-icon>
+                <fa-icon [icon]="faBan" class="text-danger" *ngIf="section.content.length !== 0" stackItemSize="1x" tooltip="Une section doit être vide pour être supprimée." placement="left top"></fa-icon>
+              </fa-stack>
+            </div>
+          </div>
+
+          <!-- Section's content (performance list) -->
+          <div class="list-group ms-5">
+            <!-- List of performances in the section -->
+            <div *ngFor="let performance of section.content; let idxPerformance = index" class="list-group-item d-flex w-100 shadow-sm">
+              <div class="d-flex w-100 justify-content-between align-items-center">
+
+                <!-- Performance's title -->
+                <div class="d-flex flex-grow-1 justify-content-start align-items-center">
+                  <h5>{{performance.performance_title}}</h5>
+                </div>
+
+                <!-- Control buttons -->
+                <div class="d-flex justify-content-between align-items-center">
+                  <!-- Reorder buttons -->
+                  <fa-icon [icon]="faArrowRightToBracket" class="mx-5 cursor-pointer" (click)="openChangeSectionModal(performance, section, template)" [ngClass]="{'invisible' : !editOrder}"></fa-icon>
+                  <fa-icon [icon]="faArrowUp" class="mx-2 cursor-pointer" (click)="move(performance, section.content, 'up')" [ngClass]="{'invisible' : idxPerformance === 0 || !editOrder}"></fa-icon>
+                  <fa-icon [icon]="faArrowDown" class="mx-2 cursor-pointer" (click)="move(performance, section.content, 'down')" [ngClass]="{'invisible' : idxPerformance === section.content.length - 1 || !editOrder}"></fa-icon>
+                  <!-- Edit and delete buttons -->
+                  <fa-icon [icon]="faPencil" class="mx-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}" [routerLink]="['/editPerformance', section.id_section, performance.id_performance]"></fa-icon>
+                  <fa-icon [icon]="faTrash" class="ms-5 cursor-pointer" [ngClass]="{'invisible' : editOrder}" (click)="deletePerformance(performance)"></fa-icon>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Add performance button -->
+            <div class="list-group-item d-flex justify-content-end align-items-center shadow-sm" *ngIf="!editOrder && sectionsWithAvailableSpace().includes(section)">
+              <fa-icon [icon]="faPlus" class="bg-secondary circle-icon cursor-pointer" size="2x" [routerLink]="['/addPerformance/', section.id_section]"></fa-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add section button -->
+        <div class="list-group-item d-flex justify-content-center align-items-center py-4 shadow-sm" *ngIf="!editOrder">
+          <fa-icon [icon]="faPlus" class="bg-secondary circle-icon cursor-pointer" size="2x" [routerLink]="'/addSection'"></fa-icon>
+        </div>
+      </div>
+
+      <!-- Trigger "reorder mode" or cancel/save changes -->
+      <div class="d-flex justify-content-end align-items-center">
+        <button class="btn btn-primary rounded" (click)="editOrder = true" *ngIf="editOrder === false">Modifier l'ordre</button>
+        <button class="btn btn-outline-primary rounded me-3" (click)="cancelOrderChanges()" *ngIf="editOrder === true">Annuler</button>
+        <button class="btn btn-primary rounded" (click)="saveOrderChanges()" *ngIf="editOrder === true">Enregistrer</button>
+      </div>
+
+      <!-- Display alert on reorder success -->
+      <div *ngIf="orderChangeSuccess" class="d-flex justify-content-center mt-2">
+        <div class="alert alert-success text-center">
+          <p class="m-0">Les modifications ont bien été enregistrées.</p>
+        </div>
+      </div>
+
+      <!-- Display alert on reorder failure -->
+      <div *ngIf="orderChangeFailure" class="d-flex justify-content-center mt-2">
+        <div class="alert alert-danger text-center">
+          <p class="m-0">Une erreur est survenue et les modifications n'ont pas pu être enregistrées.</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #emptyProfile>
+      <div class="w-75 mt-3">
+        <h1 class="text-decoration-line-through">Réorganiser votre profil</h1>
+        <p>Votre profil est vide, commencez par y ajouter une section.</p>
+        <hr>
+        <button [routerLink]="'/addSection'" class="btn btn-primary rounded w-100">Ajouter une section</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modal for selecting a new section when moving a performance to another section -->
+<ng-template #template>
+  <!-- Header -->
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Déplacer une prestation</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeChangeSectionModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="modal-body">
+    <!-- Selection -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <p class="m-0">{{performanceToDisplaceName}}</p>
+      <fa-icon [icon]="faArrowRight"></fa-icon>
+      <select class="bg-light shadow-sm rounded border" [(ngModel)]="selectedSection">
+        <!-- Only show sections that have space left as options for the <select> -->
+        <option *ngFor="let section of sectionsWithAvailableSpace(); let i = index" [ngValue]="section">{{section.section_title}}</option>
+      </select>
+    </div>
+    <!-- Confirmation button -->
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-primary px-2 rounded" (click)="changeSectionCallback(selectedSection)">Déplacer</button>
+    </div>
+  </div>
+
+</ng-template>

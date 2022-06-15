@@ -17,7 +17,7 @@ import {SnakeNamingStrategy} from "typeorm-naming-strategies";
                 synchronize: false, // Use migration instead
                 migrationsRun: false, // Execute migration at startup
                 namingStrategy: new SnakeNamingStrategy(),
-                logging: process.env.NODE_ENV === 'production' ? [ 'error' ] : 'all',
+                logging: process.env.NODE_ENV === 'production' ? [ 'error' ] : false,
             }),
         }),
     ],

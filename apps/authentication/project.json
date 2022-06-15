@@ -5,12 +5,17 @@
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/authentication",
         "main": "apps/authentication/src/main.ts",
         "tsConfig": "apps/authentication/tsconfig.app.json",
-        "assets": ["apps/authentication/src/assets"]
+        "assets": [
+          "apps/authentication/src/assets"
+        ],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -34,14 +39,20 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/authentication/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/authentication/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/authentication"],
+      "outputs": [
+        "coverage/apps/authentication"
+      ],
       "options": {
         "jestConfig": "apps/authentication/jest.config.js",
         "passWithNoTests": true
@@ -51,7 +62,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:generate -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:generate -f .env.local",
         "cwd": "apps/authentication"
       }
     },
@@ -59,7 +70,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:run -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:run -f .env.local",
         "cwd": "apps/authentication"
       }
     },
@@ -67,7 +78,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:revert -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:revert -f .env.local",
         "cwd": "apps/authentication"
       }
     },
@@ -75,7 +86,7 @@
       "builder": "@nrwl/workspace:run-commands",
       "outputs": [],
       "options": {
-        "command": "ts-node --project tsconfig.app.json ../../node_modules/.bin/typeorm migration:create -f .env.local",
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:create -f .env.local",
         "cwd": "apps/authentication"
       }
     }

@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Message } from '@ull/api-interfaces';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'ull-root',
@@ -8,5 +6,5 @@ import { Message } from '@ull/api-interfaces';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+
 }
