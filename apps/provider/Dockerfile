@@ -6,4 +6,4 @@ COPY ./dist/apps/provider /app
 RUN npm install
 RUN npm i pg
 
-CMD /wait && node main.js
+CMD node main.js

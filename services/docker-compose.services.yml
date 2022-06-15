@@ -9,6 +9,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: authentication
       POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - database_postgres
   postgres-reservation:
     image: postgres:14-alpine
     ports:
@@ -18,6 +20,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: reservation
       POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - database_postgres
   postgres-provider:
     image: postgres:14-alpine
     ports:
@@ -27,6 +31,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: provider
       POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - database_postgres
   postgres-customer:
     image: postgres:14-alpine
     ports:
@@ -36,6 +42,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: customer
       POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - database_postgres
   postgres-chat:
     image: postgres:14-alpine
     ports:
@@ -45,6 +53,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: chat
       POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - database_postgres
   postgres-discovery:
     image: postgres:14-alpine
     ports:
@@ -54,6 +64,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: discovery
       POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - database_postgres
   rabbitmq:
     image: rabbitmq:3.8.25-management-alpine
     container_name: 'rabbitmq'
@@ -68,4 +80,6 @@ services:
 
 networks:
   rabbitmq_go_net:
+    driver: bridge
+  database_postgres:
     driver: bridge

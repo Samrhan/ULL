@@ -14,6 +14,8 @@ services:
       - TYPEORM_AUTHENTICATION_URI=postgres://postgres@localhost:5432/authentication
     ports:
       - "3333:3333"
+    networks:
+      - services_database_postgres
   customer:
     image: ull/customer
     build:
@@ -27,6 +29,8 @@ services:
       - TYPEORM_CUSTOMER_URI=postgres://postgres@localhost:5432/customer
     ports:
       - "3335:3335"
+    networks:
+      - services_database_postgres
   provider:
     image: ull/provider
     build:
@@ -40,3 +44,9 @@ services:
       - TYPEORM_PROVIDER_URI=postgres://postgres@localhost:5432/provider
     ports:
       - "3338:3338"
+    networks:
+      - services_database_postgres
+
+networks:
+  services_database_postgres:
+    external: true
