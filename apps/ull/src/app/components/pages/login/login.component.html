@@ -27,7 +27,7 @@
 
           <p *ngIf="invalidCredentialsFlag" class="alert-danger p-1 my-2">Adresse e-mail ou mot de passe invalide</p>
 
-          <div>
+          <div class="d-flex flex-wrap align-items-center">
             <button class="btn btn-primary rounded-0 fs-3 me-3" id="registerButton" type="submit" [disabled]="!loginForm.valid">Se connecter</button>
             <a [routerLink]="'/resetPassword'" class="text-info small">Mot de passe oublié ?</a>
           </div>
