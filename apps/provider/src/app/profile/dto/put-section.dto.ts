@@ -21,7 +21,7 @@ export class PutSectionDto {
     @ApiProperty()
     @IsBoolean()
     @IsNotEmpty()
-    public purchasable: string;
+    public purchasable: boolean;
 
     @ApiProperty()
     @IsNumber()

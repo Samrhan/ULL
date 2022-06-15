@@ -87,7 +87,7 @@ export class ProfileService {
             throw new ForbiddenException('You are not allowed to delete this section')
         }
 
-        if (section.type === SectionType.BIG) {
+        if (section.type === SectionType.big) {
             for (const bigPictures of section.bigSectionPictures) {
                 await this.storageService.delete(bigPictures.picture, user)
             }
@@ -108,11 +108,11 @@ export class ProfileService {
 
         section.sectionTitle = body.section_title
         section.sectionDescription = body.section_description
-        section.purchasable = body.purchasable === 'true'
+        section.purchasable = body.purchasable
 
         await this.sectionRepository.save(section)
 
-        if (section.type === SectionType.SMALL && section.previewAmount && section.previewAmount?.amount !== body.preview_amount) {
+        if (section.type === SectionType.small && section.previewAmount && section.previewAmount?.amount !== body.preview_amount) {
             await this.previewAmountRepository.update(section.sectionId, {amount: body.preview_amount})
         }
     }
@@ -125,7 +125,7 @@ export class ProfileService {
         if (section.provider?.id !== user.id) {
             throw new ForbiddenException('You are not allowed to edit this section')
         }
-        if (section.type !== SectionType.BIG) {
+        if (section.type !== SectionType.big) {
             throw new BadRequestException('This section is not big')
         }
         if (files.length) {
@@ -153,7 +153,7 @@ export class ProfileService {
         if (section.provider?.id !== user.id) {
             throw new ForbiddenException('You are not allowed to edit this section')
         }
-        if (section.type !== SectionType.BIG) {
+        if (section.type !== SectionType.big) {
             throw new BadRequestException('This section is not big')
         }
         await this.storageService.delete(pictureId, user)
@@ -197,7 +197,7 @@ export class ProfileService {
                 performance.yIndex = performanceIndex
                 performance.section = section
 
-                if (performance.yIndex > 0 && performance.section.type === SectionType.BIG) {
+                if (performance.yIndex > 0 && performance.section.type === SectionType.big) {
                     throw new BadRequestException('You can not add more than 1 performance to big sections')
                 }
             }
@@ -246,7 +246,8 @@ export class ProfileService {
                 section_description: s.sectionDescription,
                 type: SectionType[s.type],
                 purchasable: s.purchasable,
-                preview_amount: s.previewAmount.amount,
+                preview_amount: s.previewAmount?.amount,
+                pictures: s.bigSectionPictures?.map(p=>p.picture),
                 content: s.performances.sort((a, b) => a.yIndex - b.yIndex).map<Performance>(p => ({
                     id_performance: p.idPerformance,
                     performance_title: p.performanceTitle,

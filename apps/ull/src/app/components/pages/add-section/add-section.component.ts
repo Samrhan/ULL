@@ -80,14 +80,14 @@ export class AddSectionComponent{
       type: values.section_type
     }
     switch (values.section_type){
-      case SectionType.BIG:
+      case SectionType.big:
         body.pictures = this.newPictures.map(val => val.file);
         body.section_description = "";
         break;
-      case SectionType.SMALL:
+      case SectionType.small:
         body.preview_amount = values.preview_amount
         break;
-      case SectionType.INFO:
+      case SectionType.info:
         body.purchasable = "false";
     }
     this.userService.addSection(body)

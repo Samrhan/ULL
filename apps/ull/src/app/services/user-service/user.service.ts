@@ -175,14 +175,14 @@ export class UserService {
     const data = new FormData();
     data.append('type', section.type);
     data.append('section_title', section.section_title);
-    data.append('section_description', section.section_description);
-    data.append('purchasable', JSON.stringify(section.purchasable));
+    data.append('section_description', section.section_description || " ");
+    data.append('purchasable', section.purchasable.toString());
 
-    if (section.type === SectionType.SMALL) {
+    if (section.type === SectionType.small) {
       data.append('preview_amount', JSON.stringify(section.preview_amount));
     }
 
-    if (section.type === SectionType.BIG) {
+    if (section.type === SectionType.big) {
       for (const picture of section.pictures || []) {
         // Append all the files to the same name to create an array
         data.append('pictures', picture);

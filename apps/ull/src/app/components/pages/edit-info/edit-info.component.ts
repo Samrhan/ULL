@@ -73,8 +73,8 @@ export class EditInfoComponent implements OnInit {
         this.updateInfoForm.get("postal_code")?.setValue(value.address.postal_code);
         this.updateInfoForm.get("complement")?.setValue(value.address.complement);
 
-        this.profilePictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' +  value.profile_picture;
-        this.coverPictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + value.cover_picture;
+        this.profilePictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' +  encodeURIComponent(value.profile_picture);
+        this.coverPictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + encodeURIComponent(value.cover_picture);
       }
     })
   }
@@ -100,10 +100,10 @@ export class EditInfoComponent implements OnInit {
     } else {
       if (targetVariable === "coverPicture") {
         this.newCoverPicture = undefined;
-        this.coverPictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.info?.cover_picture || '';
+        this.coverPictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + encodeURIComponent(this.info?.cover_picture || '');
       } else if (targetVariable === "profilePicture") {
         this.newProfilePicture = undefined;
-        this.profilePictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.info?.profile_picture || '';
+        this.profilePictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + encodeURIComponent(this.info?.profile_picture || '');
       }
     }
   }

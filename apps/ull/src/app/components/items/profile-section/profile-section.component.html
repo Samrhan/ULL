@@ -1,6 +1,6 @@
 <div class="card mb-3 px-5 py-3 rounded border border-dark" *ngIf="section">
   <!-- Big profile section -->
-  <div *ngIf="section.type === SectionType.BIG">
+  <div *ngIf="section.type === SectionType.big">
     <!-- Title header -->
     <div class="d-flex justify-content-between align-content-center">
       <h1 class="mb-3">{{section.section_title}}</h1>
@@ -23,7 +23,7 @@
   </div>
 
   <!-- Medium profile section -->
-  <div *ngIf="section.type === SectionType.MEDIUM">
+  <div *ngIf="section.type === SectionType.medium">
     <!-- Title header -->
     <div class="d-flex justify-content-between align-content-center">
       <h1 class="mb-3">{{section.section_title}}</h1>
@@ -52,7 +52,7 @@
   </div>
 
   <!-- Small profile section -->
-  <div *ngIf="section.type === SectionType.SMALL">
+  <div *ngIf="section.type === SectionType.small">
     <!-- Title header -->
     <div class="d-flex justify-content-between align-content-center">
       <h1 class="mb-3">{{section.section_title}}</h1>
@@ -83,7 +83,7 @@
   </div>
 
   <!-- Info profile section -->
-  <div *ngIf="section.type === SectionType.INFO">
+  <div *ngIf="section.type === SectionType.info">
     <h1>{{section.section_title}}</h1>
     <p>{{section.section_description}}</p>
   </div>

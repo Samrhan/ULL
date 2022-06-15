@@ -52,7 +52,7 @@ export class EditSectionComponent implements OnInit {
         this.updateSectionForm.get("section_title")?.setValue(this.section.section_title);
         this.updateSectionForm.get("section_description")?.setValue(this.section.section_description);
         this.updateSectionForm.get("purchasable")?.setValue(this.section.purchasable);
-        if (this.section.type === SectionType.SMALL) this.updateSectionForm.get("preview_amount")?.setValue(this.section.preview_amount);
+        if (this.section.type === SectionType.small) this.updateSectionForm.get("preview_amount")?.setValue(this.section.preview_amount);
       }
     });
   }
@@ -97,7 +97,7 @@ export class EditSectionComponent implements OnInit {
     if (this.section && confirm("Êtes-vous sûr ? Cette action est irréversible.")) {
       const trackedObservables : Observable<any>[] = [];
 
-      if (this.section.type == SectionType.BIG){
+      if (this.section.type == SectionType.big){
         for (const imageUrl of this.picturesToDelete){
           trackedObservables.push(this.deleteImage(imageUrl));
         }
@@ -111,7 +111,7 @@ export class EditSectionComponent implements OnInit {
       trackedObservables.push(
         this.userService.editSection({
           id_section: this.section.id_section,
-          preview_amount: values.preview_amount,
+          preview_amount: Number.parseInt(values.preview_amount || '0'),
           purchasable: values.purchasable,
           section_description: values.section_description,
           section_title: values.section_title
@@ -121,7 +121,7 @@ export class EditSectionComponent implements OnInit {
       forkJoin(trackedObservables).subscribe({
         next : () => {
           this.allRequestsDone = true;
-          location.reload()
+          this.router.navigateByUrl('/editProfile');
         },
         error : () => {
           alert("Les modifications de la section n'ont pas pu être sauvegardées.");

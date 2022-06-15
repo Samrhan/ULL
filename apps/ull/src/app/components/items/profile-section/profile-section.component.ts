@@ -17,7 +17,7 @@ export class ProfileSectionComponent{
     purchasable: false,
     section_description: "",
     section_title: "",
-    type: SectionType.INFO
+    type: SectionType.info
   };
   providerId = "";
 

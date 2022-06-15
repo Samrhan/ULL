@@ -66,7 +66,7 @@ export class EditPerformanceComponent implements OnInit {
           this.updatePerformanceForm.get("performance_price_value")?.setValue(this.performance.price.value / 100);
           this.updatePerformanceForm.get("performance_price_unit")?.setValue(this.performance.price.unit);
 
-          this.pictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.performance.picture;
+          this.pictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + encodeURIComponent(this.performance.picture);
         }
       }
     });
@@ -92,7 +92,7 @@ export class EditPerformanceComponent implements OnInit {
       this.replaceDefaultPictureUrl(this.newPicture)
     } else {
       this.newPicture = undefined;
-      this.pictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.performance?.picture || '';
+      this.pictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + encodeURIComponent(this.performance?.picture || '');
     }
   }
 
