@@ -240,8 +240,8 @@ class ListPrestat extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height -
-          (MediaQuery.of(context).size.height / 6 + 56),
+      height: MediaQuery.of(context).size.height   ,
+       //   -(MediaQuery.of(context).size.height / 6 + 56),
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -253,7 +253,10 @@ class ListPrestat extends StatelessWidget {
                 color: Color(0xFFDC3535),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainScreen(_currentAccount)),
+                );;
               },
             ),
             centerTitle: true,
