@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark py-2 justify-content-center">
+<nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark py-2 justify-content-center" *ngIf="profile">
   <div class="w-75 d-flex justify-content-between align-items-center">
     <a class="navbar-brand fs-1" [routerLink]="'/profile'">ULL</a>
     <ul class="navbar-nav col-8 col-lg-5 justify-content-around">
@@ -23,13 +23,13 @@
       <li class="nav-item d-flex flex-column align-items-center justify-content-between cursor-pointer btn-group"
           [ngClass]="{'border-bottom': selected === 'Vous'}" dropdown dropdownToggle>
           <div class="rounded-circle border border-white bg-white square-div">
-            <img [src]="environment.providerPicturesURL + profilePictureUrl" alt="Profile picture" class="h-100 w-100"/>
+            <img [src]="environment.providerPicturesURL + profile.id_provider + '/' + profile.profile_picture" alt="Profile picture" class="h-100 w-100"/>
           </div>
           <a class="nav-link active">Vous</a>
           <ull-profile-menu class="dropdown-menu dropdown-menu-right" *dropdownMenu role="menu"
-                            [profilePictureUrl]="profilePictureUrl"
-                            [companyName]="companyName"
-                            [companyDescription]="companyDescription">
+                            [profilePictureUrl]="profile.id_provider + '/' + profile.profile_picture"
+                            [companyName]="profile.company_name"
+                            [companyDescription]="profile.company_description">
           </ull-profile-menu>
       </li>
     </ul>

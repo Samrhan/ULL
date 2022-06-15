@@ -13,7 +13,7 @@ export const environment = {
   providerServiceURL: "3335/api",
   reservationServiceURL: "3334/api",
 
-  providerPicturesURL: "../../../../assets/images/"
+  providerPicturesURL: "https://cdn.sbader.fr/provider/"
 };
 
 /*

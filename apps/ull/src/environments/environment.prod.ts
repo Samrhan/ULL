@@ -1,13 +1,13 @@
 export const environment = {
   production: true,
-  baseServerURL: "http://localhost:",
-  authenticationServiceURL: "localhost:3333/api",
-  chatServiceURL: "3337/api",
-  customerServiceURL: "3336/api",
-  accountingServiceURL: "3332/api",
-  discoveryServiceURL: "3338/api",
-  providerServiceURL: "3335/api",
-  reservationServiceURL: "3334/api",
+  baseServerURL: "https://ull.sbader.fr/",
+  authenticationServiceURL: "api/authentication",
+  chatServiceURL: "api/chat",
+  customerServiceURL: "api/customer",
+  accountingServiceURL: "api/accounting",
+  discoveryServiceURL: "api/discovery",
+  providerServiceURL: "api/provider",
+  reservationServiceURL: "api/reservation",
 
-  providerPicturesURL: "../../../../assets/images/"
-};
+  providerPicturesURL: "https://cdn.sbader.fr/provider/"
+};;

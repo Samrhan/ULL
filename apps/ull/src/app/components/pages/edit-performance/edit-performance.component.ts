@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Performance, ProviderProfile, ProviderProfileSection} from "@ull/api-interfaces";
+import {Performance, ProviderProfileSection} from "@ull/api-interfaces";
 import {UserService} from "../../../services/user-service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -7,6 +7,7 @@ import {environment} from '../../../../environments/environment';
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
 import {map} from "rxjs";
 import {HttpEventType} from "@angular/common/http";
+import {AuthenticationService} from "../../../services/authentication/authentication.service";
 
 @Component({
   selector: 'ull-edit-performance',
@@ -14,7 +15,6 @@ import {HttpEventType} from "@angular/common/http";
   styleUrls: ['./edit-performance.component.scss'],
 })
 export class EditPerformanceComponent implements OnInit {
-  profile : ProviderProfile | undefined;
   performance : Performance | undefined;
 
   environment = environment;
@@ -42,6 +42,7 @@ export class EditPerformanceComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private authService: AuthenticationService,
     private router : Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
@@ -50,8 +51,6 @@ export class EditPerformanceComponent implements OnInit {
   ngOnInit() {
     this.userService.fetchProviderProfile().subscribe({
       next: value => {
-        this.profile = value
-
         try {
           this.performance = value.services
             .filter((value : ProviderProfileSection) => value.id_section === this.route.snapshot.params['idSection'])[0]
@@ -67,7 +66,7 @@ export class EditPerformanceComponent implements OnInit {
           this.updatePerformanceForm.get("performance_price_value")?.setValue(this.performance.price.value / 100);
           this.updatePerformanceForm.get("performance_price_unit")?.setValue(this.performance.price.unit);
 
-          this.pictureUrl = environment.providerPicturesURL + this.performance.picture;
+          this.pictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.performance.picture;
         }
       }
     });
@@ -93,7 +92,7 @@ export class EditPerformanceComponent implements OnInit {
       this.replaceDefaultPictureUrl(this.newPicture)
     } else {
       this.newPicture = undefined;
-      this.pictureUrl = environment.providerPicturesURL + this.performance?.picture || '';
+      this.pictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.performance?.picture || '';
     }
   }
 

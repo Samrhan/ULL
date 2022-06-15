@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import {Performance, ProviderProfile} from "@ull/api-interfaces";
+import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../../services/user-service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {environment} from '../../../../environments/environment';
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
 import {map} from "rxjs";
 import {HttpEventType} from "@angular/common/http";
+import {UserService} from "../../../services/user-service/user.service";
 
 @Component({
   selector: 'ull-add-performance',
   templateUrl: './add-performance.component.html',
   styleUrls: ['./add-performance.component.scss'],
 })
-export class AddPerformanceComponent implements OnInit {
-  profile : ProviderProfile | undefined;
+export class AddPerformanceComponent {
 
   environment = environment;
   faCamera = faCamera;
@@ -40,19 +38,11 @@ export class AddPerformanceComponent implements OnInit {
   ];
 
   constructor(
-    private userService: UserService,
     private router : Router,
+    private userService: UserService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {}
-
-  ngOnInit() {
-    this.userService.fetchProviderProfile().subscribe({
-      next: value => {
-        this.profile = value
-      }
-    })
-  }
 
   /**
    * Returns "true" if the given control is valid, false if it is invalid or doesn't exist

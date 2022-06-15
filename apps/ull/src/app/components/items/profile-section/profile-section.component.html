@@ -9,8 +9,8 @@
     <!-- Images carousel -->
     <div class="mb-3 p-2 rounded border" *ngIf="section.content[0]">
       <div class="d-flex overflow-auto py-1">
-        <img [src]="environment.providerPicturesURL + section.content[0].picture" alt="illustration" class="big-image me-2">
-        <img *ngFor="let imageUrl of section.pictures" [src]="environment.providerPicturesURL + imageUrl" alt="illustration" class="big-image me-2">
+        <img [src]="environment.providerPicturesURL + providerId + '/' + section.content[0].picture" alt="illustration" class="big-image me-2">
+        <img *ngFor="let imageUrl of section.pictures" [src]="environment.providerPicturesURL + providerId + '/' + imageUrl" alt="illustration" class="big-image me-2">
       </div>
     </div>
     <!-- Section description & price -->
@@ -44,7 +44,7 @@
         </div>
         <!-- Performance image -->
         <div class="col-3">
-          <img [src]="environment.providerPicturesURL + performance.picture" alt="illustration" class="medium-image">
+          <img [src]="environment.providerPicturesURL + providerId + '/' + performance.picture" alt="illustration" class="medium-image">
         </div>
       </div>
       <hr *ngIf="idx !== section.content.length - 1"> <!-- Separator if not last entry -->
@@ -63,7 +63,7 @@
       <div class="d-flex justify-content-between align-items-start">
         <!-- Performance picture -->
         <div class="col-1 me-3">
-          <img [src]="environment.providerPicturesURL + performance.picture" alt="illustration" class="small-image">
+          <img [src]="environment.providerPicturesURL + providerId + '/' + performance.picture" alt="illustration" class="small-image">
         </div>
         <!-- Performance details -->
         <div class="flex-grow-1 me-5">

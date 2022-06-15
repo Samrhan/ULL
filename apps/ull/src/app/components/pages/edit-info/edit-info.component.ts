@@ -7,6 +7,7 @@ import {HttpEventType} from "@angular/common/http";
 
 import {faCamera} from "@fortawesome/free-solid-svg-icons";
 import {environment} from '../../../../environments/environment';
+import {AuthenticationService} from "../../../services/authentication/authentication.service";
 
 @Component({
   selector: 'ull-edit-info',
@@ -48,6 +49,7 @@ export class EditInfoComponent implements OnInit {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit() {
@@ -71,8 +73,8 @@ export class EditInfoComponent implements OnInit {
         this.updateInfoForm.get("postal_code")?.setValue(value.address.postal_code);
         this.updateInfoForm.get("complement")?.setValue(value.address.complement);
 
-        this.profilePictureUrl = environment.providerPicturesURL + value.profile_picture;
-        this.coverPictureUrl = environment.providerPicturesURL + value.cover_picture;
+        this.profilePictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' +  value.profile_picture;
+        this.coverPictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + value.cover_picture;
       }
     })
   }
@@ -98,10 +100,10 @@ export class EditInfoComponent implements OnInit {
     } else {
       if (targetVariable === "coverPicture") {
         this.newCoverPicture = undefined;
-        this.coverPictureUrl = environment.providerPicturesURL + this.info?.cover_picture || '';
+        this.coverPictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.info?.cover_picture || '';
       } else if (targetVariable === "profilePicture") {
         this.newProfilePicture = undefined;
-        this.profilePictureUrl = environment.providerPicturesURL + this.info?.profile_picture || '';
+        this.profilePictureUrl = environment.providerPicturesURL + this.authService.getProviderId() + '/' + this.info?.profile_picture || '';
       }
     }
   }

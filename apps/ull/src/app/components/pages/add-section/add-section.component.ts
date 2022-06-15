@@ -12,8 +12,7 @@ import {HttpEventType} from "@angular/common/http";
   templateUrl: './add-section.component.html',
   styleUrls: ['./add-section.component.scss'],
 })
-export class AddSectionComponent implements OnInit {
-  profile : ProviderProfile | undefined;
+export class AddSectionComponent{
 
   SectionType = SectionType
   environment = environment;
@@ -44,14 +43,6 @@ export class AddSectionComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {}
-
-  ngOnInit() {
-    this.userService.fetchProviderProfile().subscribe({
-      next: value => {
-        this.profile = value;
-      }
-    });
-  }
 
   addPicture(event: Event){
     const target = event.target as HTMLInputElement;

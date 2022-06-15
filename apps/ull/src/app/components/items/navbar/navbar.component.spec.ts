@@ -12,6 +12,7 @@ import {ProfileComponent} from "../../pages/profile/profile.component";
 import {AuthGuardService} from "../../../services/auth-guard/auth-guard.service";
 import {EditInfoComponent} from "../../pages/edit-info/edit-info.component";
 import {EditProfileComponent} from "../../pages/edit-profile/edit-profile.component";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -22,6 +23,7 @@ describe('NavbarComponent', () => {
       declarations: [NavbarComponent],
       imports: [
         FontAwesomeModule,
+        HttpClientTestingModule,
         RouterTestingModule.withRoutes([
           { path: '', component: AccueilComponent},
           { path: 'register', component: RegisterComponent, canActivate: [AuthPreventService]},

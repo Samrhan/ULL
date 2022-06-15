@@ -2,6 +2,8 @@ import {Component, Input} from '@angular/core';
 import { environment } from '../../../../environments/environment';
 
 import {faCalendar, faDollar, faMessage} from "@fortawesome/free-solid-svg-icons";
+import {ProviderProfile} from "@ull/api-interfaces";
+import {UserService} from "../../../services/user-service/user.service";
 
 @Component({
   selector: 'ull-navbar',
@@ -10,13 +12,20 @@ import {faCalendar, faDollar, faMessage} from "@fortawesome/free-solid-svg-icons
 })
 export class NavbarComponent{
   @Input() selected = "";
-  @Input() profilePictureUrl = "";
-  @Input() companyName = "";
-  @Input() companyDescription = "";
+  profile: ProviderProfile | undefined;
 
   faCalendar = faCalendar;
   faDollar = faDollar;
   faMessage = faMessage;
 
   environment = environment;
+
+  constructor(
+    private userService: UserService
+  ) {
+    this.userService.fetchProviderProfile().subscribe({
+      next: value => this.profile = value,
+      error: () => alert("Erreur durant la récupération du profil.")
+    });
+  }
 }

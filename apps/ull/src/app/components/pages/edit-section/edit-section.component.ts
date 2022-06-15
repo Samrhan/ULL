@@ -13,8 +13,8 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "
   styleUrls: ['./edit-section.component.scss'],
 })
 export class EditSectionComponent implements OnInit {
-  profile : ProviderProfile | undefined;
   section : ProviderProfileSection | undefined;
+  providerId = "";
 
   SectionType = SectionType
   environment = environment;
@@ -42,7 +42,7 @@ export class EditSectionComponent implements OnInit {
   ngOnInit() {
     this.userService.fetchProviderProfile().subscribe({
       next: value => {
-        this.profile = value;
+        this.providerId = value.id_provider;
         this.section = value.services.filter((value : ProviderProfileSection) => value.id_section === this.route.snapshot.params['idSection'])[0];
 
         if (!this.section) {

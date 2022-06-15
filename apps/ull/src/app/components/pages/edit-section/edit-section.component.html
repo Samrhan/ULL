@@ -1,9 +1,5 @@
-<div *ngIf="profile && section">
-  <ull-navbar [selected]="'none'"
-              [profilePictureUrl]="profile.profile_picture"
-              [companyName]="profile.company_name"
-              [companyDescription]="profile.company_description">
-  </ull-navbar>
+<div *ngIf="section">
+  <ull-navbar [selected]="'none'"></ull-navbar>
 
   <!-- Content -->
   <div class="bg-light d-flex justify-content-center min-vh-100">
@@ -18,7 +14,7 @@
         <div class="d-flex justify-content-start align-items-center overflow-auto py-1">
           <!-- Pictures already present -->
           <div *ngFor="let imageUrl of section.pictures" class="d-flex flex-column align-items-start me-2">
-            <img [src]="environment.providerPicturesURL + imageUrl" alt="illustration" class="big-image mb-2" [ngClass]="{'gray-overlay' : picturesToDelete.includes(imageUrl)}">
+            <img [src]="environment.providerPicturesURL + providerId + '/' + imageUrl" alt="illustration" class="big-image mb-2" [ngClass]="{'gray-overlay' : picturesToDelete.includes(imageUrl)}">
             <button class="btn btn-success rounded" (click)="undeletePicture(imageUrl)" *ngIf="picturesToDelete.includes(imageUrl); else deletePictureButton">Rétablir</button>
             <ng-template #deletePictureButton>
               <button class="btn btn-danger rounded" (click)="deletePicture(imageUrl)">Supprimer</button>
