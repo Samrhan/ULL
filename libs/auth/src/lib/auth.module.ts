@@ -12,7 +12,7 @@ import {CustomStrategy} from "./custom.strategy";
                 type: 'topic',
             },
         ],
-        uri: 'amqp://localhost:5672',
+        uri: process.env['RABBITMQ_URI'] || 'amqp://localhost:5672',
         connectionInitOptions: {wait: false},
     }),
     PassportModule],
