@@ -24,6 +24,14 @@
 
       <ull-profile-section *ngFor="let section of profile.services" [section]="section"></ull-profile-section>
 
+      <div *ngIf="profile.services.length === 0">
+        <h1>Votre page de profil est vide !</h1>
+        <hr>
+        <p>Nous vous conseillons de commencer par <b>ajouter des sections</b> pour organiser vos diverses offres de services, puis d'y <b>renseigner les diverses prestations que vous proposez</b>.</p>
+        <p>Cliquez sur votre image de profil en haut à droite, puis sur <span class="text-decoration-underline cursor-pointer" [routerLink]="'/editProfile'">"Réorganiser votre profil"</span>.</p>
+        <button class="btn btn-primary" [routerLink]="'/addSection'">Ou alors, cliquez-ici pour ajouter directement une section !</button>
+      </div>
+
     </div>
   </div>
 </div>
