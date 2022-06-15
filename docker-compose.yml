@@ -12,6 +12,8 @@ services:
       - NODE_ENV=production
       - RABBITMQ_URI=amqp://rabbitmq:5672
       - TYPEORM_AUTHENTICATION_URI=postgres://postgres@postgres-authentication:5432/authentication
+      - WAIT_HOSTS=rabbitmq:5672
+      - WAIT_HOSTS_TIMEOUT:60
     depends_on:
       - rabbitmq
       - postgres-authentication
@@ -28,6 +30,8 @@ services:
       - NODE_ENV=production
       - RABBITMQ_URI=amqp://rabbitmq:5672
       - TYPEORM_CUSTOMER_URI=postgres://postgres@postgres-customer:5432/customer
+      - WAIT_HOSTS=rabbitmq:5672
+      - WAIT_HOSTS_TIMEOUT:60
     depends_on:
       - rabbitmq
       - postgres-customer
@@ -44,6 +48,8 @@ services:
       - NODE_ENV=production
       - RABBITMQ_URI=amqp://rabbitmq:5672
       - TYPEORM_PROVIDER_URI=postgres://postgres@postgres-provider:5432/provider
+      - WAIT_HOSTS=rabbitmq:5672
+      - WAIT_HOSTS_TIMEOUT:60
     depends_on:
       - rabbitmq
       - postgres-provider
