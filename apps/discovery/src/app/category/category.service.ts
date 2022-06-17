@@ -14,7 +14,7 @@ export class CategoryService {
     @InjectRepository(Provider) providerRepository: Repository<Provider>
 
     async getAllProviderCategory() {
-        return (await this.categoryRepository.find()).map((c) => ({name: c.categoryName, picture: c.categoryPicture}))
+        return (await this.categoryRepository.find()).map((c) => ({name: c.categoryName, picture: c.categoryPicture, description: c.categoryDescription}))
     }
 
     async getProviderCategory(providerId: string) {
@@ -22,7 +22,7 @@ export class CategoryService {
         if (!provider) {
             throw new NotFoundException()
         }
-        return {name: provider.category.categoryName, picture: provider.category.categoryPicture}
+        return {name: provider.category.categoryName, picture: provider.category.categoryPicture, description: provider.category.categoryDescription}
     }
 
     async putCategory(body: PutCategoryDto, user: JwtUser) {
@@ -51,9 +51,9 @@ export class CategoryService {
 
     async getCategories() {
         return {
-            popular: (await this.categoryRepository.find({where: {popular: true}})).map((c) => ({name: c.categoryName, picture: c.categoryPicture})),
+            popular: (await this.categoryRepository.find({where: {popular: true}})).map((c) => ({name: c.categoryName, picture: c.categoryPicture, description: c.categoryDescription})),
             collections:[],
-            all: (await this.categoryRepository.find({where: {popular: false}})).map((c) => ({name: c.categoryName, picture: c.categoryPicture}))
+            all: (await this.categoryRepository.find({where: {popular: false}})).map((c) => ({name: c.categoryName, picture: c.categoryPicture, description: c.categoryDescription}))
         }
     }
 }

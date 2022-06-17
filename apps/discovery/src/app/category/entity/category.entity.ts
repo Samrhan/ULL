@@ -2,7 +2,6 @@ import {
     Column,
     CreateDateColumn,
     Entity, PrimaryColumn,
-    PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 
@@ -17,8 +16,8 @@ export class Category {
     @Column({name: 'category_picture'})
     categoryPicture: string;
 
-    @Column({name: 'section_description'})
-    sectionDescription: string;
+    @Column({name: 'category_description'})
+    categoryDescription: string;
 
     @CreateDateColumn({name: 'created_at'})
     createdAt: string;
