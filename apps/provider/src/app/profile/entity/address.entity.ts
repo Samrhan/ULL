@@ -14,7 +14,7 @@ export class Address {
     @Column()
     city: string;
 
-    @Column({name: 'postal_coder'})
+    @Column({name: 'postal_code'})
     postalCode: string;
 
     @Column({nullable: true})

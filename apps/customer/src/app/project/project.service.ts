@@ -13,132 +13,154 @@ import {AmqpConnection, RabbitRPC} from "@golevelup/nestjs-rabbitmq";
 
 @Injectable()
 export class ProjectService {
-  @Inject() storageService: StorageService
-  @Inject() amqpConnection: AmqpConnection
+    @Inject() storageService: StorageService
+    @Inject() amqpConnection: AmqpConnection
 
-  @InjectRepository(Customer) customerRepository: Repository<Customer>
-  @InjectRepository(Project) projectRepository: Repository<Project>
-  @InjectRepository(Address) addressRepository: Repository<Address>
+    @InjectRepository(Customer) customerRepository: Repository<Customer>
+    @InjectRepository(Project) projectRepository: Repository<Project>
+    @InjectRepository(Address) addressRepository: Repository<Address>
 
-  async createProject(body: CreateProjectDto, file: MinimalFile, user: JwtUser) {
-    const project = new Project()
-    project.name = body.project_name
-    project.description = body.project_description
-    project.amountOfPeople = Number(body.amount_of_people)
-    project.projectDate = body.project_date
-    project.projectState = ProjectState.draft
-    if (file) {
-      project.image = await this.storageService.upload(file, user)
-    } else {
-      project.image = DEFAULT_PROJECT_PIC_CUSTOMER
+    async createProject(body: CreateProjectDto, file: MinimalFile, user: JwtUser) {
+        const project = new Project()
+        project.name = body.project_name
+        project.description = body.project_description
+        project.amountOfPeople = Number(body.amount_of_people)
+        project.projectDate = body.project_date
+        project.projectState = ProjectState.draft
+        if (file) {
+            project.image = await this.storageService.upload(file, user)
+        } else {
+            project.image = DEFAULT_PROJECT_PIC_CUSTOMER
+        }
+        project.customer = await this.customerRepository.findOneOrFail({id: user.id})
+        const address = new Address()
+        address.number = body.address_number
+        address.street = body.address_street
+        address.city = body.address_city
+        address.complement = body.address_complement
+        address.postalCode = body.address_postal_code
+
+        project.address = await this.addressRepository.save(address)
+
+        await this.projectRepository.save(project)
     }
-    project.customer = await this.customerRepository.findOneOrFail({id: user.id})
-    const address = new Address()
-    address.number = body.address_number
-    address.street = body.address_street
-    address.city = body.address_city
-    address.complement = body.address_complement
-    address.postalCode = body.address_postal_code
 
-    project.address = await this.addressRepository.save(address)
+    async getProjectDetail(projectId: string): Promise<IProject> {
+        const project = await this.projectRepository.findOne(projectId, {relations: ['customer', 'address']});
+        if (!project) {
+            throw new NotFoundException();
+        }
+        return <IProject>{
+            project_id: projectId,
+            name: project.name,
+            customer_display_name: `${project.customer.firstname} ${project.customer.lastname.toUpperCase()}`,
+            project_date: project.projectDate,
+            description: project.description,
+            image: project.image,
+            amount_of_people: project.amountOfPeople,
+            state: project.projectState,
+            address: <IAddress>{
+                number: project.address.number,
+                street: project.address.street,
+                postal_code: project.address.postalCode,
+                city: project.address.city,
+                complement: project.address.complement
+            }
+        }
+    }
 
-    await this.projectRepository.save(project)
-  }
+    async deleteProject(projectId: string, user: JwtUser) {
+        const project = await this.projectRepository.findOne(projectId, {relations: ['customer']})
+        if (!project) {
+            throw new NotFoundException()
+        }
+        if (project.customer.id !== user.id) {
+            throw new ForbiddenException()
+        }
+        if (project.image) {
+            await this.storageService.delete(project.image, user)
+        }
+        await this.projectRepository.delete(project)
 
-  async getProjectDetail(projectId: string): Promise<IProject> {
-    const project = await this.projectRepository.findOne(projectId, {relations: ['customer', 'address']});
-    if (!project) {
-      throw new NotFoundException();
     }
-    return <IProject>{
-      project_id: projectId,
-      name: project.name,
-      customer_display_name: `${project.customer.firstname} ${project.customer.lastname.toUpperCase()}`,
-      project_date: project.projectDate,
-      description: project.description,
-      image: project.image,
-      amount_of_people: project.amountOfPeople,
-      state: project.projectState,
-      address: <IAddress>{
-        number: project.address.number,
-        street: project.address.street,
-        postal_code: project.address.postalCode,
-        city: project.address.city,
-        complement: project.address.complement
-      }
-    }
-  }
 
-  async deleteProject(projectId: string, user: JwtUser) {
-    const project = await this.projectRepository.findOne(projectId, {relations: ['customer']})
-    if (!project) {
-      throw new NotFoundException()
-    }
-    if (project.customer.id !== user.id) {
-      throw new ForbiddenException()
-    }
-    if (project.image) {
-      await this.storageService.delete(project.image, user)
-    }
-    await this.projectRepository.delete(project)
+    async editProject(body: EditProjectDto, file: MinimalFile, user: JwtUser) {
+        const project = await this.projectRepository.findOne(body.project_id, {relations: ['customer', 'address']})
+        if (!project) {
+            throw new NotFoundException()
+        }
+        if (project.customer.id !== user.id) {
+            throw new ForbiddenException()
+        }
+        project.name = body.project_name
+        project.description = body.project_description
+        project.amountOfPeople = Number(body.amount_of_people)
 
-  }
+        if (new Date(project.projectDate).getTime() !== new Date(body.project_date).getTime()) {
+            await this.amqpConnection.request({
+                exchange: 'reservation',
+                routingKey: 'update-project-date',
+                payload: {project_id: project.idProject, new_date: body.project_date},
+                timeout: 10000
+            })
+        }
 
-  async editProject(body: EditProjectDto, file: MinimalFile, user: JwtUser) {
-    const project = await this.projectRepository.findOne(body.project_id, {relations: ['customer', 'address']})
-    if (!project) {
-      throw new NotFoundException()
-    }
-    if (project.customer.id !== user.id) {
-      throw new ForbiddenException()
-    }
-    project.name = body.project_name
-    project.description = body.project_description
-    project.amountOfPeople = Number(body.amount_of_people)
+        project.projectDate = body.project_date
+        if (file) {
+            await this.storageService.delete(project.image, user)
+            project.image = await this.storageService.upload(file, user)
+        }
+        project.address.number = body.address_number
+        project.address.street = body.address_street
+        project.address.city = body.address_city
+        project.address.complement = body.address_complement
+        project.address.postalCode = body.address_postal_code
 
-    if (new Date(project.projectDate).getTime() !== new Date(body.project_date).getTime()) {
-      await this.amqpConnection.request({
+        project.address = await this.addressRepository.save(project.address)
+
+        await this.projectRepository.save(project)
+    }
+
+    @RabbitRPC({
         exchange: 'reservation',
-        routingKey: 'update-project-date',
-        payload: {project_id: project.idProject, new_date: body.project_date},
-        timeout: 10000
-      })
+        routingKey: 'check-project',
+        queue: 'customer-reservation'
+    })
+    async checkProject(message: { project_id: string, user_id: string }) {
+        try {
+            const project = await this.projectRepository.findOne(message.project_id, {relations: ['customer']})
+            if (project.customer.id !== message.user_id) {
+                return {state: 403}
+            }
+            return {
+                state: 200,
+                value: await this.getProjectDetail(message.project_id)
+            }
+
+        } catch {
+            return {state: 404}
+        }
     }
 
-    project.projectDate = body.project_date
-    if (file) {
-      await this.storageService.delete(project.image, user)
-      project.image = await this.storageService.upload(file, user)
+    async getAllProjects(user: JwtUser) {
+        const customer = await this.customerRepository.findOneOrFail(user.id)
+        const projects = await this.projectRepository.find({
+            where: {customer}, relations: ['address']
+        })
+        return projects.map((p=>({
+            project_id: p.idProject,
+            project_name: p.name,
+            project_date: p.projectDate,
+            project_description: p.description,
+            amount_of_people: p.amountOfPeople,
+            project_location: {
+                number: p.address.number,
+                street: p.address.street,
+                city: p.address.city,
+                complement: p.address.complement,
+                postal_code: p.address.postalCode
+            },
+            project_picture: p.image,
+        })));
     }
-    project.address.number = body.address_number
-    project.address.street = body.address_street
-    project.address.city = body.address_city
-    project.address.complement = body.address_complement
-    project.address.postalCode = body.address_postal_code
-
-    project.address = await this.addressRepository.save(project.address)
-
-    await this.projectRepository.save(project)
-  }
-
-  @RabbitRPC({
-    exchange: 'reservation',
-    routingKey: 'check-project',
-    queue: 'customer-reservation'
-  })
-  async checkProject(message: { project_id: string, user_id: string }) {
-    try {
-      const project = await this.projectRepository.findOne(message.project_id, {relations: ['customer']})
-      if (project.customer.id !== message.user_id) {
-        return {state: 403}
-      }
-      return {
-        state: 200,
-        value: await this.getProjectDetail(message.project_id)
-      }
-
-    } catch {
-      return {state: 404}
-    }
-  }
 }
