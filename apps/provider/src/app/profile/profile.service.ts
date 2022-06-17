@@ -240,25 +240,29 @@ export class ProfileService {
             cover_picture: queryProfile.coverPicture,
             profile_picture: queryProfile.profilePicture,
             rating: 0,
-            services: queryProfile.sections.sort((a, b) => a.yIndex - b.yIndex).map<ProviderProfileSection>(s => ({
-                id_section: s.sectionId,
-                section_title: s.sectionTitle,
-                section_description: s.sectionDescription,
-                type: SectionType[s.type],
-                purchasable: s.purchasable,
-                preview_amount: s.previewAmount?.amount,
-                pictures: s.bigSectionPictures?.map(p=>p.picture),
-                content: s.performances.sort((a, b) => a.yIndex - b.yIndex).map<Performance>(p => ({
-                    id_performance: p.idPerformance,
-                    performance_title: p.performanceTitle,
-                    performance_description: p.performanceDescription,
-                    price: {
-                        value: p.priceValue,
-                        unit: PriceUnit[p.priceUnit],
-                    },
-                    picture: p.performancePicture,
-                })),
-            }))
+            services: queryProfile.sections
+                .sort((a, b) => a.yIndex - b.yIndex)
+                .map<ProviderProfileSection>(s => ({
+                    id_section: s.sectionId,
+                    section_title: s.sectionTitle,
+                    section_description: s.sectionDescription,
+                    type: SectionType[s.type],
+                    purchasable: s.purchasable,
+                    preview_amount: s.previewAmount?.amount,
+                    pictures: s.bigSectionPictures?.map(p => p.picture),
+                    content: s.performances
+                        .sort((a, b) => a.yIndex - b.yIndex)
+                        .map<Performance>(p => ({
+                            id_performance: p.idPerformance,
+                            performance_title: p.performanceTitle,
+                            performance_description: p.performanceDescription,
+                            price: {
+                                value: p.priceValue,
+                                unit: PriceUnit[p.priceUnit],
+                            },
+                            picture: p.performancePicture,
+                        })),
+                }))
         }
     }
 
@@ -311,16 +315,16 @@ export class ProfileService {
         provider.address.city = updateProfile.address_city;
         provider.address.complement = updateProfile.address_complement;
 
-        for(const file of files){
+        for (const file of files) {
             switch (file.fieldname) {
                 case 'profile_picture':
-                    if (provider.profilePicture !== DEFAULT_PROFILE_PIC_PROVIDER) {
+                    if (provider.profilePicture) {
                         await this.storageService.delete(provider.profilePicture, user)
                     }
                     provider.profilePicture = await this.storageService.upload(file, user)
                     break;
                 case 'cover_picture':
-                    if (provider.coverPicture !== DEFAULT_COVER_PIC_PROVIDER) {
+                    if (provider.coverPicture) {
                         await this.storageService.delete(provider.coverPicture, user)
                     }
                     provider.coverPicture = await this.storageService.upload(file, user)
