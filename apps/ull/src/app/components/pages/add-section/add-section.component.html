@@ -56,7 +56,7 @@
         </div>
         <!-- If the section is small, how many performances to show by default -->
         <div class="mb-3 p-2 w-25" *ngIf="addSectionForm.get('section_type')?.value === SectionType.small">
-          <label for="previewAmount" class="w-100">Nombre de prestations à afficher par défaut</label>
+          <label for="previewAmount" class="w-100">Nombre de prestations à afficher par défaut.<br><span class="small text-muted">Les prestations en plus seront visibles avec un bouton "voir plus".</span></label>
           <input type="number" min="1" max="5" id="previewAmount" [formControlName]="'preview_amount'" required class="inner-shadow rounded p-2 w-100 border-danger" [ngClass]="{'border-0' : validInput('preview_amount')}">
         </div>
       </div>

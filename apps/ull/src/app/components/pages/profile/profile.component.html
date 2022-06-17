@@ -7,7 +7,7 @@
       <div class="card mb-3 rounded border border-dark">
         <img [src]="environment.providerPicturesURL + profile.id_provider + '/' + profile.cover_picture" class="card-img-top max-vh-50" alt="Image de couverture">
         <div class="profile-picture-container rounded-circle border border-dark shadow-lg ms-5">
-          <img [src]="environment.providerPicturesURL + profile.id_provider + '/' + profile.profile_picture" alt="Photo de profil" class="h-100">
+          <img [src]="environment.providerPicturesURL + profile.id_provider + '/' + profile.profile_picture" alt="Photo de profil" class="h-100 w-100 ">
         </div>
         <div class="card-body mx-5 d-flex flex-wrap justify-content-between align-items-start">
           <div class="col-lg-8">
@@ -23,6 +23,14 @@
       </div>
 
       <ull-profile-section *ngFor="let section of profile.services" [section]="section"></ull-profile-section>
+
+      <div *ngIf="profile.services.length === 0">
+        <h1>Votre page de profil est vide !</h1>
+        <hr>
+        <p>Nous vous conseillons de commencer par <b>ajouter des sections</b> pour organiser vos diverses offres de services, puis d'y <b>renseigner les diverses prestations que vous proposez</b>.</p>
+        <p>Cliquez sur votre image de profil en haut à droite, puis sur <span class="text-decoration-underline cursor-pointer" [routerLink]="'/editProfile'">"Réorganiser votre profil"</span>.</p>
+        <button class="btn btn-primary" [routerLink]="'/addSection'">Ou alors, cliquez-ici pour ajouter directement une section !</button>
+      </div>
 
     </div>
   </div>

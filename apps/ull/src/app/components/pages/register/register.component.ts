@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../../services/authentication/authentication.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ull-register',
@@ -53,6 +54,7 @@ export class RegisterComponent {
 
   constructor(
     private authentication: AuthenticationService,
+    private router: Router,
     private formBuilder: FormBuilder
   ) {}
 
@@ -84,6 +86,7 @@ export class RegisterComponent {
       phone: values['phone'],
       siren: values['siren']
     }).subscribe({
+      next: () => this.router.navigateByUrl('/login?newAccount=yes'),
       error: err => {
         switch (err.status){
           case 400:
