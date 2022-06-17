@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Inject, Param, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Inject, Param, Post, UseGuards} from '@nestjs/common';
 import {LocalAuthGuard, User, UserGuard} from "@ull/auth";
 import {PostReservationDto} from "./dto/post-reservation.dto";
 import {ReservationService} from "./reservation.service";
@@ -15,6 +15,11 @@ export class ReservationController {
         await this.reservationService.addReservation(body, user)
     }
 
+    @Delete('reservation/:project_id/:performance_id')
+    async deleteReservation(@Param('project_id') projectId: string, @Param('performance_id') performanceId: string, @User() user: JwtUser) {
+        return await this.reservationService.deleteReservation(projectId, performanceId, user)
+    }
+
     @Get('reservation/:project_id/:performance_id')
     async getReservationDetails(@Param('project_id') projectId: string, @Param('performance_id') performanceId: string, @User() user: JwtUser) {
         return await this.reservationService.getReservationDetail(projectId, performanceId, user)
@@ -24,7 +29,6 @@ export class ReservationController {
     async getAllReservation(@Param('project_id') projectId: string, @User() user: JwtUser) {
         return await this.reservationService.getAllReservation(projectId, user)
     }
-
 
     @Get('requested_provider_reservations')
     async getRequestedProviderReservation(@User() user: JwtUser) {
