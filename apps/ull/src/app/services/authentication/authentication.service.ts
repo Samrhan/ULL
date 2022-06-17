@@ -51,11 +51,11 @@ export class AuthenticationService {
   }
 
   requestResetPassword(body: RequestResetPasswordProviderBody): Observable<any>{
-    return this.httpClient.post(environment.baseServerURL + environment.authenticationServiceURL + "/forgottenPassword", body);
+    return this.httpClient.post(environment.baseServerURL + environment.authenticationServiceURL + "/forgotten_password", body);
   }
 
   enactNewPassword(body: EnactResetPasswordProviderBody): Observable<{access_token: string}>{
-    return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.authenticationServiceURL + "/resetPassword", body)
+    return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.authenticationServiceURL + "/reset_password", body)
       .pipe(
         tap(body => {
           this.storeTokenAndRedirect(body.access_token);
@@ -64,7 +64,7 @@ export class AuthenticationService {
   }
 
   changePassword(body: ChangePasswordProviderBody){
-    return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.authenticationServiceURL + "/changePassword", body)
+    return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.authenticationServiceURL + "/change_password", body)
       .pipe(
         tap(body => {
           AuthenticationService.storeUserToken(body.access_token);
