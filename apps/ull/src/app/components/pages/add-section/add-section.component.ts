@@ -31,9 +31,9 @@ export class AddSectionComponent{
   });
 
   sectionTypeTranslation = [
-    {type: "big", text: 'Section de grande taille'},
-    {type: "medium", text: 'Section de taille moyenne'},
-    {type: "small", text: 'Section de petite taille'},
+    {type: "big", text: 'Section de grande taille (une seule prestation fortement mise en avant)'},
+    {type: "medium", text: 'Section de taille moyenne (quelques prestations principales)'},
+    {type: "small", text: 'Section de petite taille (un ensemble de prestations moins centrales)'},
     {type: "info", text: "Section d'informations"},
   ];
 
