@@ -48,7 +48,7 @@ services:
     environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
       - NODE_ENV=production
       - RABBITMQ_URI=amqp://rabbitmq:5672
-      - TYPEORM_CUSTOMER_URI=postgres://postgres@postgres-discovery:5432/discovery
+      - TYPEORM_DISCOVERY_URI=postgres://postgres@postgres-discovery:5432/discovery
     ports:
       - "3337:3337"
     networks:
