@@ -21,18 +21,18 @@ export class AccueilComponent {
 
   explainPannels = [{
     category: "Organisez des événements inoubliables",
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit !",
-    text: "Morbi dictum vestibulum dolor at dignissim. Ut congue non ligula vel tempor."
+    title: "ULL et ses partenaires sont là pour vous y aider !",
+    text: "Que ce soit votre anniversaire, votre mariage ou tout autre idée géniale que vous avez eu, ULL a ce qu’il vous faut !"
   },
   {
     category: "Touchez une nouvelle clientèle",
-    title: "Lorem ipsum dolor sit amet",
-    text: "Morbi dictum vestibulum dolor at dignissim. Ut congue non ligula vel tempor."
+    title: "Envi de changer d’air et de visage ? Faire kiffer toujours plus de monde ? Alors rejoins-nous !",
+    text: "ULL te permet de te mettre en avant comme jamais avant, sans avoir besoin de changer qui tu es ! Fais vite découvrir tes talents au monde ! "
   },
   {
     category: "Simplifiez la gestion de votre activité",
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit !",
-    text: "Lorem ipsum dolor sit amet. Morbi dictum vestibulum dolor at dignissim. Ut congue non ligula vel tempor."
+    title: "Le papier n'est pas pour toi ? Pas de problème, chez ULL on aime pas ça non plus. ",
+    text: "ULL te fait tes factures, tes contrats, et tout ce qui y ressemble pour que tu puisses te concentrer sur ce qui compte, ta passion !"
   }]
   selected = 0;
 }
