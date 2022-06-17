@@ -10,7 +10,8 @@
         "outputPath": "dist/apps/discovery",
         "main": "apps/discovery/src/main.ts",
         "tsConfig": "apps/discovery/tsconfig.app.json",
-        "assets": ["apps/discovery/src/assets"]
+        "assets": ["apps/discovery/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
