@@ -33,11 +33,6 @@ export class AuthenticationService {
 
   register(body: RegisterProviderRequestBody): Observable<{access_token: string}> {
     return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.providerServiceURL + "/register", body)
-      .pipe(
-        tap(body => {
-          this.storeTokenAndRedirect(body.access_token);
-        })
-      );
   }
 
   login(body: LoginProviderRequestBody): Observable<{access_token: string}> {

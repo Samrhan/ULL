@@ -32,6 +32,9 @@
             <a [routerLink]="'/resetPassword'" class="text-info small">Mot de passe oublié ?</a>
           </div>
         </form>
+        <div *ngIf="newAccount" class="alert alert-success mt-3">
+          Votre compte a bien été créé ! Veuillez vous identifier.
+        </div>
       </div>
     </div>
   </div>
