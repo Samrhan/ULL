@@ -1,0 +1,28 @@
+server {
+
+  listen 80;
+
+  client_max_body_size 100M;
+
+  server_tokens off;
+
+  add_header Content-Security-Policy "default-src 'none';media-src 'self'; connect-src 'self' http://localhost:3000; script-src 'unsafe-inline' 'self' 'unsafe-eval' https://use.fontawesome.com/ https://static.cloudflareinsights.com; img-src https: data: blob: http://localhost:3000/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/; font-src 'self' https://fonts.gstatic.com/; frame-src 'self'; frame-ancestors 'self'";
+
+  add_header X-Content-Type-Options "nosniff";
+
+  add_header X-XSS-Protection "1; mode=block";
+
+  add_header Strict-Transport-Security "max-age=15552000; includeSubDomains";
+
+  add_header X-Download-Options "noopen";
+
+  add_header X-Frame-Options "deny";
+
+  proxy_set_header X-Forwarded-Proto $scheme;
+
+  root /usr/share/nginx/html/;
+
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}

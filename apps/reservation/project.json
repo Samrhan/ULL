@@ -10,7 +10,8 @@
         "outputPath": "dist/apps/reservation",
         "main": "apps/reservation/src/main.ts",
         "tsConfig": "apps/reservation/tsconfig.app.json",
-        "assets": ["apps/reservation/src/assets"]
+        "assets": ["apps/reservation/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {

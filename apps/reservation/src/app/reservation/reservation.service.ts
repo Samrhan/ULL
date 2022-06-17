@@ -24,6 +24,7 @@ export class ReservationService {
         reservation.state = ReservationState.ADDED
         reservation.projectDate = project.project_date
         reservation.providerId = performance.provider_id
+        reservation.customerId = user.id
         await this.reservationRepository.save(reservation)
     }
 
@@ -39,6 +40,18 @@ export class ReservationService {
             state: reservation.state,
             replacement_performance_id: reservation.reservationReplace?.idPerformance,
         }
+    }
+
+
+    async deleteReservation(idProject: string, idPerformance: string, user: JwtUser) {
+        const reservation = await this.reservationRepository.findOne({where: {idPerformance, idProject}})
+        if (!reservation) {
+            throw new NotFoundException()
+        }
+        if (reservation.customerId !== user.id) {
+            throw new ForbiddenException()
+        }
+        await this.reservationRepository.delete({idProject, idPerformance})
     }
 
     async getProviderReservations(user: JwtUser) {
@@ -130,4 +143,5 @@ export class ReservationService {
             state: body.accepted ? ReservationState.ACCEPTED : ReservationState.REJECTED
         })
     }
+
 }

@@ -1,6 +1,13 @@
 version: "3"
 
 services:
+  front:
+    image: ull/front
+    build:
+      context: ./
+      dockerfile: ./apps/ull/Dockerfile
+    ports:
+      - "3000:80"
   authentication:
     image: ull/authentication
     build:
@@ -29,6 +36,36 @@ services:
       - TYPEORM_CUSTOMER_URI=postgres://postgres@postgres-customer:5432/customer
     ports:
       - "3335:3335"
+    networks:
+      - services_database_postgres
+  discovery:
+    image: ull/discovery
+    build:
+      context: ./
+      dockerfile: ./apps/discovery/Dockerfile
+    env_file:
+      - .env
+    environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
+      - NODE_ENV=production
+      - RABBITMQ_URI=amqp://rabbitmq:5672
+      - TYPEORM_DISCOVERY_URI=postgres://postgres@postgres-discovery:5432/discovery
+    ports:
+      - "3337:3337"
+    networks:
+      - services_database_postgres
+  reservation:
+    image: ull/reservation
+    build:
+      context: ./
+      dockerfile: ./apps/reservation/Dockerfile
+    env_file:
+      - .env
+    environment: #environment variables defined here override those from env_file. See : https://docs.docker.com/compose/environment-variables/#set-environment-variables-with-docker-compose-run
+      - NODE_ENV=production
+      - RABBITMQ_URI=amqp://rabbitmq:5672
+      - TYPEORM_RESERVATION_URI=postgres://postgres@postgres-reservation:5432/reservation
+    ports:
+      - "3339:3339"
     networks:
       - services_database_postgres
   provider:

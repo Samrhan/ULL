@@ -60,8 +60,8 @@ export class AuthService {
     provider.siren = registerDto.siren;
     provider.email = registerDto.email;
     provider.phoneNumber = registerDto.phone;
-    provider.profilePicture = registerDto.profile_picture || DEFAULT_PROFILE_PIC_PROVIDER;
-    provider.coverPicture = registerDto.cover_picture || DEFAULT_COVER_PIC_PROVIDER;
+    provider.profilePicture = registerDto.profile_picture;
+    provider.coverPicture = registerDto.cover_picture;
     provider.areaServed = registerDto.area_served  || '';
 
     try {
