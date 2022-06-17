@@ -18,7 +18,7 @@ import {AnyFilesInterceptor} from "@nestjs/platform-express";
 import {ProjectService} from "./project.service";
 import {EditProjectDto} from "./dto/edit-project.entity";
 
-@Controller('project')
+@Controller('')
 @UseGuards(LocalAuthGuard)
 @UseInterceptors(
     AnyFilesInterceptor()
@@ -26,26 +26,31 @@ import {EditProjectDto} from "./dto/edit-project.entity";
 export class ProjectController {
     @Inject() projectService: ProjectService
 
-    @Post()
+    @Post('project')
     @UseGuards(UserGuard('customer'))
     async createProject(@Body() body: CreateProjectDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
         await this.projectService.createProject(body, files[0], user)
     }
 
-    @Put()
+    @Put('project')
     @UseGuards(UserGuard('customer'))
     async editProject(@Body() body: EditProjectDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
         await this.projectService.editProject(body, files[0], user)
     }
 
-    @Delete(':id')
+    @Delete('project:id')
     @UseGuards(UserGuard('customer'))
     async deleteProject(@Param('id') projectId: string, @User() user: JwtUser) {
         await this.projectService.deleteProject(projectId, user)
     }
 
-    @Get(':id')
+    @Get('project:id')
     async getProjectDetail(@Param('id') projectId: string): Promise<IProject>{
         return await this.projectService.getProjectDetail(projectId)
+    }
+
+    @Get('all_projects')
+    async getAllProjects(@User() user: JwtUser){
+        return await this.projectService.getAllProjects(user)
     }
 }

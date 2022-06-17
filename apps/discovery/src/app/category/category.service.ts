@@ -5,10 +5,12 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Provider} from "../shared/entity/provider.entity";
 import {PutCategoryDto} from "./dto/put-category.dto";
 import {JwtUser} from "@ull/api-interfaces";
+import {Tag} from "../tag/entity/tag.entity";
 
 @Injectable()
 export class CategoryService {
     @InjectRepository(Category) categoryRepository: Repository<Category>
+    @InjectRepository(Tag) tagRepository: Repository<Tag>
     @InjectRepository(Provider) providerRepository: Repository<Provider>
 
     async getAllProviderCategory() {
@@ -36,5 +38,22 @@ export class CategoryService {
         }
         provider.category = category
         await this.providerRepository.save(provider)
+    }
+
+    async getRecommend(categoryName: string, projectId: string, user: JwtUser): Promise<string[]> {
+        const category = await this.categoryRepository.findOne(categoryName)
+        if (!category) {
+            throw new NotFoundException()
+        }
+        const providers = await this.providerRepository.find({where: {category}, take: 10})
+        return providers.map((p) => (p.idProvider))
+    }
+
+    async getCategories() {
+        return {
+            popular: (await this.categoryRepository.find({where: {popular: true}})).map((c) => ({name: c.categoryName, picture: c.categoryPicture})),
+            collections:[],
+            all: (await this.categoryRepository.find({where: {popular: false}})).map((c) => ({name: c.categoryName, picture: c.categoryPicture}))
+        }
     }
 }
