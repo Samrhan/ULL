@@ -237,8 +237,8 @@ export class ProfileService {
             company_name: queryProfile.companyName,
             company_description: queryProfile.companyDescription,
             area_served: queryProfile.areaServed,
-            cover_picture: queryProfile.coverPicture,
-            profile_picture: queryProfile.profilePicture,
+            cover_picture: queryProfile.coverPicture || DEFAULT_COVER_PIC_PROVIDER,
+            profile_picture: queryProfile.profilePicture || DEFAULT_PROFILE_PIC_PROVIDER,
             rating: 0,
             services: queryProfile.sections
                 .sort((a, b) => a.yIndex - b.yIndex)
