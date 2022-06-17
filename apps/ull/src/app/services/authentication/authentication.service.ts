@@ -26,6 +26,7 @@ export class AuthenticationService {
   ) { }
 
   storeTokenAndRedirect(userToken: string){
+    sessionStorage.clear();
     AuthenticationService.storeUserToken(userToken);
     this.router.navigate(['/profile']);
   }
@@ -49,7 +50,8 @@ export class AuthenticationService {
   }
 
   disconnect(): void {
-    localStorage.removeItem('user-token');
+    localStorage.clear();
+    sessionStorage.clear();
     location.reload();
   }
 
