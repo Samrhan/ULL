@@ -9,8 +9,7 @@
       "options": {
         "outputPath": "dist/apps/dummy-data-scripts",
         "main": "apps/dummy-data-scripts/src/main.ts",
-        "tsConfig": "apps/dummy-data-scripts/tsconfig.app.json",
-        "assets": ["apps/dummy-data-scripts/src/assets"]
+        "tsConfig": "apps/dummy-data-scripts/tsconfig.app.json"
       },
       "configurations": {
         "production": {
