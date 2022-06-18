@@ -1,0 +1,52 @@
+{
+  "root": "apps/dummy-data-scripts",
+  "sourceRoot": "apps/dummy-data-scripts/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/dummy-data-scripts",
+        "main": "apps/dummy-data-scripts/src/main.ts",
+        "tsConfig": "apps/dummy-data-scripts/tsconfig.app.json",
+        "assets": ["apps/dummy-data-scripts/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/dummy-data-scripts/src/environments/environment.ts",
+              "with": "apps/dummy-data-scripts/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "dummy-data-scripts:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/dummy-data-scripts/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/dummy-data-scripts"],
+      "options": {
+        "jestConfig": "apps/dummy-data-scripts/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
