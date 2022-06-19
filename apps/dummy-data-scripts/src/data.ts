@@ -23,8 +23,8 @@ export const providerData : {
       phone: "+33601020304",
       siren: "844639286"
     },
-    profile_picture: '',
-    cover_picture: '',
+    profile_picture: 'images/waitress-gff8ebb643_1920.jpg',
+    cover_picture: 'images/waitress-gff8ebb643_1920.jpg',
     company_info: {
       company_name: "Catering premium",
       company_description: "Un service traiteur de qualité",
