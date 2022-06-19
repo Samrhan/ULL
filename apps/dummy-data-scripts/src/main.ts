@@ -1,7 +1,6 @@
 import {environment} from "./environments/environment";
 import axios from "axios";
 import {providerData} from "./data";
-import * as readline from 'readline';
 import * as fs from 'fs';
 import {
   EditProviderInfoBody, ProviderProfile,
@@ -11,44 +10,18 @@ import {
   Performance
 } from "@ull/api-interfaces";
 import FormData from "form-data";
-import {throws} from "assert";
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-function menu(){
-  rl.question(
-    "Please select the script you wish to run :\n" +
-    "\t1. Initialize provider (web) database with dummy data\n" +
-    "\t2. Initialize customer (mobile app) database with dummy data\n",
-    async (result) => {
-      const choice = Number.parseInt(result, 10);
-      switch (choice){
-        case 1:
-          await initProviderDatabase();
-          break;
-        case 2:
-          await initCustomerDatabase();
-          break;
-        default:
-          console.log("Invalid input, please enter a valid option.");
-          menu();
-      }
-      console.log("========= Finished script =========");
-      process.exit(0);
-    }
-  );
-}
-menu()
+initProviderDatabase();
 
 /**
  * Uploads each provider profile from ./data.providerData
  */
 async function initProviderDatabase() : Promise<void> {
   // Handle each profile independently in parallel
+  console.log("========= Starting upload of users =========");
   await Promise.all(providerData.map(profile => handleProvider(profile)));
+  console.log("========= Finished script =========");
+  process.exit(0);
 }
 
 /**
@@ -295,17 +268,4 @@ async function addPerformancesToSection(userToken: string, sectionId: string, pe
     // Very important await to ensure sequentiality
     await axios.post(environment.baseServerURL + environment.providerServiceURL + '/performance', data.getBuffer(), config)
   }
-}
-
-
-
-
-
-
-
-
-
-
-async function initCustomerDatabase() : Promise<void> {
-
 }
