@@ -23,8 +23,8 @@ export const providerData : {
       phone: "+33601020304",
       siren: "844639286"
     },
-    profile_picture: 'images/waitress-gff8ebb643_1920.jpg',
-    cover_picture: 'images/waitress-gff8ebb643_1920.jpg',
+    profile_picture: '/images/waitress-gff8ebb643_1920.jpg',
+    cover_picture: '/images/waitress-gff8ebb643_1920.jpg',
     company_info: {
       company_name: "Catering premium",
       company_description: "Un service traiteur de qualité",
@@ -38,8 +38,8 @@ export const providerData : {
         city: "Paris"
       },
     },
-    category: "",
-    tags: [""],
+    category: "Traiteur",
+    tags: ["Cuisine Française", "Salle des fêtes"],
     profile_content: [
       {
         id_section: "",
@@ -48,8 +48,8 @@ export const providerData : {
         section_description: "",
         purchasable: true,
         pictures: [
-          "images/waitress-gff8ebb643_1920.jpg",
-          "images/beer-820011_1920.jpg",
+          "/images/waitress-gff8ebb643_1920.jpg",
+          "/images/beer-820011_1920.jpg",
         ],
         content: [
           {
@@ -60,7 +60,7 @@ export const providerData : {
               value: 1300,
               unit: PriceUnit.person
             },
-            picture: "images/cocktails.jpg",
+            picture: "/images/cocktails.jpg",
           }
         ]
       },
@@ -79,7 +79,7 @@ export const providerData : {
               value: 500,
               unit: PriceUnit.stack
             },
-            picture: "images/cupcakes-gc0620a627_1920.jpg",
+            picture: "/images/cupcakes-gc0620a627_1920.jpg",
           },
           {
             id_performance: "",
@@ -89,7 +89,7 @@ export const providerData : {
               value: 500,
               unit: PriceUnit.stack
             },
-            picture: "images/italian-food-2157246__340.png",
+            picture: "/images/italian-food-2157246__340.png",
           }
         ]
       }

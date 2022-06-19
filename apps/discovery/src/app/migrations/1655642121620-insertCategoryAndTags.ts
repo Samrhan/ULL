@@ -26,14 +26,14 @@ export class insertCategoryAndTags1655642121620 implements MigrationInterface {
             '        (\'musicien solo\'),\n' +
             '        (\'DJ\'),\n' +
             '        (\'Cuisine Italienne\'),\n' +
-            '        (\'Cuisine Français\'),\n' +
+            '        (\'Cuisine Française\'),\n' +
             '        (\'Cuisine Japonaise\'),\n' +
             '        (\'Cuisine Mexicaine\'),\n' +
             '        (\'Cuisine Coréenne\'),\n' +
             '        (\'Cuisine Espagnole\'),\n' +
             '        (\'Cuisine Grecque\'),\n' +
-            '        (\'Cuisine Truc\'),\n' +
-            '        (\'Cuisine Thaïs\'),\n' +
+            '        (\'Cuisine Turque\'),\n' +
+            '        (\'Cuisine Thaï\'),\n' +
             '        (\'Cuisine Chinoise\'),\n' +
             '        (\'Cuisine Indienne\'),\n' +
             '        (\'Cuisine Orientale\'),\n' +

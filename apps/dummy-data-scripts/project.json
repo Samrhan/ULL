@@ -9,7 +9,8 @@
       "options": {
         "outputPath": "dist/apps/dummy-data-scripts",
         "main": "apps/dummy-data-scripts/src/main.ts",
-        "tsConfig": "apps/dummy-data-scripts/tsconfig.app.json"
+        "tsConfig": "apps/dummy-data-scripts/tsconfig.app.json",
+        "assets": ["apps/dummy-data-scripts/src/images"]
       },
       "configurations": {
         "production": {
@@ -28,7 +29,8 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "dummy-data-scripts:build"
+        "buildTarget": "dummy-data-scripts:build",
+        "watch": false
       }
     },
     "lint": {

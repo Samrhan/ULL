@@ -11,6 +11,7 @@ import {
   Performance
 } from "@ull/api-interfaces";
 import FormData from "form-data";
+import {throws} from "assert";
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -22,19 +23,21 @@ function menu(){
     "Please select the script you wish to run :\n" +
     "\t1. Initialize provider (web) database with dummy data\n" +
     "\t2. Initialize customer (mobile app) database with dummy data\n",
-    (result) => {
+    async (result) => {
       const choice = Number.parseInt(result, 10);
       switch (choice){
         case 1:
-          initProviderDatabase();
+          await initProviderDatabase();
           break;
         case 2:
-          initCustomerDatabase().then();
+          await initCustomerDatabase();
           break;
         default:
           console.log("Invalid input, please enter a valid option.");
           menu();
       }
+      console.log("========= Finished script =========");
+      process.exit(0);
     }
   );
 }
@@ -43,9 +46,9 @@ menu()
 /**
  * Uploads each provider profile from ./data.providerData
  */
-function initProviderDatabase() : void {
+async function initProviderDatabase() : Promise<void> {
   // Handle each profile independently in parallel
-  providerData.forEach(profile => handleProvider(profile));
+  await Promise.all(providerData.map(profile => handleProvider(profile)));
 }
 
 /**
@@ -62,20 +65,25 @@ async function handleProvider(providerData) : Promise<void> {
   try {
     await registerProvider(providerData.register);
   } catch (e) {
-    console.error(`An error occured while registering the user ${providerData.company_info.company_name} : ${e}`);
+    console.error(`An error occured while registering the user '${providerData.company_info.company_name}' :`, e,'\n--------------------------------');
     return;
   }
-  console.log(`Registered user ${providerData.company_info.company_name}`);
+  console.log(`Registered user '${providerData.company_info.company_name}'`,'\n--------------------------------');
 
-  const userToken = await loginProvider(providerData.register);
+  const userToken = (await loginProvider(providerData.register)).data.access_token;
   if(userToken){
-    console.log(`Logged in user ${providerData.company_info.company_name} with token : '${userToken}'`);
+    console.log(`Logged in user '${providerData.company_info.company_name}' with token : `, userToken,'\n--------------------------------');
 
-    setProviderInfos(userToken, providerData.company_info, providerData.profile_picture, providerData.cover_picture);
-    setProviderCategorization(userToken, providerData.category, providerData.tags);
-    setProviderServices(userToken, providerData.profile_content);
+    const promiseList = [];
+
+    promiseList.push(setProviderInfos(userToken, providerData.company_info, providerData.profile_picture, providerData.cover_picture));
+    promiseList.push(setProviderCategorization(userToken, providerData.category, providerData.tags));
+    promiseList.push(setProviderServices(userToken, providerData.profile_content));
+
+    await Promise.all(promiseList);
+    console.log(`============= Finished adding user '${providerData.company_info.company_name}' to the database =============`);
   } else {
-    console.error(`Couldn't login user ${providerData.company_info.company_name}`);
+    console.error(`Couldn't login user '${providerData.company_info.company_name}'`,'\n--------------------------------');
   }
 }
 
@@ -91,14 +99,14 @@ function registerProvider(body: RegisterProviderRequestBody) : Promise<void> {
  * Logins the user and returns a Promise that resolves with the access token
  * @param body
  */
-function loginProvider(body: RegisterProviderRequestBody) : Promise<string> {
+function loginProvider(body: RegisterProviderRequestBody) : Promise<any> {
   try {
     return axios.post(environment.baseServerURL + environment.authenticationServiceURL + '/login', {
       email: body.email,
       password: body.password
     });
   } catch (e) {
-    console.error(`Error while logging in user : ${e}`);
+    console.error(`Error while logging in user '${body.email}'`, e,'\n--------------------------------');
     return new Promise(resolve => resolve(""));
   }
 }
@@ -131,17 +139,31 @@ async function setProviderInfos(userToken: string, newInfo: EditProviderInfoBody
     }
 
     // This FormData accepts buffers for files instead of requiring a Blob which doesn't exist in node
-    formData.append('profile_picture', fs.readFileSync(profilePicture));
-    formData.append('cover_picture', fs.readFileSync(coverPicture));
+    // We must specify the Content-Type of the image, otherwise form-data will put the default 'application/octet-stream'
+    // type which will be refused by the backend
+    // Instead, we must set a type of 'image/{file extension}'
+    // https://github.com/form-data/form-data#alternative-submission-methods
+    formData.append('profile_picture', fs.readFileSync(__dirname + profilePicture), {
+      filepath: __dirname + profilePicture,                                      // Important, don't know why
+      contentType: `image/${profilePicture.split('.').at(-1)}`   // Set the Content-Type property
+    })
+    // We must specify the Content-Type of the image, otherwise form-data will put the default 'application/octet-stream'
+    // type which will be refused by the backend
+    // Instead, we must set a type of 'image/{file extension}'
+    formData.append('cover_picture', fs.readFileSync(__dirname + coverPicture), {
+      filepath: __dirname + coverPicture,                                      // Important, don't know why
+      contentType: `image/${coverPicture.split('.').at(-1)}`   // Set the Content-Type property
+    })
 
     // Specify that the content is of type form-data
-    const config = {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${userToken}`}};
+    const config = {headers: formData.getHeaders()};
+    config.headers['Authorization'] = `Bearer ${userToken}`;
 
-    await axios.post(environment.baseServerURL + environment.providerServiceURL + '/profile', formData, config);
+    await axios.put(environment.baseServerURL + environment.providerServiceURL + '/profile', formData.getBuffer(), config);
 
-    console.log(`Set infos for user ${newInfo.company_name} (token : ${userToken})`);
+    console.log(`Set infos for user '${newInfo.company_name}' (token : '${userToken.toString()}')`, '\n--------------------------------');
   } catch (e) {
-    console.error(`Couldn't set infos for user ${newInfo.company_name} (token : ${userToken}) : ${e}`);
+    console.error(`Couldn't set infos for user '${newInfo.company_name}' (token : '${userToken.toString()}') : `, e, '\n--------------------------------');
   }
 }
 
@@ -158,9 +180,9 @@ async function setProviderCategorization(userToken: string, category: string, ta
     await axios.put(environment.baseServerURL + environment.discoveryServiceURL + '/provider_category', {name: category}, config);
     await axios.put(environment.baseServerURL + environment.discoveryServiceURL + '/provider_tags', tags, config);
 
-    console.log(`Set category and tags for user ${userToken}`);
+    console.log(`Set category and tags for user '${userToken.toString()}'`, '\n--------------------------------');
   } catch (e) {
-    console.error(`Couldn't set category and tags for user ${userToken} : ${e}`);
+    console.error(`Couldn't set category and tags for user '${userToken.toString()}' : `, e, '\n--------------------------------');
   }
 }
 
@@ -189,8 +211,6 @@ async function setProviderServices(userToken: string, sections: ProviderProfileS
   try {
     // 1. Post the sections in the order they come in
     for(const section of sections){
-      const config = { headers: { 'Content-Type': 'multipart/form-data', 'Authorization' : `Bearer ${userToken}` } };
-
       const data = new FormData();
       data.append('type', section.type);
       data.append('section_title', section.section_title);
@@ -203,30 +223,41 @@ async function setProviderServices(userToken: string, sections: ProviderProfileS
 
       if (section.type === SectionType.big) {
         for (const picture of section.pictures || []) {
-          // Append all the files to the same name to create an array
-          data.append('pictures', fs.readFileSync(picture));
+          // We must specify the Content-Type of the image, otherwise form-data will put the default 'application/octet-stream'
+          // type which will be refused by the backend
+          // Instead, we must set a type of 'image/{file extension}'
+          // https://github.com/form-data/form-data#alternative-submission-methods
+          data.append('pictures', fs.readFileSync(__dirname + picture), {
+            filepath: __dirname + picture,                                      // Important, don't know why
+            contentType: `image/${picture.split('.').at(-1)}`   // Set the Content-Type property
+          })
         }
       }
 
+      const config = {headers: data.getHeaders()};
+      config.headers['Authorization'] = `Bearer ${userToken}`;
+
       // Very important await to make sure every addition is sequential
-      await axios.post(environment.baseServerURL + environment.providerServiceURL + '/section', data, config);
+      await axios.post(environment.baseServerURL + environment.providerServiceURL + '/section', data.getBuffer(), config);
     }
 
     // 2. Fetch the user's profile
     const config = { headers: { 'Authorization' : `Bearer ${userToken}` } };
-    const profile : ProviderProfile = await axios.get(environment.baseServerURL + environment.providerServiceURL + '/profile/' + getProviderId(userToken), config);
+    const profile : ProviderProfile = (await axios.get(environment.baseServerURL + environment.providerServiceURL + '/profile/' + getProviderId(userToken), config)).data;
     const profileSections : ProviderProfileSection[] = profile.services;
 
+    const promiseList = [];
     // 3. Run through both lists in order and add the relevant performances sequentially
     for(let i = 0; i < profileSections.length; i++){
       // The appending to sections is paralellized though as only the order of addition inside a section matter
       // Therefore, no await here
-      addPerformancesToSection(userToken, profileSections[i].id_section, sections[i].content);
+      promiseList.push(addPerformancesToSection(userToken, profileSections[i].id_section, sections[i].content));
     }
 
-    console.log(`Set profile sections and performances for user ${userToken}`);
+    await Promise.all(promiseList);
+    console.log(`Set profile sections and performances for user '${userToken.toString()}'`, '\n--------------------------------');
   } catch (e) {
-    console.error(`Couldn't set profile sections and performances for user ${userToken} : ${e}`);
+    console.error(`Couldn't set profile sections and performances for user '${userToken.toString()}' : `, e, '\n--------------------------------');
   }
 }
 
@@ -242,18 +273,27 @@ async function addPerformancesToSection(userToken: string, sectionId: string, pe
    */
 
   // Add every performance in order
-  const config = { headers: { 'Content-Type': 'multipart/form-data', 'Authorization' : `Bearer ${userToken}` } };
   for(const performance of performances){
     const data = new FormData();
     data.append('performance_title', performance.performance_title);
     data.append('performance_description', performance.performance_description);
-    data.append('performance_picture', fs.readFileSync(performance.picture));
+    // We must specify the Content-Type of the image, otherwise form-data will put the default 'application/octet-stream'
+    // type which will be refused by the backend
+    // Instead, we must set a type of 'image/{file extension}'
+    // https://github.com/form-data/form-data#alternative-submission-methods
+    data.append('performance_picture', fs.readFileSync(__dirname + performance.picture), {
+      filepath: __dirname + performance.picture,                                      // Important, don't know why
+      contentType: `image/${performance.picture.split('.').at(-1)}`   // Set the Content-Type property
+    })
     data.append('price_value', JSON.stringify(performance.price.value));
     data.append('price_unit', performance.price.unit);
     data.append('id_section', sectionId);
 
+    const config = {headers: data.getHeaders()};
+    config.headers['Authorization'] = `Bearer ${userToken}`;
+
     // Very important await to ensure sequentiality
-    await axios.post(environment.baseServerURL + environment.providerServiceURL + '/performance', data, config)
+    await axios.post(environment.baseServerURL + environment.providerServiceURL + '/performance', data.getBuffer(), config)
   }
 }
 
