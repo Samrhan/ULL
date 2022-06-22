@@ -273,7 +273,8 @@ export const providerData : {
         ]
       }
     ]
-  },{
+  },
+  {
     register: {
       company_name: "Gabriel Châtillon",
       email: "gabriel.chatillon@outlook.com",
@@ -288,7 +289,7 @@ export const providerData : {
       company_description: "DJ moderne",
       area_served: "Sud de Paris",
       email: "gabriel.chatillon@outlook.com",
-      phone: "+33601020304",
+      phone: "+33601020306",
       address: {
         number: "1",
         street: "Rue de la victoire",
@@ -319,6 +320,61 @@ export const providerData : {
               unit: PriceUnit.absolute
             },
             picture: "/images/audience-g6ad299182_1920.jpg",
+          }
+        ]
+      }
+    ]
+  },
+  {
+    register: {
+      company_name: "Domaine de la Tuilerie",
+      email: "domaine-tuilerie@orange.fr",
+      password: "password",
+      phone: "+33601020307",
+      siren: "484456884"
+    },
+    profile_picture: '/images/music-player-g7f03cb116_1920.jpg',
+    cover_picture: '/images/audio-g4cfa9b9e7_1920.jpg',
+    company_info: {
+      company_name: "Domaine de la Tuilerie",
+      company_description: "Un espace de 370 mètres carrés pouvant accueillir 400 personnes.",
+      area_served: "Domaine à Marolles-en-Brie (94440)",
+      email: "domaine-tuilerie@orange.fr",
+      phone: "+33601020307",
+      address: {
+        number: "7",
+        street: "Rue de la Tuilerie",
+        postal_code: "94440",
+        city: "Marolles-en-Brie"
+      },
+    },
+    category: "Locataire de salle",
+    tags: ["Salle des fêtes", "Monument historique", "Parc", "Château"],
+    profile_content: [
+      {
+        id_section: "",
+        type: SectionType.big,
+        section_title: "Animation musicale",
+        section_description: "",
+        purchasable: true,
+        pictures: [
+          "/images/lico-4.jpeg",
+          "/images/lico-15.jpeg",
+          "/images/lico-16.jpeg",
+          "/images/lico-29.jpeg",
+          "/images/lico-34.jpeg",
+          "/images/lico-37.jpeg"
+        ],
+        content: [
+          {
+            id_performance: "",
+            performance_title: "Louer le domaine",
+            performance_description: "Bienvenue chez marolles event !\n\nPour vos événements privés, notre équipe de professionnels vous accompagne avec grand plaisir dans toute l'organisation de votre projet et met tout son savoir-faire à votre service.\n\nNotre espace le pavillon \"la Tuilerie\" à Marolles en Brie peut accueillir vos réceptions privées de 100 à 400 personnes. Ce lieu sera idéal pour vos mariages.Notre salle de réception très spacieuse, ouverte sur un grand jardin fleuri, est à votre disposition. Idéale pour une réception en pleine nature. Nous ferons notre maximum pour faire de votre événement, un moment spécial pour vous et vos invités que vous n'oublierez jamais, soyez-en sûrs !\n\n! Entreprises ou particuliers, vous pourrez nous accorder toute votre confiance les yeux fermés.\n\nNous mettons un point d’honneur à répondre à vos besoins, notamment pour les dîners de Gala, les dîners de fin d'année, les repas d'affaires ou encore les déjeuners d'affaires ou de fin d'année...\n\nPour de plus amples informations, n'hésitez pas à nous contacter !",
+            price: {
+              value: 150000,
+              unit: PriceUnit.absolute
+            },
+            picture: "/images/lico-17.jpeg",
           }
         ]
       }
