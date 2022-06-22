@@ -273,5 +273,55 @@ export const providerData : {
         ]
       }
     ]
-  },
+  },{
+    register: {
+      company_name: "Gabriel Châtillon",
+      email: "gabriel.chatillon@outlook.com",
+      password: "password",
+      phone: "+33601020306",
+      siren: "511930729"
+    },
+    profile_picture: '/images/music-player-g7f03cb116_1920.jpg',
+    cover_picture: '/images/audio-g4cfa9b9e7_1920.jpg',
+    company_info: {
+      company_name: "Gabriel Châtillon",
+      company_description: "DJ moderne",
+      area_served: "Sud de Paris",
+      email: "gabriel.chatillon@outlook.com",
+      phone: "+33601020304",
+      address: {
+        number: "1",
+        street: "Rue de la victoire",
+        postal_code: "94310",
+        city: "Orly"
+      },
+    },
+    category: "Musicien",
+    tags: ["DJ", "Style moderne"],
+    profile_content: [
+      {
+        id_section: "",
+        type: SectionType.big,
+        section_title: "Animation musicale",
+        section_description: "",
+        purchasable: true,
+        pictures: [
+          "/images/dj-g43624caea_1920.jpg",
+          "/images/hand-g94e2eabe3_1920.jpg"
+        ],
+        content: [
+          {
+            id_performance: "",
+            performance_title: "Je viens faire l'animation de votre événement",
+            performance_description: "Je m'adapte à vos goûts et vos envie, pour tous les publics. N'hésitez pas si vous avez une idée précise de ce que vous voulez (artiste, album, voire une liste exacte). Je peux également vous conseiller et éllaborer une playlist avec vous si vous êtes moins sûr.\n\nNous pouvons discuter via le chat de l'application.\n\nAttention : pour des raisons légales de droit d'auteur, je ne peux pas passer toutes les musiques. Nous pourrons également discuter de cela pour organiser au mieux votre événement.",
+            price: {
+              value: 25000,
+              unit: PriceUnit.absolute
+            },
+            picture: "/images/audience-g6ad299182_1920.jpg",
+          }
+        ]
+      }
+    ]
+  }
 ]
