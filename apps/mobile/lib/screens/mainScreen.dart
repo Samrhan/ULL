@@ -85,187 +85,192 @@ class _EventBarState extends State<EventBar> {
       children: [
         Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 4,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: <Color>[Color(0xFF894c56), Color(0xFFa80d0d)])),
-            child: Column(children: [
-              Row(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Column(children: [
+                  Row(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(15, 60, 0, 0),
-                        child: Text("Votre évènement",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15,
-                            ),
-                            textAlign: TextAlign.left),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Container(
-                            width: 300,
-                            decoration: ShapeDecoration(
-                              color: const Color(0x00ffffff),
-                              shape: SmoothRectangleBorder(
-                                borderRadius: SmoothBorderRadius(
-                                  cornerRadius: 10,
-                                  cornerSmoothing: 0.5,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(15, 60, 0, 0),
+                            child: Text("Votre évènement",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15,
                                 ),
-                              ),
-                            ),
-                            child: MaterialButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return Column(
-                                        children: [
-                                          Container(
-                                            child: const Text(
-                                              "Vos évènements",
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Color(0xff832232)),
-                                            ),
-                                            decoration:
-                                                BoxDecoration(boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.5),
-                                                spreadRadius: 2,
-                                                blurRadius: 3,
-                                              )
-                                            ], color: Colors.white),
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                          ),
-                                          for (var item in items)
-                                            if (item != dropDownValue)
+                                textAlign: TextAlign.left),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              child: Container(
+                                width: 300,
+                                decoration: ShapeDecoration(
+                                  color: const Color(0x00ffffff),
+                                  shape: SmoothRectangleBorder(
+                                    borderRadius: SmoothBorderRadius(
+                                      cornerRadius: 10,
+                                      cornerSmoothing: 0.5,
+                                    ),
+                                  ),
+                                ),
+                                child: MaterialButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) {
+                                          return Column(
+                                            children: [
                                               Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  decoration:
-                                                      const BoxDecoration(
+                                                child: const Text(
+                                                  "Vos évènements",
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: Color(0xff832232)),
+                                                ),
+                                                decoration:
+                                                    BoxDecoration(boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5),
+                                                    spreadRadius: 2,
+                                                    blurRadius: 3,
+                                                  )
+                                                ], color: Colors.white),
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                              ),
+                                              for (var item in items)
+                                                if (item != dropDownValue)
+                                                  Container(
+                                                      width: MediaQuery.of(context)
+                                                          .size
+                                                          .width,
+                                                      decoration: const BoxDecoration(
                                                           border: Border(
                                                               bottom: BorderSide(
                                                                   width: 0.5,
                                                                   color: Colors
                                                                       .grey))),
-                                                  child: MaterialButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          dropDownValue = item;
-                                                          globals.dropDownValue =
-                                                              dropDownValue;
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment.start,
-                                                          children: [
-                                                            Text(item,
-                                                                style:
-                                                                    const TextStyle(
+                                                      child: MaterialButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              dropDownValue =
+                                                                  item;
+                                                              globals.dropDownValue =
+                                                                  dropDownValue;
+                                                            });
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment.start,
+                                                              children: [
+                                                                Text(item,
+                                                                    style: const TextStyle(
                                                                         fontSize:
                                                                             12))
-                                                          ])))
-                                            else
-                                              Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  decoration: const BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              width: 0.5,
-                                                              color: Colors.grey))),
-                                                  child: MaterialButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          dropDownValue = item;
-                                                          globals.dropDownValue =
-                                                              dropDownValue;
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [Text(item, style: const TextStyle(fontSize: 12))])))
-                                        ],
-                                      );
-                                    });
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(dropDownValue,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 15)),
-                                  const Icon(Icons.keyboard_arrow_down,
-                                      color: Colors.white)
-                                ],
+                                                              ])))
+                                                else
+                                                  Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      decoration: const BoxDecoration(
+                                                          border: Border(
+                                                              bottom: BorderSide(
+                                                                  width: 0.5,
+                                                                  color: Colors.grey))),
+                                                      child: MaterialButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              dropDownValue =
+                                                                  item;
+                                                              globals.dropDownValue =
+                                                                  dropDownValue;
+                                                            });
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [Text(item, style: const TextStyle(fontSize: 12))])))
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(dropDownValue,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15)),
+                                      const Icon(Icons.keyboard_arrow_down,
+                                          color: Colors.white)
+                                    ],
+                                  ),
+                                ),
+                              ))
+                        ],
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                // <-- SEE HERE
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(12.0),
+                                ),
                               ),
-                            ),
-                          ))
+                              builder: (BuildContext context) {
+                                return Profile(_currentUser);
+                              });
+                        },
+                        child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: getProfileImage(), fit: BoxFit.fill),
+                            )),
+                      )
                     ],
                   ),
-                  MaterialButton(
-                    onPressed: () {
-                      showModalBottomSheet<void>(
-                          isScrollControlled: true,
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                            // <-- SEE HERE
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(12.0),
-                            ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 7 * 6,
+                    child: TextField(
+                      decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.search, size: 25),
+                          hintText: 'Quel type de prestation recherchez-vous ?',
+                          hintStyle: const TextStyle(fontSize: 13),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
                           ),
-                          builder: (BuildContext context) {
-                            return Profile(_currentUser);
-                          });
-                    },
-                    child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: getProfileImage(), fit: BoxFit.fill),
-                        )),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(25.7),
+                          ),
+                          isDense: true,
+                          // Added this
+                          contentPadding: const EdgeInsets.all(12)),
+                    ),
                   )
-                ],
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 7 * 6,
-                child: TextField(
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search, size: 25),
-                      hintText: 'Quel type de prestation recherchez-vous ?',
-                      hintStyle: const TextStyle(fontSize: 13),
-                      filled: true,
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      isDense: true,
-                      // Added this
-                      contentPadding: const EdgeInsets.all(12)),
-                ),
-              )
-            ])),
+                ]))),
         const Padding(
             padding: EdgeInsets.fromLTRB(15, 15, 0, 10),
             child: Text("Populaire",

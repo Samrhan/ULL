@@ -114,10 +114,6 @@ class _MainEventState extends State<MainEventStated>{
                       .of(context)
                       .size
                       .width,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 6+10,
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topRight,
@@ -128,7 +124,8 @@ class _MainEventState extends State<MainEventStated>{
                           ]
                       )
                   ),
-                  child: Column(
+                  child: Padding(padding: const EdgeInsets.only(bottom: 10),
+                  child : Column(
                       children : [
                         Row(
                           children: [
@@ -305,6 +302,7 @@ class _MainEventState extends State<MainEventStated>{
                           ],
                         ),
                       ]
+                  )
                   )
               ),
             content: Column(

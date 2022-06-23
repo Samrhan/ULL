@@ -29,7 +29,6 @@ class Category extends StatelessWidget{
                   children: [
                     Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 7,
                         decoration: const BoxDecoration(
                             gradient: LinearGradient(
                                 begin: Alignment.topRight,
@@ -38,7 +37,8 @@ class Category extends StatelessWidget{
                               Color(0xFF894c56),
                               Color(0xFFa80d0d)
                             ])),
-                        child: Column(
+                        child: Padding(padding: const EdgeInsets.only(bottom: 30),
+                            child:Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -57,7 +57,10 @@ class Category extends StatelessWidget{
                                       color: Colors.white, fontSize: 17),
                                 ),
                               )
-                            ])),
+                            ]
+                            )
+                        ),
+                    )
                   ],
                 ),
 
