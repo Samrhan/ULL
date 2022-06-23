@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ULL/screens/bottomNavBar.dart';
 import 'package:ULL/screens/ListPrestat.dart';
+import 'package:ULL/services/globals.dart' as globals;
 
-class Category extends StatelessWidget {
-  Category(GoogleSignInAccount? _currentAccount, var event, {Key? key}) {
-    this.event = event;
-    this._currentAccount = _currentAccount;
+class Category extends StatelessWidget{
+  Category(GoogleSignInAccount? _currentAccount,{Key? key}){
+    this.event = globals.dropDownValue;
+    this._currentAccount=_currentAccount;
+
   }
 
   var event;
   GoogleSignInAccount? _currentAccount;
+
 
   @override
   Widget build(BuildContext context) {

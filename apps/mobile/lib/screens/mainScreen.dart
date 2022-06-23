@@ -12,16 +12,20 @@ import 'package:ULL/main.dart';
 import 'package:ULL/screens/category.dart';
 import 'package:ULL/screens/profile.dart';
 import 'package:ULL/screens/mainEvent.dart';
+import 'package:ULL/services/globals.dart' as globals;
 import 'package:ULL/screens/ListPrestat.dart';
+
 
 class MainScreen extends StatelessWidget {
   MainScreen(GoogleSignInAccount? _currentAccount, {Key? key})
       : super(key: key) {
     this._currentAccount = _currentAccount;
     super.key;
+    eventBar = EventBar(_currentAccount);
   }
 
   GoogleSignInAccount? _currentAccount;
+  var eventBar;
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +60,9 @@ class _EventBarState extends State<EventBar> {
   ];
   var assetImg = [];
 
-  @override
-  EventBar get widget => super.widget;
+
+  @override EventBar get widget => super.widget;
+
 
   var _currentUser;
 
@@ -65,6 +70,14 @@ class _EventBarState extends State<EventBar> {
   initState() {
     super.initState();
     _currentUser = widget._currentAccount;
+    if(globals.dropDownValue != null){
+      dropDownValue = globals.dropDownValue!;
+    }
+    else{
+      dropDownValue = items[0];
+      globals.dropDownValue=dropDownValue;
+    }
+
   }
 
   @override
@@ -139,7 +152,36 @@ class _EventBarState extends State<EventBar> {
                                                 .width,
                                           ),
                                           for (var item in items)
-                                            if (item != dropDownValue)
+                                            if(item != dropDownValue)
+                                            Container(
+                                              width: MediaQuery
+                                                    .of(context)
+                                                    .size
+                                                    .width,
+                                              decoration : const BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide(width: 0.5,color: Colors.grey)
+                                                  )
+                                              ),
+                                              child : MaterialButton(
+                                                onPressed: (){
+                                                  setState((){
+                                                    dropDownValue = item;
+                                                    globals.dropDownValue=dropDownValue;
+                                                  });
+                                                  Navigator.pop(context);
+                                                  },
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children : [
+                                                    Text(item,style: const TextStyle(fontSize: 12))
+                                                  ]
+                                                )
+
+                                              )
+                                            )
+                                          else
+
                                               Container(
                                                   width: MediaQuery.of(context)
                                                       .size
@@ -155,6 +197,7 @@ class _EventBarState extends State<EventBar> {
                                                       onPressed: () {
                                                         setState(() {
                                                           dropDownValue = item;
+                                                          globals.dropDownValue=dropDownValue;
                                                         });
                                                         Navigator.pop(context);
                                                       },
