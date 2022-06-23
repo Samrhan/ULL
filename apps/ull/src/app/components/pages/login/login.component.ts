@@ -1,17 +1,25 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../../../services/authentication/authentication.service";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'ull-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   constructor(
     private authentication: AuthenticationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute
   ) {}
+
+  newAccount = false;
+
+  ngOnInit() {
+    this.newAccount = (this.route.snapshot.queryParams['newAccount'] || '') === 'yes';
+  }
 
   loginForm:FormGroup = this.formBuilder.group({
     email: new FormControl('', Validators.required),

@@ -36,7 +36,7 @@ export class RequestedReservationsListComponent implements OnInit {
   }
 
   sortChronologically(a: Reservation, b: Reservation) : number {
-    return b.project.project_date.getTime() - a.project.project_date.getTime();
+    return new Date(b.project.project_date).getTime() - new Date(a.project.project_date).getTime();
   }
 
   savePref() {

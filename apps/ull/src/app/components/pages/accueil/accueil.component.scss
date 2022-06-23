@@ -4,6 +4,7 @@
   background-image: url("/assets/images/cocktails.jpg");
   background-repeat: no-repeat;
   background-position: center;
+  background-size: cover;
 }
 
 .explain-title {
@@ -80,15 +81,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  line-height: 1.1em;
+  line-height: 2em;
   opacity: 0;
   z-index: 2;
   transition-delay: 0.1s;
-  font-size: 24px;
-  font-family: sans-serif;
   font-weight: 400;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  padding: 10%;
 }
 
 .hover-img:hover:before,

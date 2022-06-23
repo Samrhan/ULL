@@ -1,9 +1,5 @@
-<div *ngIf="profile && performance">
-  <ull-navbar [selected]="'none'"
-              [profilePictureUrl]="profile.profile_picture"
-              [companyName]="profile.company_name"
-              [companyDescription]="profile.company_description">
-  </ull-navbar>
+<div *ngIf="performance">
+  <ull-navbar [selected]="'none'"></ull-navbar>
 
   <!-- Content -->
   <div class="bg-light d-flex justify-content-center min-vh-100">

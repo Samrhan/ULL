@@ -14,7 +14,7 @@
         "polyfills": "apps/ull/src/polyfills.ts",
         "tsConfig": "apps/ull/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/ull/src/favicon.ico", "apps/ull/src/assets"],
+        "assets": ["apps/ull/src/favicon.png", "apps/ull/src/assets"],
         "styles": ["apps/ull/src/styles.scss"],
         "scripts": []
       },
@@ -23,13 +23,13 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "1mb",
+              "maximumError": "5mb"
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "maximumWarning": "1mb",
+              "maximumError": "5mb"
             }
           ],
           "fileReplacements": [

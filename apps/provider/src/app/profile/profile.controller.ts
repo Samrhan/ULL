@@ -31,11 +31,11 @@ export class ProfileController {
 
     @Post('section')
     async uploadSection(@Body() body: UploadSectionDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
-        if (body.type !== SectionType.SMALL) {
+        if (body.type !== SectionType.small) {
             body.preview_amount = undefined;
         }
 
-        if (body.type !== SectionType.BIG) {
+        if (body.type !== SectionType.big) {
             files = []
         }
 

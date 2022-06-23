@@ -38,4 +38,8 @@ export class OrderedPerformanceComponent {
       error: () => alert("Action impossible, une erreur est survenue")
     })
   }
+
+  formatDate(project_date: string) {
+    return new Date(project_date).toLocaleDateString();
+  }
 }
