@@ -35,11 +35,11 @@ export class Provider {
     @Column({name: 'phone_number'})
     phoneNumber: string
 
-    @Column({name: 'profile_picture'})
-    profilePicture: string
+    @Column({name: 'profile_picture', nullable: true})
+    profilePicture?: string
 
-    @Column({name: 'cover_picture'})
-    coverPicture: string;
+    @Column({name: 'cover_picture', nullable: true})
+    coverPicture?: string;
 
     @Column({name: 'area_served'})
     areaServed: string;

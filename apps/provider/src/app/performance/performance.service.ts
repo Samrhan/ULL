@@ -35,7 +35,7 @@ export class PerformanceService {
             throw new ForbiddenException('You are not allowed to create performance in this section')
         }
 
-        if (section.type === SectionType.BIG && section.performances.length > 0) {
+        if (section.type === SectionType.big && section.performances.length > 0) {
             throw new BadRequestException('You can only have one performance in a big section')
         }
 

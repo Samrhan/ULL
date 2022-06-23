@@ -10,11 +10,6 @@ export class UploadSectionDto {
     public type: SectionType;
 
     @ApiProperty()
-    @IsNumberString()
-    @IsNotEmpty()
-    public y_index: number;
-
-    @ApiProperty()
     @IsString()
     @IsNotEmpty()
     public section_title: string;

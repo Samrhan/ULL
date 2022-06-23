@@ -48,7 +48,11 @@ export class EditCategorizationComponent implements OnInit {
         this.currentCategory = value
         this.currentCategoryName = value.name
       },
-      error: () => this.router.navigateByUrl('/profile')
+      error: (err) => {
+        if (err.status !== 404){ // Case where the provider doesn't have a category yet
+          this.router.navigateByUrl('/profile')
+        }
+      }
     })
     this.categorizationService.getCurrentTags(true).subscribe({
       next: value => this.currentTags = value,

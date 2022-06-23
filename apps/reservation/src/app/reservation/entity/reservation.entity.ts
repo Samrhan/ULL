@@ -25,6 +25,9 @@ export class Reservation {
     @Column({name: 'provider_id'})
     providerId: string
 
+    @Column({name: 'customer_id'})
+    customerId: string
+
     @Column({name: 'added_date', type: 'timestamp without time zone'})
     addedDate: string;
 

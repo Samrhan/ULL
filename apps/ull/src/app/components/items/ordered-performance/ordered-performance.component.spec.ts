@@ -7,6 +7,7 @@ import {RouterTestingModule} from "@angular/router/testing";
 import {AccueilComponent} from "../../pages/accueil/accueil.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('OrderedPerformanceComponent', () => {
   let component: OrderedPerformanceComponent;
@@ -22,7 +23,8 @@ describe('OrderedPerformanceComponent', () => {
           { path: 'profile', component: AccueilComponent}
         ]),
         FontAwesomeModule,
-        TooltipModule
+        TooltipModule,
+        ReactiveFormsModule
       ],
       providers: [
         BsModalService

@@ -1,8 +1,8 @@
 export enum SectionType {
-    BIG = 'big',
-    MEDIUM = 'medium',
-    SMALL = 'small',
-    INFO = 'info',
+    big = 'big',
+    medium = 'medium',
+    small = 'small',
+    info = 'info',
 }
 
 export enum UserType {

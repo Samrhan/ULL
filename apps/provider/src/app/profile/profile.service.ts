@@ -45,19 +45,15 @@ export class ProfileService {
         section.sectionTitle = body.section_title
         section.sectionDescription = body.section_description
         section.purchasable = body.purchasable === 'true'
-        section.yIndex = body.y_index
+
+        const maxYIndex = await this.sectionRepository.findOne({
+            select: ['yIndex'],
+            where: {provider: user.id},
+            order: {yIndex: 'DESC'}
+        })
+
+        section.yIndex = maxYIndex ? maxYIndex.yIndex + 1 : 0
         section.provider = await this.providerRepository.findOne(user.id)
-
-        const checkYIndex = await this.sectionRepository.find({
-            where: {
-                provider: section.provider,
-                yIndex: body.y_index
-            }
-        });
-
-        if (checkYIndex.length > 0) {
-            throw new BadRequestException('Y index already used')
-        }
 
         const insertedSection = await this.sectionRepository.save(section)
         if (body.preview_amount) {
@@ -91,7 +87,7 @@ export class ProfileService {
             throw new ForbiddenException('You are not allowed to delete this section')
         }
 
-        if (section.type === SectionType.BIG) {
+        if (section.type === SectionType.big) {
             for (const bigPictures of section.bigSectionPictures) {
                 await this.storageService.delete(bigPictures.picture, user)
             }
@@ -112,23 +108,11 @@ export class ProfileService {
 
         section.sectionTitle = body.section_title
         section.sectionDescription = body.section_description
-        section.purchasable = body.purchasable === 'true'
-        section.yIndex = body.y_index
-
-        const checkYIndex = await this.sectionRepository.find({
-            where: {
-                provider: section.provider,
-                yIndex: body.y_index
-            }
-        });
-
-        if (checkYIndex.length > 0) {
-            throw new BadRequestException('Y index already taken')
-        }
+        section.purchasable = body.purchasable
 
         await this.sectionRepository.save(section)
 
-        if (section.type === SectionType.SMALL && section.previewAmount && section.previewAmount?.amount !== body.preview_amount) {
+        if (section.type === SectionType.small && section.previewAmount && section.previewAmount?.amount !== body.preview_amount) {
             await this.previewAmountRepository.update(section.sectionId, {amount: body.preview_amount})
         }
     }
@@ -141,7 +125,7 @@ export class ProfileService {
         if (section.provider?.id !== user.id) {
             throw new ForbiddenException('You are not allowed to edit this section')
         }
-        if (section.type !== SectionType.BIG) {
+        if (section.type !== SectionType.big) {
             throw new BadRequestException('This section is not big')
         }
         if (files.length) {
@@ -169,7 +153,7 @@ export class ProfileService {
         if (section.provider?.id !== user.id) {
             throw new ForbiddenException('You are not allowed to edit this section')
         }
-        if (section.type !== SectionType.BIG) {
+        if (section.type !== SectionType.big) {
             throw new BadRequestException('This section is not big')
         }
         await this.storageService.delete(pictureId, user)
@@ -213,7 +197,7 @@ export class ProfileService {
                 performance.yIndex = performanceIndex
                 performance.section = section
 
-                if (performance.yIndex > 0 && performance.section.type === SectionType.BIG) {
+                if (performance.yIndex > 0 && performance.section.type === SectionType.big) {
                     throw new BadRequestException('You can not add more than 1 performance to big sections')
                 }
             }
@@ -253,27 +237,32 @@ export class ProfileService {
             company_name: queryProfile.companyName,
             company_description: queryProfile.companyDescription,
             area_served: queryProfile.areaServed,
-            cover_picture: queryProfile.coverPicture,
-            profile_picture: queryProfile.profilePicture,
+            cover_picture: queryProfile.coverPicture || DEFAULT_COVER_PIC_PROVIDER,
+            profile_picture: queryProfile.profilePicture || DEFAULT_PROFILE_PIC_PROVIDER,
             rating: 0,
-            services: queryProfile.sections.sort((a, b) => a.yIndex - b.yIndex).map<ProviderProfileSection>(s => ({
-                id_section: s.sectionId,
-                section_title: s.sectionTitle,
-                section_description: s.sectionDescription,
-                type: SectionType[s.type],
-                purchasable: s.purchasable,
-                preview_amount: s.previewAmount.amount,
-                content: s.performances.sort((a, b) => a.yIndex - b.yIndex).map<Performance>(p => ({
-                    id_performance: p.idPerformance,
-                    performance_title: p.performanceTitle,
-                    performance_description: p.performanceDescription,
-                    price: {
-                        value: p.priceValue,
-                        unit: PriceUnit[p.priceUnit],
-                    },
-                    picture: p.performancePicture,
-                })),
-            }))
+            services: queryProfile.sections
+                .sort((a, b) => a.yIndex - b.yIndex)
+                .map<ProviderProfileSection>(s => ({
+                    id_section: s.sectionId,
+                    section_title: s.sectionTitle,
+                    section_description: s.sectionDescription,
+                    type: SectionType[s.type],
+                    purchasable: s.purchasable,
+                    preview_amount: s.previewAmount?.amount,
+                    pictures: s.bigSectionPictures?.map(p => p.picture),
+                    content: s.performances
+                        .sort((a, b) => a.yIndex - b.yIndex)
+                        .map<Performance>(p => ({
+                            id_performance: p.idPerformance,
+                            performance_title: p.performanceTitle,
+                            performance_description: p.performanceDescription,
+                            price: {
+                                value: p.priceValue,
+                                unit: PriceUnit[p.priceUnit],
+                            },
+                            picture: p.performancePicture,
+                        })),
+                }))
         }
     }
 
@@ -326,16 +315,16 @@ export class ProfileService {
         provider.address.city = updateProfile.address_city;
         provider.address.complement = updateProfile.address_complement;
 
-        for(const file of files){
+        for (const file of files) {
             switch (file.fieldname) {
                 case 'profile_picture':
-                    if (provider.profilePicture !== DEFAULT_PROFILE_PIC_PROVIDER) {
+                    if (provider.profilePicture) {
                         await this.storageService.delete(provider.profilePicture, user)
                     }
                     provider.profilePicture = await this.storageService.upload(file, user)
                     break;
                 case 'cover_picture':
-                    if (provider.coverPicture !== DEFAULT_COVER_PIC_PROVIDER) {
+                    if (provider.coverPicture) {
                         await this.storageService.delete(provider.coverPicture, user)
                     }
                     provider.coverPicture = await this.storageService.upload(file, user)
