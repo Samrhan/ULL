@@ -12,14 +12,17 @@ import 'package:ULL/main.dart';
 import 'package:ULL/screens/category.dart';
 import 'package:ULL/screens/profile.dart';
 import 'package:ULL/screens/mainEvent.dart';
+import 'package:ULL/services/globals.dart' as globals;
 
 class MainScreen extends StatelessWidget{
   MainScreen(GoogleSignInAccount? _currentAccount, {Key? key}) : super(key: key){
     this._currentAccount = _currentAccount;
     super.key;
+    eventBar = EventBar(_currentAccount);
   }
 
   GoogleSignInAccount? _currentAccount;
+  var eventBar;
 
 
 
@@ -57,6 +60,8 @@ class _EventBarState extends State<EventBar>{
 
   ];
 
+
+
   @override EventBar get widget => super.widget;
 
   var _currentUser;
@@ -65,7 +70,13 @@ class _EventBarState extends State<EventBar>{
   initState(){
     super.initState();
     _currentUser = widget._currentAccount;
-
+    if(globals.dropDownValue != null){
+      dropDownValue = globals.dropDownValue!;
+    }
+    else{
+      dropDownValue = items[0];
+      globals.dropDownValue=dropDownValue;
+    }
   }
 
 
@@ -167,6 +178,7 @@ class _EventBarState extends State<EventBar>{
                                                 onPressed: (){
                                                   setState((){
                                                     dropDownValue = item;
+                                                    globals.dropDownValue=dropDownValue;
                                                   });
                                                   Navigator.pop(context);
                                                   },
@@ -194,6 +206,7 @@ class _EventBarState extends State<EventBar>{
                                                       onPressed: (){
                                                         setState((){
                                                           dropDownValue = item;
+                                                          globals.dropDownValue=dropDownValue;
                                                         });
                                                         Navigator.pop(context);
                                                       },
@@ -296,7 +309,7 @@ class _EventBarState extends State<EventBar>{
                       Navigator.push(
                       context,
                         PageRouteBuilder(
-                          pageBuilder: (context,a1,a2) => Category(_currentUser,dropDownValue),
+                          pageBuilder: (context,a1,a2) => Category(_currentUser),
                           transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
                           transitionDuration: const Duration(milliseconds: 0),
                       ),

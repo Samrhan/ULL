@@ -9,7 +9,7 @@ import 'package:ULL/screens/message.dart';
 
 class BottomNavBar extends StatelessWidget{
 
-  BottomNavBar(int index,GoogleSignInAccount? _currentAccount, {super.key}){
+  BottomNavBar(int index,GoogleSignInAccount? _currentAccount,{super.key}){
     this._currentAccount = _currentAccount;
     super.key;
     _currentIndex = index;
