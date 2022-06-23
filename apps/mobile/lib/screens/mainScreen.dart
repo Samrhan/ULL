@@ -15,7 +15,6 @@ import 'package:ULL/screens/mainEvent.dart';
 import 'package:ULL/services/globals.dart' as globals;
 import 'package:ULL/screens/ListPrestat.dart';
 
-
 class MainScreen extends StatelessWidget {
   MainScreen(GoogleSignInAccount? _currentAccount, {Key? key})
       : super(key: key) {
@@ -60,9 +59,8 @@ class _EventBarState extends State<EventBar> {
   ];
   var assetImg = [];
 
-
-  @override EventBar get widget => super.widget;
-
+  @override
+  EventBar get widget => super.widget;
 
   var _currentUser;
 
@@ -70,14 +68,12 @@ class _EventBarState extends State<EventBar> {
   initState() {
     super.initState();
     _currentUser = widget._currentAccount;
-    if(globals.dropDownValue != null){
+    if (globals.dropDownValue != null) {
       dropDownValue = globals.dropDownValue!;
-    }
-    else{
+    } else {
       dropDownValue = items[0];
-      globals.dropDownValue=dropDownValue;
+      globals.dropDownValue = dropDownValue;
     }
-
   }
 
   @override
@@ -152,36 +148,7 @@ class _EventBarState extends State<EventBar> {
                                                 .width,
                                           ),
                                           for (var item in items)
-                                            if(item != dropDownValue)
-                                            Container(
-                                              width: MediaQuery
-                                                    .of(context)
-                                                    .size
-                                                    .width,
-                                              decoration : const BoxDecoration(
-                                                  border: Border(
-                                                    bottom: BorderSide(width: 0.5,color: Colors.grey)
-                                                  )
-                                              ),
-                                              child : MaterialButton(
-                                                onPressed: (){
-                                                  setState((){
-                                                    dropDownValue = item;
-                                                    globals.dropDownValue=dropDownValue;
-                                                  });
-                                                  Navigator.pop(context);
-                                                  },
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children : [
-                                                    Text(item,style: const TextStyle(fontSize: 12))
-                                                  ]
-                                                )
-
-                                              )
-                                            )
-                                          else
-
+                                            if (item != dropDownValue)
                                               Container(
                                                   width: MediaQuery.of(context)
                                                       .size
@@ -197,7 +164,8 @@ class _EventBarState extends State<EventBar> {
                                                       onPressed: () {
                                                         setState(() {
                                                           dropDownValue = item;
-                                                          globals.dropDownValue=dropDownValue;
+                                                          globals.dropDownValue =
+                                                              dropDownValue;
                                                         });
                                                         Navigator.pop(context);
                                                       },
@@ -225,18 +193,12 @@ class _EventBarState extends State<EventBar> {
                                                       onPressed: () {
                                                         setState(() {
                                                           dropDownValue = item;
+                                                          globals.dropDownValue =
+                                                              dropDownValue;
                                                         });
                                                         Navigator.pop(context);
                                                       },
-                                                      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                                                        Icon(Icons.check),
-                                                        Text(item,
-                                                            style: const TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold))
-                                                      ])))
+                                                      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [Text(item, style: const TextStyle(fontSize: 12))])))
                                         ],
                                       );
                                     });
@@ -258,9 +220,10 @@ class _EventBarState extends State<EventBar> {
                   MaterialButton(
                     onPressed: () {
                       showModalBottomSheet<void>(
-                          isScrollControlled:true,
+                          isScrollControlled: true,
                           context: context,
-                          shape: const RoundedRectangleBorder( // <-- SEE HERE
+                          shape: const RoundedRectangleBorder(
+                            // <-- SEE HERE
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(12.0),
                             ),
@@ -317,8 +280,8 @@ class _EventBarState extends State<EventBar> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Category(_currentUser,
-                                dropDownValue)), //ListPrestat('_currentUser',_currentUser)),
+                            builder: (context) => Category(
+                                _currentUser)), //ListPrestat('_currentUser',_currentUser)),
                       );
                     },
                     child: Container(
