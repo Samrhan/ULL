@@ -202,7 +202,16 @@ class _EventBarState extends State<EventBar> {
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [Text(item, style: const TextStyle(fontSize: 12))])))
+                                                          child: Row(
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              children:
+                                                              [
+                                                                const Icon(Icons.check),
+                                                                Text(item, style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
+                                                              ]
+                                                          )
+                                                      )
+                                                  )
                                             ],
                                           );
                                         });
