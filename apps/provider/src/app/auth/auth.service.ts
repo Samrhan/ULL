@@ -9,7 +9,6 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {v4 as uuidv4} from 'uuid';
 import {AmqpConnection} from "@golevelup/nestjs-rabbitmq";
 import {RegisterProviderMessage} from "@ull/api-interfaces";
-import {DEFAULT_COVER_PIC_PROVIDER, DEFAULT_PROFILE_PIC_PROVIDER} from "@ull/global-constants";
 
 @Injectable()
 export class AuthService {
@@ -51,7 +50,7 @@ export class AuthService {
   }
 
   async registerProvider(registerDto: RegisterDto, id?: string) {
-    await this.checkSiren(registerDto.siren)
+    //await this.checkSiren(registerDto.siren)
 
     const provider = new Provider();
     provider.id = id || uuidv4();

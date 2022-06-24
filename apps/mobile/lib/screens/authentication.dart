@@ -56,7 +56,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
                           const Text('Une toute petite étape avant de débuter',
                               style: TextStyle(
                                   fontSize: 35,
-                                  color: Color(0xff832232),
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center),
 
@@ -101,7 +101,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
                         width: 20,
                       ),
                       const Text("Continuer avec Google",
-                        style: TextStyle(color: Colors.grey, fontSize: 20),)
+                        style: TextStyle(color: Colors.grey, fontSize: 18),)
                     ],
                   ),),
               )

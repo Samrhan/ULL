@@ -38,6 +38,7 @@ dependencies:
   google_sign_in: ^5.3.1
   http: ^0.13.4
   figma_squircle: ^0.5.3
+  sticky_headers: ^0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,7 @@ flutter:
   - asset/photographe.jpg
   - asset/salle.jpg
   - asset/traiteur.jpg
+  - asset/bow_tie.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

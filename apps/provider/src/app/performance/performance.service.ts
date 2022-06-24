@@ -101,6 +101,7 @@ export class PerformanceService {
         performance.deleted = true
         performance.deletedAt = new Date();
         performance.yIndex = null;
+        performance.section = null;
         await this.performanceRepository.save(performance)
     }
 
