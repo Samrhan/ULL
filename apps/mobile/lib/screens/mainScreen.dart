@@ -219,10 +219,15 @@ class _EventBarState extends State<EventBar> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text(dropDownValue,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15)),
+                                      Expanded(
+                                          child: Text(dropDownValue,
+                                              maxLines: 1,
+                                              overflow : TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15)
+                                          )
+                                      ),
                                       const Icon(Icons.keyboard_arrow_down,
                                           color: Colors.white)
                                     ],
