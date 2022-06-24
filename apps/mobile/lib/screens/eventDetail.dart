@@ -1,4 +1,5 @@
 import 'package:ULL/screens/bottomNavBar.dart';
+import 'package:ULL/screens/mainEvent.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -87,6 +88,38 @@ class _EventDetailState extends State<EventDetailStated>{
                   image: DecorationImage(image: NetworkImage(event.image),fit: BoxFit.fill)
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children : [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context,a1,a2) => MainEvent(_currentUser),
+                                transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                                transitionDuration: const Duration(milliseconds: 0),
+                              ),
+                            );
+                          },
+                      child :Padding(
+                        padding: const EdgeInsets.only(top: 40,left: 20),
+                        child : Container(
+                          width: 50,
+                          height: 50,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          child : const Icon(Icons.keyboard_arrow_left, size: 50,color: Color(0xff832232),),
+                          ),
+                        )
+
+                    ),
+                    ),
+                Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
@@ -101,6 +134,8 @@ class _EventDetailState extends State<EventDetailStated>{
                     ])),)
                   ],
                 ),
+                ]
+            )
               ),
               content: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
