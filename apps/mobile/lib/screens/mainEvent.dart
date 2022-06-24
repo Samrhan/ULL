@@ -478,7 +478,14 @@ class _MainEventState extends State<MainEventStated>{
                                   .of(context)
                                   .size
                                   .height / 6,
-                              child: Row(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children : [
+
+                              Align(
+                                alignment: Alignment.topCenter,
+                              child :
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
@@ -518,6 +525,25 @@ class _MainEventState extends State<MainEventStated>{
                                     ),
                                   )
                                 ]
+                              )
+                              ),
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 5,bottom: 5),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 50,
+                                        height: 50,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white
+                                        ),
+                                        child: Icon(getIcon(event.state),size: 30,),
+                                      ),
+                                    ),
+                                  ),
+                                  ]
                               )
                             ),
                             Padding(
