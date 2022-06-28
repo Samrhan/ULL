@@ -1,3 +1,4 @@
+import 'package:ULL/screens/addEvent.dart';
 import 'package:ULL/screens/eventDetail.dart';
 import 'package:ULL/screens/profile.dart';
 import 'package:figma_squircle/figma_squircle.dart';
@@ -27,7 +28,13 @@ class MainEvent extends StatelessWidget{
           bottomNavigationBar: BottomNavBar(1,_currentAccount),
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add,size: 50,),
-            onPressed: (){},
+            onPressed: (){
+              showModalBottomSheet(context: context,
+              builder: (context){
+                return AddEvent();
+                }
+              );
+            },
             backgroundColor: const Color(0xff832232),
           ),
           body: ConstrainedBox(
