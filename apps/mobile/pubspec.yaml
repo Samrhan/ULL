@@ -40,6 +40,7 @@ dependencies:
   figma_squircle: ^0.5.3
   sticky_headers: ^0.3.0
   image_picker: ^0.8.5+3
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:

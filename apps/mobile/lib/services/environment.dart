@@ -2,11 +2,16 @@
 class Environment{
   var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
   Environment(){
+    print("e");
     bool isProd = const bool.fromEnvironment('dart.vm.product');
     if(isProd){
+      print("f");
       environmentCopy(EnvironmentProd());
+      print("g");
     }else{
+      print("h");
       environmentCopy(EnvironmentDebug());
+      print("i");
     }
   }
   environmentCopy(Environment e){
@@ -25,6 +30,7 @@ class Environment{
 
 class EnvironmentDebug extends Environment{
   EnvironmentDebug(){
+    print("l");
     baseServer = "http://localhost:";
     authenticationService = "3333/api/authentication";
     chatService = "3337/api/chat";

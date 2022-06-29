@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:ULL/services/environment.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:figma_squircle/figma_squircle.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class AddEvent extends StatefulWidget {
   AddEvent() : super();
@@ -15,59 +18,294 @@ class AddEvent extends StatefulWidget {
 class AddEventState extends State<AddEvent> {
   XFile? file;
   ImagePicker _picker = ImagePicker();
-  String? name;
+  String? name,addressNb,addressStreet,addressCity,addressPostalCode,date,nb,description;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width-20,
-            height: 250,
-            alignment: Alignment.center,
-            decoration: getDecoration(),
-            child: Container(
-              width: 150,
-              height: 50,
-              decoration: ShapeDecoration(
-                color: Colors.black,
-                shape: SmoothRectangleBorder(
-                  borderRadius: SmoothBorderRadius(
-                    cornerRadius: 10,
-                    cornerSmoothing: 0.5,
-                  ),
-                ),
-              ),
-              child: MaterialButton(
-                onPressed: chooseImage,
-                child: const Text(
-                  "Choisir une image",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xffFCF8F7),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MaterialButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child: const Text("Annuler",style: TextStyle(color: Color(0xff832232),fontSize: 20),),
             ),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text("Nom du projet",style: TextStyle(fontWeight: FontWeight.bold),),
-                TextField(
-                  onChanged : (text) {
-                    updateValue(name,text);
-                    print(name);
-                  },
-                )
-              ],
+            MaterialButton(
+              onPressed: pushData,
+              child: const Text("Enregistrer",style: TextStyle(color: Color(0xff832232),fontSize: 20,fontWeight: FontWeight.bold),),
             ),
-          )
-        ],
+          ],
+        ),
       ),
+      body : Padding(
+        padding: const EdgeInsets.all(10),
+        child: SingleChildScrollView(
+          child:Column(
+            children: [
+              showImage(),
+              Container(
+                height: 80,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width-20,
+                decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(width: 0.5,color: Colors.grey))
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Nom du projet",style: TextStyle(fontWeight: FontWeight.bold),),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child :Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width/2,
+                        child : TextField(
+                          onChanged : (text) {
+                            setState((){
+                              name = text;
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            fillColor: Color(0xffeeeeee),
+                            filled: true
+                          ),
+                        )
+                      )
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 261,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width-20,
+                decoration: const BoxDecoration(
+                    border: Border(bottom: BorderSide(width: 0.5,color: Colors.grey))
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child : Text(
+                          "Adresse",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold
+                          ),
+                        )
+                    ),
+                    Padding(
+                        padding: EdgeInsets.all(10),
+                        child : Column(
+                          children: [
+                          Container(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width/2,
+                              height: 60,
+                              child : TextField(
+                                onChanged : (text) {
+                                  setState((){
+                                    addressNb = text;
+                                  });
+                                },
+                                decoration: const InputDecoration(
+                                  fillColor: Color(0xffeeeeee),
+                                  filled: true,
+                                  hintText: "Numéro"
+                                ),
+                              )
+                          ),
+                            Container(
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width/2,
+                                height: 60,
+                                child : TextField(
+                                  onChanged : (text) {
+                                    setState((){
+                                      addressStreet = text;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                      fillColor: Color(0xffeeeeee),
+                                      filled: true,
+                                      hintText: "Rue"
+                                  ),
+                                )
+                            ),
+                            Container(
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width/2,
+                                height: 60,
+                                child : TextField(
+                                  onChanged : (text) {
+                                    setState((){
+                                      addressPostalCode = text;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                      fillColor: Color(0xffeeeeee),
+                                      filled: true,
+                                      hintText: "Code postal"
+                                  ),
+                                )
+                            ),
+                            Container(
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width/2,
+                                height: 60,
+                                child : TextField(
+                                  onChanged : (text) {
+                                    setState((){
+                                      addressCity = text;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                      fillColor: Color(0xffeeeeee),
+                                      filled: true,
+                                      hintText: "Ville"
+                                  ),
+                                )
+                            ),
+                        ]
+                      )
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 80,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width-20,
+                decoration: const BoxDecoration(
+                    border: Border(bottom: BorderSide(width: 0.5,color: Colors.grey))
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Date",style: TextStyle(fontWeight: FontWeight.bold),),
+                    Padding(
+                        padding: EdgeInsets.all(10),
+                        child :Container(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width/2,
+                            child : TextField(
+                              onChanged : (text) {
+                                setState((){
+                                  date = text;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                  fillColor: Color(0xffeeeeee),
+                                  filled: true
+                              ),
+                            )
+                        )
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 80,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width-20,
+                decoration: const BoxDecoration(
+                    border: Border(bottom: BorderSide(width: 0.5,color: Colors.grey))
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Nombre de participants",style: TextStyle(fontWeight: FontWeight.bold),),
+                    Padding(
+                        padding: EdgeInsets.all(10),
+                        child :Container(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width/2,
+                            child : TextField(
+                              onChanged : (text) {
+                                setState((){
+                                  nb = text;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                  fillColor: Color(0xffeeeeee),
+                                  filled: true
+                              ),
+                            )
+                        )
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 260,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width-20,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(padding: EdgeInsets.only(top: 20),
+                      child : Text("Description",style: TextStyle(fontWeight: FontWeight.bold),)
+                    ),
+                    Padding(
+                        padding: EdgeInsets.all(10),
+                        child :Container(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width/2,
+                            child : TextField(
+                              maxLines: 10,
+                              maxLength: 2000,
+                              onChanged : (text) {
+                                setState((){
+                                  description = text;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                  fillColor: Color(0xffeeeeee),
+                                  filled: true
+                              ),
+                            )
+                        )
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+      )
     );
   }
 
@@ -107,10 +345,62 @@ class AddEventState extends State<AddEvent> {
   }
 
 
-  updateValue(variable,text){
-    setState((){
-      variable = text;
+  Widget showImage(){
+    return Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width-20,
+      height: 250,
+      alignment: Alignment.center,
+      decoration: getDecoration(),
+      child: Container(
+        width: 150,
+        height: 50,
+        decoration: ShapeDecoration(
+          color: Colors.black,
+          shape: SmoothRectangleBorder(
+            borderRadius: SmoothBorderRadius(
+              cornerRadius: 10,
+              cornerSmoothing: 0.5,
+            ),
+          ),
+        ),
+        child: MaterialButton(
+          onPressed: chooseImage,
+          child: const Text(
+            "Choisir une image",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+
+  pushData() async{
+    var dio = Dio();
+    Environment ev = Environment();
+    var url = ev.baseServer+ev.customerService+"/project";
+    FormData formData = FormData.fromMap({
+      "project_name" : name,
+      "project_date" : date,
+      "project_description" : description,
+      "amount_of_people" : nb,
+      "address_number" : addressNb,
+      "address_street" : addressStreet,
+      "address_city" : addressCity,
+      "address_postal_code" : addressPostalCode,
+      "project_picture" : await MultipartFile.fromFile(file!.path,filename: file!.name)
     });
+
+    var res = await dio.post(url,data : formData);
+    if(res.statusCode == 200){
+      print("Uploaded");
+      Navigator.pop(context);
+    }
+    else{
+      print(res.statusMessage);
+    }
   }
 
 }

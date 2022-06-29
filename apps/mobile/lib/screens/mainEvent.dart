@@ -29,9 +29,16 @@ class MainEvent extends StatelessWidget{
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add,size: 50,),
             onPressed: (){
-              showModalBottomSheet(context: context,
-              builder: (context){
-                return AddEvent();
+              showModalBottomSheet(
+                constraints: BoxConstraints(
+                  maxHeight:MediaQuery
+                      .of(context)
+                      .size.height-70
+                ),
+                isScrollControlled: true,
+                context: context,
+                builder: (context){
+                  return AddEvent();
                 }
               );
             },
