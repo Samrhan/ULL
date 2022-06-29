@@ -2,19 +2,27 @@
 class Environment{
   var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
   Environment(){
-    print("e");
     bool isProd = const bool.fromEnvironment('dart.vm.product');
     if(isProd){
-      print("f");
-      environmentCopy(EnvironmentProd());
-      print("g");
+      environmentCopyProd(EnvironmentProd());
     }else{
-      print("h");
-      environmentCopy(EnvironmentDebug());
-      print("i");
+      environmentCopyDebug(EnvironmentDebug());
     }
   }
-  environmentCopy(Environment e){
+  environmentCopyProd(EnvironmentProd e){
+
+    baseServer = e.baseServer;
+    authenticationService = e.authenticationService;
+    chatService = e.chatService;
+    customerService = e.customerService;
+    accountingService = e.accountingService;
+    discoveryService = e.discoveryService;
+    providerService = e.providerService;
+    reservationService = e.reservationService;
+    providerPictures = e.providerPictures;
+  }
+  environmentCopyDebug(EnvironmentDebug e){
+
     baseServer = e.baseServer;
     authenticationService = e.authenticationService;
     chatService = e.chatService;
@@ -28,9 +36,9 @@ class Environment{
 
 }
 
-class EnvironmentDebug extends Environment{
+class EnvironmentDebug{
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
   EnvironmentDebug(){
-    print("l");
     baseServer = "http://localhost:";
     authenticationService = "3333/api/authentication";
     chatService = "3337/api/chat";
@@ -43,7 +51,8 @@ class EnvironmentDebug extends Environment{
   }
 }
 
-class EnvironmentProd extends Environment{
+class EnvironmentProd{
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
   EnvironmentProd(){
     baseServer = "https://ull.sbader.fr/";
     authenticationService = "api/authentication";
