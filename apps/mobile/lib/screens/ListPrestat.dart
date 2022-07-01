@@ -5,6 +5,7 @@ import 'package:ULL/screens/mainScreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dio/dio.dart';
 import 'package:ULL/services/globals.dart' as globals;
+import 'package:ULL/screens/Prestat.dart';
 
 import '../services/environment.dart';
 
@@ -113,7 +114,9 @@ class CustomListItem extends StatelessWidget {
     required this.subtitle,
     required this.ListCat,
     required this.idpresta,
+    required this.currentAccount,
   }) : super(key: key);
+  final GoogleSignInAccount? currentAccount;
 
   final Widget thumbnail;
   final String title;
@@ -152,6 +155,15 @@ class CustomListItem extends StatelessWidget {
                   size: 24,
                 ),
                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrestatStated(
+                        currentAccount,
+                         idpresta,
+                      ),
+                    ),
+                  );
                   print(idpresta);
                 },
               ),
@@ -171,7 +183,9 @@ class CustomListItem2 extends StatelessWidget {
     required this.subtitle,
     required this.ListCat,
     required this.idpresta,
+    required this.currentAccount,
   }) : super(key: key);
+  final GoogleSignInAccount? currentAccount;
 
   final Widget thumbnail;
   final String title;
@@ -198,6 +212,7 @@ class CustomListItem2 extends StatelessWidget {
               title: title,
               subtitle: subtitle,
               ListCat: ListCat,
+                currentAccount : currentAccount
             ),
           )
         ],
@@ -225,7 +240,7 @@ class _ListPrestatState extends State<ListPrestatStated> {
   var _currentCat;
   GoogleSignInAccount? _currentAccount;
   List<dynamic> _Listpresta = ["Presta 1", "Presta 2", "Presta 3"];
-  List<dynamic>_ListprestaTot = ["Presta 1", "Presta 2", "Presta 3"];
+  List<dynamic> _ListprestaTot = ["Presta 1", "Presta 2", "Presta 3"];
   List<List<dynamic>> _ListprestaCat = [
     ["Presta 1", "Presta 2", "Presta 3"],
     ["Presta 1", "Presta 2", "Presta 3"],
@@ -321,6 +336,7 @@ class _ListPrestatState extends State<ListPrestatStated> {
                           subtitle: _Listpresta[index]['company_description'],
                           ListCat: _ListprestaCat[index],
                           idpresta: _Listpresta[index]['id_provider'],
+                            currentAccount:_currentAccount
                         ),
                     ],
                   ),
@@ -349,8 +365,6 @@ class _ListPrestatState extends State<ListPrestatStated> {
       var response = await dio.get(url);
 
       for (int i = 0; i < response.data.length; i++) {
-
-
         url =
             ev.baseServer + ev.providerService + "/profile/" + response.data[i];
         var response2 = await dio.get(url);
