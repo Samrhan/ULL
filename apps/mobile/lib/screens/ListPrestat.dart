@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ULL/screens/mainScreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,35 +13,13 @@ import '../services/environment.dart';
 אני לא ממש יודע מה עשיתי, הייתי צריך לקנן דקלאס בשיעורים בשיעורים אחרת זה לא עובד. זה אפילו יותר גרוע מ-CSS.
  */
 
-void fetchPresta() async {
-  print('objvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvect');
-  print('gggfgs');
-  Environment ev = Environment();
-  print(globals.accessToken);
-
-  try {
-    Dio dio = new Dio();
-    dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
-    String url = ev.baseServer +
-        ev.discoveryService +
-        "/recommend?category=Traiteur&projectId=1";
-    print(url);
-    var response = await dio.get(url);
-    print(response);
-    //return response;
-
-  } catch (e) {
-    print(e);
-  }
-}
-
 class TagList extends StatelessWidget {
   const TagList({
     Key? key,
     required this.ListCat,
   }) : super(key: key);
 
-  final String ListCat;
+  final List<dynamic> ListCat;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +30,7 @@ class TagList extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           children: <Widget>[
-            for (int index = 0; index < 50; index++)
+            for (int index = 0; index < ListCat.length; index++)
               Padding(
                   padding: const EdgeInsets.only(right: 4.0),
                   child: Container(
@@ -63,7 +43,7 @@ class TagList extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                           child: Text(
-                            ListCat,
+                            ListCat[index],
                             style: const TextStyle(
                                 fontSize: 11.0,
                                 color: Colors.black,
@@ -84,7 +64,7 @@ class _ArticleDescription extends StatelessWidget {
 
   final String title;
   final String subtitle;
-  final String ListCat;
+  final List<dynamic> ListCat;
 
   @override
   Widget build(BuildContext context) {
@@ -132,12 +112,14 @@ class CustomListItem extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.ListCat,
+    required this.idpresta,
   }) : super(key: key);
 
   final Widget thumbnail;
   final String title;
   final String subtitle;
-  final String ListCat;
+  final String idpresta;
+  final List<dynamic> ListCat;
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +152,7 @@ class CustomListItem extends StatelessWidget {
                   size: 24,
                 ),
                 onPressed: () {
-                  print("Click");
+                  print(idpresta);
                 },
               ),
             ),
@@ -181,23 +163,6 @@ class CustomListItem extends StatelessWidget {
   }
 }
 
-class Presta {
-  const Presta({
-    Key? key,
-    required this.thumbnail,
-    required this.title,
-    required this.subtitle,
-    required this.ListCat,
-    required this.id,
-  });
-
-  final Widget thumbnail;
-  final String title;
-  final String subtitle;
-  final String ListCat;
-  final String id;
-}
-
 class CustomListItem2 extends StatelessWidget {
   const CustomListItem2({
     Key? key,
@@ -205,12 +170,14 @@ class CustomListItem2 extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.ListCat,
+    required this.idpresta,
   }) : super(key: key);
 
   final Widget thumbnail;
   final String title;
   final String subtitle;
-  final String ListCat;
+  final String idpresta;
+  final List<dynamic> ListCat;
 
   @override
   Widget build(BuildContext context) {
@@ -226,6 +193,7 @@ class CustomListItem2 extends StatelessWidget {
           ),
           Expanded(
             child: CustomListItem(
+              idpresta: idpresta,
               thumbnail: thumbnail,
               title: title,
               subtitle: subtitle,
@@ -256,11 +224,22 @@ class _ListPrestatState extends State<ListPrestatStated> {
 
   var _currentCat;
   GoogleSignInAccount? _currentAccount;
+  List<dynamic> _Listpresta = ["Presta 1", "Presta 2", "Presta 3"];
+  List<dynamic>_ListprestaTot = ["Presta 1", "Presta 2", "Presta 3"];
+  List<List<dynamic>> _ListprestaCat = [
+    ["Presta 1", "Presta 2", "Presta 3"],
+    ["Presta 1", "Presta 2", "Presta 3"],
+  ];
+  bool _isLoading = true;
+  Environment ev = Environment();
 
   void initState() {
     super.initState();
     _currentAccount = widget._currentAccount;
     _currentCat = widget._currentCat;
+    _Listpresta = [];
+    _ListprestaTot = [];
+    _ListprestaCat = [];
     fetchPresta();
   }
 
@@ -278,69 +257,76 @@ class _ListPrestatState extends State<ListPrestatStated> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       //   -(MediaQuery.of(context).size.height / 6 + 56),
-      child: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: const Color(0xFFDCDCDC),
-            pinned: true,
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Color(0xFFDC3535),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MainScreen(_currentAccount)),
-                );
-                ;
-              },
-            ),
-            centerTitle: true,
-            shadowColor: Colors.black,
-            elevation: 10,
-            bottom: const PreferredSize(
-                preferredSize: Size.fromHeight(0),
-                child: TagList(ListCat: 'brouette')),
-            title: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.all(MediaQuery.of(context).size.width / 4),
-                child: Text(
-                  _currentCat,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
+      child: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: const Color(0xFFDCDCDC),
+                  pinned: true,
+                  leading: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Color(0xFFDC3535),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainScreen(_currentAccount)),
+                      );
+                      ;
+                    },
                   ),
-                )),
-          ),
-          SliverFixedExtentList(
-            itemExtent: 110.0,
-            delegate: SliverChildListDelegate(
-              [
-                for (int index = 0; index < 5; index++)
-                  CustomListItem2(
-                    thumbnail: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: AspectRatio(
-                          child: Image.network(
-                            growableList[index],
-                            width: 100.0,
-                            height: 100.0,
-                            fit: BoxFit.fill,
-                          ),
-                          aspectRatio: 1 / 1,
-                        )),
-                    title: 'Chez Luigi',
-                    subtitle: 'Les meilleurs pizza hors d\'italie.',
-                    ListCat: 'Food Truck',
+                  centerTitle: true,
+                  shadowColor: Colors.black,
+                  elevation: 10,
+                  bottom: PreferredSize(
+                      preferredSize: Size.fromHeight(0),
+                      child: TagList(ListCat: _ListprestaTot)),
+                  title: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding:
+                          EdgeInsets.all(MediaQuery.of(context).size.width / 4),
+                      child: Text(
+                        _currentCat,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )),
+                ),
+                SliverFixedExtentList(
+                  itemExtent: 110.0,
+                  delegate: SliverChildListDelegate(
+                    [
+                      for (int index = 0; index < _Listpresta.length; index++)
+                        CustomListItem2(
+                          thumbnail: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: AspectRatio(
+                                child: Image.network(
+                                  //ev.providerPictures + _Listpresta[index]['profile_picture'],
+                                  "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+                                  width: 100.0,
+                                  height: 100.0,
+                                  fit: BoxFit.fill,
+                                ),
+                                aspectRatio: 1 / 1,
+                              )),
+                          title: _Listpresta[index]['company_name'],
+                          subtitle: _Listpresta[index]['company_description'],
+                          ListCat: _ListprestaCat[index],
+                          idpresta: _Listpresta[index]['id_provider'],
+                        ),
+                    ],
                   ),
+                )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 
@@ -348,5 +334,47 @@ class _ListPrestatState extends State<ListPrestatStated> {
   State<StatefulWidget> createState() {
     // TODO: implement createState
     throw UnimplementedError();
+  }
+
+  Future fetchPresta() async {
+    List<dynamic> presta = [];
+    List<dynamic> prestaCatTot = [];
+    List<List<dynamic>> prestaCat = [];
+    try {
+      Dio dio = new Dio();
+      dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
+      String url = ev.baseServer +
+          ev.discoveryService +
+          "/recommend?category=Traiteur&projectId=0";
+      var response = await dio.get(url);
+
+      for (int i = 0; i < response.data.length; i++) {
+
+
+        url =
+            ev.baseServer + ev.providerService + "/profile/" + response.data[i];
+        var response2 = await dio.get(url);
+        presta.add(response2.data);
+        url = ev.baseServer +
+            ev.discoveryService +
+            "/provider_tags/" +
+            response.data[i];
+        var response3 = await dio.get(url);
+        prestaCat.add(response3.data);
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    for (int i = 0; i < prestaCat.length; i++) {
+      prestaCatTot = prestaCatTot + prestaCat[i];
+    }
+    prestaCatTot = prestaCatTot.toSet().toList();
+    setState(() {
+      _Listpresta = presta;
+      _isLoading = false;
+      _ListprestaCat = prestaCat;
+      _ListprestaTot = prestaCatTot;
+    });
   }
 }
