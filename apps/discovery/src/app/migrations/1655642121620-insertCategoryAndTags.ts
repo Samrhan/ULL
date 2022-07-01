@@ -3,7 +3,7 @@ import {MigrationInterface, QueryRunner} from "typeorm";
 export class insertCategoryAndTags1655642121620 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query('insert into category (category_name, popular, category_picture, section_description, created_at, updated_at)\n' +
+        await queryRunner.query('insert into category (category_name, popular, category_picture, category_description, created_at, updated_at)\n' +
             'values  (\'Traiteur\', true, \'caterer.jpg\', \'description\', \'2022-06-15 14:54:35.386546\', \'2022-06-15 14:54:35.386546\'),\n' +
             '        (\'Education\', false, \'education.jpg\', \'description\', \'2022-06-15 14:55:49.418146\', \'2022-06-15 14:55:49.418146\'),\n' +
             '        (\'Musicien\', true, \'musician.jpg\', \'description\', \'2022-06-15 14:54:35.354620\', \'2022-06-15 14:54:35.354620\'),\n' +
