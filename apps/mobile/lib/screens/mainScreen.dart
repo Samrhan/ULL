@@ -14,6 +14,7 @@ import 'package:ULL/screens/profile.dart';
 import 'package:ULL/screens/mainEvent.dart';
 import 'package:ULL/services/globals.dart' as globals;
 import 'package:ULL/screens/ListPrestat.dart';
+import 'package:ULL/services/environment.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen(GoogleSignInAccount? _currentAccount, {Key? key})
@@ -65,7 +66,7 @@ class _EventBarState extends State<EventBar> {
   var _currentUser;
 
   @override
-  initState() {
+  initState(){
     super.initState();
     _currentUser = widget._currentAccount;
     if (globals.dropDownValue != null) {
@@ -74,6 +75,7 @@ class _EventBarState extends State<EventBar> {
       dropDownValue = items[0];
       globals.dropDownValue = dropDownValue;
     }
+
   }
 
   @override
@@ -579,4 +581,7 @@ class _EventBarState extends State<EventBar> {
       return const AssetImage("asset/JW.jpg");
     }
   }
+
+
+
 }

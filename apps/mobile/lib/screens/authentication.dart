@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'dart:convert' show json;
 
+import 'package:ULL/services/projectDisplay.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ULL/services/authentication.dart';
 import 'package:ULL/screens/mainScreen.dart';
+import 'package:ULL/services/environment.dart';
+import 'package:ULL/services/globals.dart' as globals;
+import 'package:http/http.dart' as http;
+import 'dart:convert' show json;
 
 
 class AuthenticationPage extends StatefulWidget{
@@ -89,6 +94,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
                 child: MaterialButton(
                   onPressed: ()  async {
                     var _auth = await _authentication.signIn();
+                    await _authentication.handleGetContact(_auth!);
+                    await getAllProjects();
                     setState(() {
                        _currentAccount = _auth;
                     });
@@ -118,6 +125,36 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
     }
   }
 
+  Future<void> getAllProjects() async{
+    Map<String, String> requestHeaders = {
+      'Authorization': "Bearer ${globals.accessToken}"
+    };
+    Environment ev = Environment();
+    String url = ev.baseServer + ev.customerService + "/all_projects" ;
+    final http.Response response = await http.get(
+        Uri.parse(url),
+        headers: requestHeaders
+    );
+    final List data =
+    json.decode(response.body);
+    data.forEach((element) {
+      print(element["project_location"]["number"]);
+      /*globals.allEvents.add(ProjectDisplay(
+          element["project_id"],
+          element["project_name"],
+          element["project_date"],
+          element["project_description"],
+          element["amount_of_people"],
+          element["project_location"]["number"],
+          element["project_location"]["street"],
+          element["project_location"]["city"],
+          element["project_location"]["complement"],
+          element["project_location"]["postal_code"],
+          element["project_picture"],
+          null
+      ));*/
+    });
+  }
 
 }
 

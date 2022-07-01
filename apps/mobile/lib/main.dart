@@ -10,6 +10,7 @@ import 'dart:convert' show json;
 import 'package:flutter/material.dart';
 import 'package:ULL/screens/authentication.dart';
 import 'package:ULL/screens/mainScreen.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(

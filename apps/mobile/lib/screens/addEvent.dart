@@ -8,6 +8,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import 'package:ULL/services/globals.dart' as globals;
 
 class AddEvent extends StatefulWidget {
   AddEvent() : super();
@@ -24,9 +25,9 @@ class AddEventState extends State<AddEvent> {
       addressStreet,
       addressCity,
       addressPostalCode,
-      date,
       nb,
       description;
+  DateTime date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -200,19 +201,36 @@ class AddEventState extends State<AddEvent> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: TextField(
-                                  onChanged: (text) {
+                            padding: const EdgeInsets.all(10),
+                            child: ElevatedButtonTheme(
+                              data: ElevatedButtonThemeData(
+                                style: ButtonStyle(
+                                  minimumSize: MaterialStateProperty.resolveWith<Size>(
+                                        (states) => Size((MediaQuery.of(context).size.width / 2),50)),
+                                  side: MaterialStateProperty.resolveWith<BorderSide>(
+                                          (states) => const BorderSide(color: Colors.grey)),
+                                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                          (states) => const Color(0xffeeeeee)),
+                                )
+                              ),
+                              child : ElevatedButton(
+                                onPressed: () async{
+                                  DateTime? newDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: date,
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(2100)
+                                  );
+                                  if(newDate != null) {
                                     setState(() {
-                                      date = text;
+                                      date = newDate;
                                     });
-                                  },
-                                  decoration: const InputDecoration(
-                                      fillColor: Color(0xffeeeeee),
-                                      filled: true),
-                                ))),
+                                  }
+                                },
+                                child: Text('${date.day}/${date.month}/${date.year}',style: const TextStyle(color: Colors.black,fontSize: 20),),
+                              )
+                          )
+                        ),
                       ],
                     ),
                   ),
@@ -345,11 +363,13 @@ class AddEventState extends State<AddEvent> {
 
   pushData() async {
     var dio = Dio();
+    dio.options.headers['content-Type'] = 'multipart/form-data';
+    dio.options.headers['Authorization'] = "Bearer ${globals.accessToken}";
     Environment ev = Environment();
     var url = ev.baseServer + ev.customerService + "/project";
     FormData formData = FormData.fromMap({
       "project_name": name,
-      "project_date": date,
+      "project_date": date.toString(),
       "project_description": description,
       "amount_of_people": nb,
       "address_number": addressNb,
@@ -362,14 +382,14 @@ class AddEventState extends State<AddEvent> {
 
     try {
       var res = await dio.post(url, data: formData);
-      if (res.statusCode == 200) {
-        print("Uploaded");
-        Navigator.pop(context);
-      } else {
-        print(res.statusMessage);
-      }
+      Navigator.pop(context);
+      print(res.statusMessage);
     }catch(e){
-      print(e);
+      if(e is DioError){
+        print(e.response);
+      }else{
+        print("rip");
+      }
     }
   }
 }
