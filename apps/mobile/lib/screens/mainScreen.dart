@@ -52,12 +52,7 @@ class EventBar extends StatefulWidget {
 }
 
 class _EventBarState extends State<EventBar> {
-  var dropDownValue = "Anniversaire Adrien - 17/12/2022";
-  var items = [
-    "Anniversaire Adrien - 17/12/2022",
-    "Anniversaire Jonathan - 25/09/2022",
-    "Anniversaire Emily - 25/01/2022"
-  ];
+  var dropDownValue = "Pas d'événements pour le moment";
   var assetImg = [];
 
   @override
@@ -69,11 +64,13 @@ class _EventBarState extends State<EventBar> {
   initState(){
     super.initState();
     _currentUser = widget._currentAccount;
-    if (globals.dropDownValue != null) {
-      dropDownValue = globals.dropDownValue!;
-    } else {
-      dropDownValue = items[0];
-      globals.dropDownValue = dropDownValue;
+    if (globals.dropDownValue == null){
+      if(globals.allEvents.isNotEmpty) {
+        globals.dropDownValue = globals.allEvents[0];
+        dropDownValue = dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
+      }
+    }else{
+      dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
     }
 
   }
@@ -126,9 +123,16 @@ class _EventBarState extends State<EventBar> {
                                 child: MaterialButton(
                                   onPressed: () {
                                     showModalBottomSheet(
+                                        constraints: BoxConstraints(
+                                            maxHeight:MediaQuery
+                                                .of(context)
+                                                .size.height-70
+                                        ),
+                                        isScrollControlled: true,
                                         context: context,
                                         builder: (context) {
-                                          return Column(
+                                          return SingleChildScrollView(
+                                            child :Column(
                                             children: [
                                               Container(
                                                 child: const Text(
@@ -150,8 +154,8 @@ class _EventBarState extends State<EventBar> {
                                                     .size
                                                     .width,
                                               ),
-                                              for (var item in items)
-                                                if (item != dropDownValue)
+                                              for (var item in globals.allEvents)
+                                                if (item.projectId != globals.dropDownValue!.projectId)
                                                   Container(
                                                       width: MediaQuery.of(context)
                                                           .size
@@ -165,10 +169,8 @@ class _EventBarState extends State<EventBar> {
                                                       child: MaterialButton(
                                                           onPressed: () {
                                                             setState(() {
-                                                              dropDownValue =
-                                                                  item;
-                                                              globals.dropDownValue =
-                                                                  dropDownValue;
+                                                              dropDownValue = item.name+" - "+item.projectDate;
+                                                              globals.dropDownValue = item;
                                                             });
                                                             Navigator.pop(
                                                                 context);
@@ -177,7 +179,7 @@ class _EventBarState extends State<EventBar> {
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment.start,
                                                               children: [
-                                                                Text(item,
+                                                                Text(item.name+" - "+item.projectDate,
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             12))
@@ -196,10 +198,8 @@ class _EventBarState extends State<EventBar> {
                                                       child: MaterialButton(
                                                           onPressed: () {
                                                             setState(() {
-                                                              dropDownValue =
-                                                                  item;
-                                                              globals.dropDownValue =
-                                                                  dropDownValue;
+                                                              dropDownValue = item.name+" - "+item.projectDate;
+                                                              globals.dropDownValue = item;
                                                             });
                                                             Navigator.pop(
                                                                 context);
@@ -209,12 +209,13 @@ class _EventBarState extends State<EventBar> {
                                                               children:
                                                               [
                                                                 const Icon(Icons.check),
-                                                                Text(item, style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
+                                                                Text(item.name+" - "+item.projectDate, style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
                                                               ]
                                                           )
                                                       )
                                                   )
                                             ],
+                                          )
                                           );
                                         });
                                   },

@@ -4,14 +4,14 @@ class ProjectDisplay{
   String name;
   String projectDate;
   String description;
-  String amountOfPeople;
+  int amountOfPeople;
   String number;
   String street;
   String city;
   String? complement;
   String postal_code;
   String image;
-  String? state;
+  String state;
 
   /*export enum ProjectState {
     draft = 'draft',

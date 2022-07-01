@@ -1,6 +1,6 @@
 
 class Environment{
-  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,customerPictures;
   Environment(){
     bool isProd = const bool.fromEnvironment('dart.vm.product');
     if(isProd){
@@ -19,7 +19,7 @@ class Environment{
     discoveryService = e.discoveryService;
     providerService = e.providerService;
     reservationService = e.reservationService;
-    providerPictures = e.providerPictures;
+    customerPictures = e.customerPictures;
   }
   environmentCopyDebug(EnvironmentDebug e){
 
@@ -31,13 +31,13 @@ class Environment{
     discoveryService = e.discoveryService;
     providerService = e.providerService;
     reservationService = e.reservationService;
-    providerPictures = e.providerPictures;
+    customerPictures = e.customerPictures;
   }
 
 }
 
 class EnvironmentDebug{
-  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,customerPictures;
   EnvironmentDebug(){
     baseServer = "http://10.0.2.2:";
     authenticationService = "3333/api/authentication";
@@ -47,12 +47,12 @@ class EnvironmentDebug{
     discoveryService = "3338/api/discovery";
     providerService = "3335/api/provider";
     reservationService = "3334/api/reservation";
-    providerPictures = "https://cdn.sbader.fr/provider/";
+    customerPictures = "https://cdn.sbader.fr/customer/";
   }
 }
 
 class EnvironmentProd{
-  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,customerPictures;
   EnvironmentProd(){
     baseServer = "https://ull.sbader.fr/";
     authenticationService = "api/authentication";
@@ -62,6 +62,6 @@ class EnvironmentProd{
     discoveryService = "api/discovery";
     providerService = "api/provider";
     reservationService = "api/reservation";
-    providerPictures = "https://cdn.sbader.fr/provider/";
+    customerPictures = "https://cdn.sbader.fr/customer/";
   }
 }
