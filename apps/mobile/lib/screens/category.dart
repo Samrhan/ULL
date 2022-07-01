@@ -66,7 +66,7 @@ class Category extends StatelessWidget{
 
             ),
             body:
-            ListPrestat('Traiteur', _currentAccount)
+            ListPrestatStated( _currentAccount,'Traiteur')
            // ListPrestat('Traiteur', _currentAccount)
 
 

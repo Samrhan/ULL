@@ -1,16 +1,37 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:ULL/screens/mainFavorite.dart';
 import 'package:ULL/screens/mainScreen.dart';
-import 'package:ULL/screens/mainEvent.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:ULL/screens/message.dart';
+import 'package:dio/dio.dart';
+import 'package:ULL/services/globals.dart' as globals;
+
+import '../services/environment.dart';
 
 // Bonjour ne posez pas de questions  Merci.
 /*
 אני לא ממש יודע מה עשיתי, הייתי צריך לקנן דקלאס בשיעורים בשיעורים אחרת זה לא עובד. זה אפילו יותר גרוע מ-CSS.
  */
+
+void fetchPresta() async {
+  print('objvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvect');
+  print('gggfgs');
+  Environment ev = Environment();
+  print(globals.accessToken);
+
+  try {
+    Dio dio = new Dio();
+    dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
+    String url = ev.baseServer +
+        ev.discoveryService +
+        "/recommend?category=Traiteur&projectId=1";
+    print(url);
+    var response = await dio.get(url);
+    print(response);
+    //return response;
+
+  } catch (e) {
+    print(e);
+  }
+}
 
 class TagList extends StatelessWidget {
   const TagList({
@@ -168,17 +189,14 @@ class Presta {
     required this.subtitle,
     required this.ListCat,
     required this.id,
-  }) ;
+  });
 
   final Widget thumbnail;
   final String title;
   final String subtitle;
   final String ListCat;
   final String id;
-
-
 }
-
 
 class CustomListItem2 extends StatelessWidget {
   const CustomListItem2({
@@ -193,9 +211,6 @@ class CustomListItem2 extends StatelessWidget {
   final String title;
   final String subtitle;
   final String ListCat;
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -223,25 +238,46 @@ class CustomListItem2 extends StatelessWidget {
   }
 }
 
-
-class ListPrestat extends StatelessWidget {
-  ListPrestat(String cat, GoogleSignInAccount? _currentAccount, {super.key}) {
-    this._currentAccount = _currentAccount;
-    super.key;
-    _currentCat = cat;
-  }
-
+class ListPrestatStated extends StatefulWidget {
   String _currentCat = 'Default';
+
+  ListPrestatStated(this._currentAccount, this._currentCat, {Key? key})
+      : super(key: key);
+
+  final GoogleSignInAccount? _currentAccount;
+
+  @override
+  State<ListPrestatStated> createState() => _ListPrestatState();
+}
+
+class _ListPrestatState extends State<ListPrestatStated> {
+  @override
+  ListPrestatStated get widget => super.widget;
+
+  var _currentCat;
   GoogleSignInAccount? _currentAccount;
 
-  final growableList = <String>['https://i.stack.imgur.com/hi0eh.jpg', 'https://www.atelierdeschefs.com/media/recette-e30299-pizza-pepperoni-tomate-mozza.jpg','https://i.stack.imgur.com/hi0eh.jpg', 'https://www.atelierdeschefs.com/media/recette-e30299-pizza-pepperoni-tomate-mozza.jpg','https://upload.wikimedia.org/wikipedia/commons/5/58/Forggensee_Panorama_SK_0001.jpg']; // Creates growable list.
+  void initState() {
+    super.initState();
+    _currentAccount = widget._currentAccount;
+    _currentCat = widget._currentCat;
+    fetchPresta();
+  }
+
+  final growableList = <String>[
+    'https://i.stack.imgur.com/hi0eh.jpg',
+    'https://www.atelierdeschefs.com/media/recette-e30299-pizza-pepperoni-tomate-mozza.jpg',
+    'https://i.stack.imgur.com/hi0eh.jpg',
+    'https://www.atelierdeschefs.com/media/recette-e30299-pizza-pepperoni-tomate-mozza.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/5/58/Forggensee_Panorama_SK_0001.jpg'
+  ]; // Creates growable list.
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height   ,
-       //   -(MediaQuery.of(context).size.height / 6 + 56),
+      height: MediaQuery.of(context).size.height,
+      //   -(MediaQuery.of(context).size.height / 6 + 56),
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -255,8 +291,10 @@ class ListPrestat extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MainScreen(_currentAccount)),
-                );;
+                  MaterialPageRoute(
+                      builder: (context) => MainScreen(_currentAccount)),
+                );
+                ;
               },
             ),
             centerTitle: true,
@@ -304,5 +342,11 @@ class ListPrestat extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
   }
 }
