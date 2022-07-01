@@ -145,22 +145,8 @@ export class ProjectService {
     async getAllProjects(user: JwtUser) {
         const customer = await this.customerRepository.findOneOrFail(user.id)
         const projects = await this.projectRepository.find({
-            where: {customer}, relations: ['address']
+            where: {customer},
         })
-        return projects.map((p=>({
-            project_id: p.idProject,
-            project_name: p.name,
-            project_date: p.projectDate,
-            project_description: p.description,
-            amount_of_people: p.amountOfPeople,
-            project_location: {
-                number: p.address.number,
-                street: p.address.street,
-                city: p.address.city,
-                complement: p.address.complement,
-                postal_code: p.address.postalCode
-            },
-            project_picture: p.image,
-        })));
+        return projects.map((p) => p.idProject);
     }
 }
