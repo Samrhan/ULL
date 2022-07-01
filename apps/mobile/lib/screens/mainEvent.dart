@@ -92,28 +92,31 @@ class _MainEventState extends State<MainEventStated>{
     selectedProject = selectedProject.substring(0,selectedProject.length-1);
     events = [
       ProjectDisplay(
+        null,
         "Anniversaire Adrien",
         "17/12/2022",
         "Gros anniversaire sa mère. Y aura des meufs à balles, un cirque ambulant et même quelqu'un déguisé en séraphine.",
         "20",
-        "179 Bd Maxime Gorki, 94800 Villejuif",
+        "179", "Bd Maxime Gorki", "Villejuif",null, "94800",
         "https://www.feteanniversaire.fr/files/pages-anniversaire/2020/05/18/25-idees-de-textes-danniversaire.jpg",
         "pending_validation"
       ),
       ProjectDisplay(
+          null,
           "Anniversaire Jonathan",
           "25/09/2022",
           "Anniversaire chill. Au programme choucroute et terraforming mars. Bref de l'emmerdement sympathique.",
           "amountOfPeople",
-          "projectLocation",
+          "179", "Bd Maxime Gorki", "Villejuif",null, "94800",
           "https://tra.img.pmdstatic.net/fit/https.3A.2F.2Fi.2Epmdstatic.2Enet.2FCAM.2F2021.2F09.2F04.2F102033a7-fd8f-4650-bd9c-a56d560939d4.2Ejpeg/1200x630/quality/80/pourquoi-faire-la-fete-nous-fait-du-bien.jpg",
           "pending_payment"
       ),
       ProjectDisplay(
+          null,
           "Anniversaire Emily",
           "25/01/2022",
           "Gros karting sa mère avec défi : celui qui roule en-dessous de 160km/h est un caca à roulette.",
-          "amountOfPeople2", "projectLocation2", "https://canaldelasiagne.fr/wp-content/uploads/2021/08/fete@2x.jpg",
+          "amountOfPeople2", "179", "Bd Maxime Gorki", "Villejuif",null, "94800", "https://canaldelasiagne.fr/wp-content/uploads/2021/08/fete@2x.jpg",
           "paid"
       )
     ];
