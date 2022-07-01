@@ -379,5 +379,32 @@ export const providerData : {
         ]
       }
     ]
+  },
+  {
+    register: {
+      company_name: "",
+      email: "",
+      password: "",
+      phone: "+33",
+      siren: ""
+    },
+    profile_picture: '/images/',
+    cover_picture: '/images/',
+    company_info: {
+      company_name: "",
+      company_description: "",
+      area_served: "",
+      email: "",
+      phone: "+33",
+      address: {
+        number: "",
+        street: "",
+        postal_code: "",
+        city: ""
+      },
+    },
+    category: "",
+    tags: [""],
+    profile_content: []
   }
 ]
