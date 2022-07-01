@@ -265,8 +265,14 @@ class _MainEventState extends State<MainEventStated>{
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
-                                            Text(dropDownValue,
-                                                style: const TextStyle(color: Colors.white,fontSize: 15)
+                                            Expanded(
+                                                child: Text(dropDownValue,
+                                                    maxLines: 1,
+                                                    overflow : TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15)
+                                                )
                                             ),
                                             const Icon(Icons.keyboard_arrow_down,color: Colors.white)
                                           ],
@@ -478,7 +484,14 @@ class _MainEventState extends State<MainEventStated>{
                                   .of(context)
                                   .size
                                   .height / 6,
-                              child: Row(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children : [
+
+                              Align(
+                                alignment: Alignment.topCenter,
+                              child :
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
@@ -518,6 +531,25 @@ class _MainEventState extends State<MainEventStated>{
                                     ),
                                   )
                                 ]
+                              )
+                              ),
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 5,bottom: 5),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 50,
+                                        height: 50,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white
+                                        ),
+                                        child: Icon(getIcon(event.state),size: 30,),
+                                      ),
+                                    ),
+                                  ),
+                                  ]
                               )
                             ),
                             Padding(

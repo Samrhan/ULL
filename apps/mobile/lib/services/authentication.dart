@@ -7,9 +7,6 @@ class Authentication{
 
 
   final  GoogleSignIn _googleSignIn = GoogleSignIn(
-    // Optional clientId
-    clientId:
-    '978419384807-l8725i106c9a3pl60st07i2gs39p1ct2.apps.googleusercontent.com',
     scopes: <String>[
       'email',
       'openid',
