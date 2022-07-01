@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ULL/services/environment.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:figma_squircle/figma_squircle.dart';
@@ -9,9 +10,13 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:ULL/services/globals.dart' as globals;
+import 'package:ULL/screens/transition.dart';
 
 class AddEvent extends StatefulWidget {
-  AddEvent() : super();
+  AddEvent(GoogleSignInAccount? _currentAccount) : super(){
+    this._currentAccount=_currentAccount;
+  }
+  GoogleSignInAccount? _currentAccount;
 
   @override
   AddEventState createState() => AddEventState();
@@ -27,7 +32,16 @@ class AddEventState extends State<AddEvent> {
       addressPostalCode,
       nb,
       description;
+  GoogleSignInAccount? _currentAccount;
   DateTime date = DateTime.now();
+
+  AddEvent get widget => super.widget;
+
+  @override
+  initState(){
+    super.initState();
+    _currentAccount=widget._currentAccount;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +241,8 @@ class AddEventState extends State<AddEvent> {
                                     });
                                   }
                                 },
-                                child: Text('${date.day}/${date.month}/${date.year}',style: const TextStyle(color: Colors.black,fontSize: 20),),
+                                child: Text(date.day.toString().padLeft(2,'0') + '/' + date.month.toString().padLeft(2,'0') + '/' + date.year.toString().padLeft(2,'0')
+                                  ,style: const TextStyle(color: Colors.black,fontSize: 20),),
                               )
                           )
                         ),
@@ -382,7 +397,14 @@ class AddEventState extends State<AddEvent> {
 
     try {
       var res = await dio.post(url, data: formData);
-      Navigator.pop(context);
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context,a1,a2) => Transition(_currentAccount),
+          transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+          transitionDuration: const Duration(milliseconds: 0),
+        ),
+      );
       print(res.statusMessage);
     }catch(e){
       if(e is DioError){

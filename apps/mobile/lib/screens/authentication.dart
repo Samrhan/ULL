@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert' show json;
 
+import 'package:ULL/screens/transition.dart';
 import 'package:ULL/services/projectDisplay.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
                   onPressed: ()  async {
                     var _auth = await _authentication.signIn();
                     await _authentication.handleGetContact(_auth!);
-                    await getAllProjects();
+                    print(globals.allEvents);
                     setState(() {
                        _currentAccount = _auth;
                     });
@@ -120,41 +121,12 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
     else{
       return Material(
         type: MaterialType.transparency,
-        child: MainScreen(_currentAccount)
+        child: Transition(_currentAccount)
       );
     }
   }
 
-  Future<void> getAllProjects() async{
-    Map<String, String> requestHeaders = {
-      'Authorization': "Bearer ${globals.accessToken}"
-    };
-    Environment ev = Environment();
-    String url = ev.baseServer + ev.customerService + "/all_projects" ;
-    final http.Response response = await http.get(
-        Uri.parse(url),
-        headers: requestHeaders
-    );
-    final List data =
-    json.decode(response.body);
-    data.forEach((element) {
-      print(element["project_location"]["number"]);
-      /*globals.allEvents.add(ProjectDisplay(
-          element["project_id"],
-          element["project_name"],
-          element["project_date"],
-          element["project_description"],
-          element["amount_of_people"],
-          element["project_location"]["number"],
-          element["project_location"]["street"],
-          element["project_location"]["city"],
-          element["project_location"]["complement"],
-          element["project_location"]["postal_code"],
-          element["project_picture"],
-          null
-      ));*/
-    });
-  }
+
 
 }
 
