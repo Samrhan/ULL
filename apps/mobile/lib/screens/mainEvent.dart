@@ -68,7 +68,7 @@ class MainEventStated extends StatefulWidget{
 
 class _MainEventState extends State<MainEventStated>{
 
-  var dropDownValue;
+  var dropDownValue = "Pas d'événements pour le moment" ;
   List<ProjectDisplay> events=[];
 
   @override MainEventStated get widget => super.widget;
