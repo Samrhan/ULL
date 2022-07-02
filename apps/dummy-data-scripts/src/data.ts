@@ -333,8 +333,8 @@ export const providerData : {
       phone: "+33601020307",
       siren: "484456884"
     },
-    profile_picture: '/images/music-player-g7f03cb116_1920.jpg',
-    cover_picture: '/images/audio-g4cfa9b9e7_1920.jpg',
+    profile_picture: '/images/logo-tuilerie-150.png',
+    cover_picture: '/images/Tuilerie_Slider_2B.jpeg',
     company_info: {
       company_name: "Domaine de la Tuilerie",
       company_description: "Un espace de 370 mètres carrés pouvant accueillir 400 personnes.",
@@ -354,7 +354,7 @@ export const providerData : {
       {
         id_section: "",
         type: SectionType.big,
-        section_title: "Animation musicale",
+        section_title: "Salle de festivités",
         section_description: "",
         purchasable: true,
         pictures: [
