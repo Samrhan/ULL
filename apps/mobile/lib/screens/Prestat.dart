@@ -9,6 +9,86 @@ import 'package:ULL/services/globals.dart' as globals;
 
 import '../services/environment.dart';
 
+class BeginCat extends StatelessWidget {
+  const BeginCat({
+    Key? key,
+    required this.info,
+  }) : super(key: key);
+
+  final Map<String, dynamic> info;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 150,
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        children: [
+          SizedBox(width: 10),
+          CircleAvatar(
+            radius: 50,
+            backgroundImage: NetworkImage(
+              //ev.providerPictures + _Listpresta[index]['profile_picture'],
+              "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+            ),
+          ),
+          SizedBox(width: 10),
+          SizedBox(
+            width: MediaQuery.of(context).size.width - 200,
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: Container(
+                    child: Text(
+                      info['company_name'],
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 110,
+                  child: Container(
+                    child: Text(
+                      info['company_description'],
+                      style: TextStyle(color: Colors.grey, fontSize: 13),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5),
+                SizedBox(
+                  width: double.infinity,
+                  child: Container(
+                    child: Text(
+                      info['area_served'],
+                      style: TextStyle(color: Colors.grey, fontSize: 13),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black38,
+            blurRadius: 5,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class InfoCat extends StatelessWidget {
   const InfoCat({
     Key? key,
@@ -20,28 +100,21 @@ class InfoCat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width -10,
-      decoration: BoxDecoration( boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(0, 3), // changes position of shadow
-        ),
-      ],),
-
-      padding: const EdgeInsets.all(7),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:  [
-            Text(textinfo,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold)),
-
-          ]),
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: EdgeInsets.all(10), //apply padding to all four sides
+        child: Text(textinfo),
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black38,
+            blurRadius: 5,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -49,42 +122,291 @@ class InfoCat extends StatelessWidget {
 class BigCat extends StatelessWidget {
   const BigCat({
     Key? key,
-    required this.textinfo,
+    required this.tinfo,
   }) : super(key: key);
 
-  final String textinfo;
+  final Map<String, dynamic> tinfo;
 
   @override
   Widget build(BuildContext context) {
-    return Text("BigCat");
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: EdgeInsets.all(10), //apply padding to all four sides
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              width: double.infinity,
+              child: Container(
+                child: Text(
+                  tinfo['section_title'],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 90,
+              child: ListView(
+                // This next line does the trick.
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  for (int index = 0;
+                      index < tinfo['pictures'].length + 5;
+                      index++)
+                    Container(
+                        margin: EdgeInsets.all(2),
+                        child: AspectRatio(
+                          child: Image.network(
+                            "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+                            height: 190.0,
+                            fit: BoxFit.fill,
+                          ),
+                          aspectRatio: 5 / 3,
+                        )),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    child: Text(
+                      tinfo['content'][0]['performance_title'],
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Text(
+                      tinfo['content'][0]['price']['value'].toString() +
+                          "/" +
+                          tinfo['content'][0]['price']['unit'],
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Text(tinfo['content'][0]['performance_description'],
+                style: TextStyle(color: Colors.grey, fontSize: 11)),
+          ],
+        ),
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black38,
+            blurRadius: 5,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class MediumCat extends StatelessWidget {
   const MediumCat({
     Key? key,
-    required this.textinfo,
+    required this.tinfo,
   }) : super(key: key);
 
-  final String textinfo;
+  final Map<String, dynamic> tinfo;
 
   @override
   Widget build(BuildContext context) {
-    return Text("Medium");
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Container(
+                child: Text(
+                  tinfo['section_title'],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              child: Container(
+                child: Text(
+                  tinfo['section_description'],
+                  style: TextStyle(fontSize: 16),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 250,
+              child: ListView(
+                // This next line does the trick.
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  for (int index = 0; index < tinfo["content"].length; index++)
+                    Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: SizedBox(
+                        width: 170,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 120,
+                              width: 170,
+                              child: Image.network(
+                                'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Column(children: [
+                              Text(
+                                tinfo["content"][index]["performance_title"],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              const SizedBox(
+                                height: 14,
+                              ),
+                              Text(
+                                  tinfo["content"][index]
+                                      ["performance_description"],
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 12)),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Text(
+                                  tinfo["content"][index]['price']['value']
+                                          .toString() +
+                                      "/" +
+                                      tinfo["content"][index]['price']['unit'],
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 12)),
+                            ])
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
 
 class SmallCat extends StatelessWidget {
   const SmallCat({
     Key? key,
-    required this.textinfo,
+    required this.tinfo,
   }) : super(key: key);
 
-  final String textinfo;
+  final Map<String, dynamic> tinfo;
 
   @override
   Widget build(BuildContext context) {
-    return Text("Small");
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Container(
+                child: Text(
+                  tinfo['section_title'],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            for (int index = 0; index < 4; index++)
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 110,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 110,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              child: Text(
+                                "Pizza aaaa",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              child: Text(
+                                "Base tomate tout ca tout ca",
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              child: Text(
+                                "10E",
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: AspectRatio(
+                            child: Image.network(
+                              //ev.providerPictures + _Listpresta[index]['profile_picture'],
+                              "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+                              width: 100.0,
+                              height: 100.0,
+                              fit: BoxFit.fill,
+                            ),
+                            aspectRatio: 1 / 1,
+                          )),
+                    ),
+                  ],
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 5,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+              )
+          ],
+        ));
   }
 }
 
@@ -105,12 +427,19 @@ class Choicecat extends StatelessWidget {
             textinfo: cat['section_description'],
           ),
         ] else if (cat['type'] == 'big') ...[
-          Text("big"),
+          BigCat(
+            tinfo: cat,
+          ),
         ] else if (cat['type'] == 'medium') ...[
-          Text("medium"),
+          MediumCat(
+            tinfo: cat,
+          ),
         ] else if (cat['type'] == 'small') ...[
-          Text("small"),
+          SmallCat(
+            tinfo: cat,
+          ),
         ],
+        SizedBox(height: 10),
       ],
     );
   }
@@ -189,6 +518,9 @@ class _PrestatState extends State<PrestatStated> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
+                          SizedBox(height: 20),
+                          BeginCat(info: _Presta[0]),
+                          SizedBox(height: 10),
                           for (int index = 0;
                               index < _Presta[0]['services'].length;
                               index++)
