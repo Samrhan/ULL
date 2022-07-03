@@ -89,6 +89,29 @@ class BeginCat extends StatelessWidget {
   }
 }
 
+class addPresta extends StatelessWidget {
+  const addPresta({
+    Key? key,
+    required this.textinfo,
+  }) : super(key: key);
+
+  final String textinfo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(left: 20.0, right: 20.0),
+        child: ElevatedButton(
+          child: Text("Ajouter ce prestataire"),
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            primary: Colors.red,
+          ),
+        ));
+  }
+}
+
 class InfoCat extends StatelessWidget {
   const InfoCat({
     Key? key,
@@ -509,6 +532,7 @@ class _PrestatState extends State<PrestatStated> {
                       expandedHeight: 150.0,
                       backgroundColor: Colors.black,
                       flexibleSpace: FlexibleSpaceBar(
+
                           title: Text(_Presta[0]['company_name']),
                           background: Image.network(
                             'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -518,6 +542,9 @@ class _PrestatState extends State<PrestatStated> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
+                          addPresta(
+                            textinfo: 'aa',
+                          ),
                           SizedBox(height: 20),
                           BeginCat(info: _Presta[0]),
                           SizedBox(height: 10),
