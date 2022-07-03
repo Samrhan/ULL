@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,11 @@ import 'package:ULL/services/globals.dart' as globals;
 import '../services/environment.dart';
 
 class BeginCat extends StatelessWidget {
-  const BeginCat({
+  BeginCat({
     Key? key,
     required this.info,
   }) : super(key: key);
+  final Environment ev = Environment();
 
   final Map<String, dynamic> info;
 
@@ -24,13 +26,15 @@ class BeginCat extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(height: 150),
-
           const SizedBox(width: 10),
-           CircleAvatar(
+          CircleAvatar(
             radius: 50,
             backgroundImage: NetworkImage(
               //ev.providerPictures + _Listpresta[index]['profile_picture'],
-              "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+              ev.providerPictures +
+                  info['id_provider'] +
+                  "/" +
+                  info['profile_picture'],
             ),
           ),
           const SizedBox(width: 10),
@@ -43,8 +47,8 @@ class BeginCat extends StatelessWidget {
                   child: Container(
                     child: Text(
                       info['company_name'],
-                      style:
-                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 24),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -144,12 +148,16 @@ class InfoCat extends StatelessWidget {
 }
 
 class BigCat extends StatelessWidget {
-  const BigCat({
+  var prestat;
+
+  BigCat({
     Key? key,
     required this.tinfo,
+    required this.prestat,
   }) : super(key: key);
 
   final Map<String, dynamic> tinfo;
+  final Environment ev = Environment();
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +171,8 @@ class BigCat extends StatelessWidget {
               width: double.infinity,
               child: Text(
                 tinfo['section_title'],
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -173,14 +182,15 @@ class BigCat extends StatelessWidget {
                 // This next line does the trick.
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  for (int index = 0;
-                      index < tinfo['pictures'].length + 5;
-                      index++)
+                  for (int index = 0; index < tinfo['pictures'].length; index++)
                     Container(
                         margin: const EdgeInsets.all(2),
                         child: AspectRatio(
                           child: Image.network(
-                            "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+                            ev.providerPictures +
+                                prestat +
+                                "/" +
+                                tinfo['pictures'][index],
                             height: 190.0,
                             fit: BoxFit.fill,
                           ),
@@ -227,9 +237,13 @@ class BigCat extends StatelessWidget {
 }
 
 class MediumCat extends StatelessWidget {
-  const MediumCat({
+  var prestat;
+  final Environment ev = Environment();
+
+  MediumCat({
     Key? key,
     required this.tinfo,
+    required this.prestat,
   }) : super(key: key);
 
   final Map<String, dynamic> tinfo;
@@ -244,7 +258,8 @@ class MediumCat extends StatelessWidget {
               width: double.infinity,
               child: Text(
                 tinfo['section_title'],
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -274,7 +289,10 @@ class MediumCat extends StatelessWidget {
                               height: 120,
                               width: 170,
                               child: Image.network(
-                                'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+                                ev.providerPictures +
+                                    prestat +
+                                    "/" +
+                                    tinfo['content'][index]["picture"],
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -319,12 +337,17 @@ class MediumCat extends StatelessWidget {
 }
 
 class SmallCat extends StatelessWidget {
-  const SmallCat({
+  var prestat;
+
+  SmallCat({
     Key? key,
     required this.tinfo,
+    required this.prestat,
   }) : super(key: key);
 
   final Map<String, dynamic> tinfo;
+
+  final Environment ev = Environment();
 
   @override
   Widget build(BuildContext context) {
@@ -341,7 +364,7 @@ class SmallCat extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            for (int index = 0; index < 4; index++)
+            for (int index = 0; index < tinfo['content'].length; index++)
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 110,
@@ -352,39 +375,50 @@ class SmallCat extends StatelessWidget {
                       child: Column(
                         children: [
                           SizedBox(
+                              width: double.infinity,
+                              child: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    tinfo['content'][index]
+                                        ['performance_title'],
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              )),
+                          const SizedBox(height: 20),
+                          SizedBox(
                             width: double.infinity,
-                            child: Container(
-                              child:  Text(
-                                "Pizza aaaa",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  child: Text(
+                                    tinfo['content'][index]
+                                        ['performance_description'],
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                )),
                           ),
                           const SizedBox(height: 20),
                           SizedBox(
                             width: double.infinity,
-                            child: Container(
-                              child: Text(
-                                "Base tomate tout ca tout ca",
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 15),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: double.infinity,
-                            child: Container(
-                              child: Text(
-                                "10E",
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 15),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  child: Text(
+                                    tinfo['content'][index]['price']['value']
+                                            .toString() +
+                                        "€",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                )),
                           ),
                         ],
                       ),
@@ -395,8 +429,10 @@ class SmallCat extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.0),
                           child: AspectRatio(
                             child: Image.network(
-                              //ev.providerPictures + _Listpresta[index]['profile_picture'],
-                              "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+                              ev.providerPictures +
+                                  prestat +
+                                  "/" +
+                                  tinfo['content'][index]["picture"],
                               width: 100.0,
                               height: 100.0,
                               fit: BoxFit.fill,
@@ -423,9 +459,12 @@ class SmallCat extends StatelessWidget {
 }
 
 class Choicecat extends StatelessWidget {
-  const Choicecat({
+  var prestat;
+
+  Choicecat({
     Key? key,
     required this.cat,
+    required this.prestat,
   }) : super(key: key);
 
   final Map<String, dynamic> cat;
@@ -441,14 +480,17 @@ class Choicecat extends StatelessWidget {
         ] else if (cat['type'] == 'big') ...[
           BigCat(
             tinfo: cat,
+            prestat: prestat,
           ),
         ] else if (cat['type'] == 'medium') ...[
           MediumCat(
             tinfo: cat,
+            prestat: prestat,
           ),
         ] else if (cat['type'] == 'small') ...[
           SmallCat(
             tinfo: cat,
+            prestat: prestat,
           ),
         ],
         const SizedBox(height: 10),
@@ -458,7 +500,7 @@ class Choicecat extends StatelessWidget {
 }
 
 class PrestatStated extends StatefulWidget {
-   String _currentPrestat = 'Default';
+  String _currentPrestat = 'Default';
   final GoogleSignInAccount? _currentAccount;
 
   PrestatStated(this._currentAccount, this._currentPrestat, {Key? key})
@@ -551,7 +593,10 @@ class _PrestatState extends State<PrestatStated> {
                                   ],
                                 )),
                             background: Image.network(
-                              "https://images.ctfassets.net/pjshm78m9jt4/383122_header/d79a41045d07d114941f7641c83eea6d/importedImage383122_header",
+                              ev.providerPictures +
+                                  _Presta[0]['id_provider'] +
+                                  "/" +
+                                  _Presta[0]['cover_picture'],
                               fit: BoxFit.cover,
                             ));
                       }),
@@ -568,7 +613,9 @@ class _PrestatState extends State<PrestatStated> {
                           for (int index = 0;
                               index < _Presta[0]['services'].length;
                               index++)
-                            Choicecat(cat: _Presta[0]['services'][index])
+                            Choicecat(
+                                cat: _Presta[0]['services'][index],
+                                prestat: _currentPrestat),
                         ],
                       ),
                     )
@@ -598,7 +645,7 @@ class _PrestatState extends State<PrestatStated> {
       print(e);
     }
 
-    print(presta);
+    log(presta.toString());
     setState(() {
       _Presta = presta;
       _isLoading = false;
