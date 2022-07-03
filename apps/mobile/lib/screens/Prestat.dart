@@ -43,7 +43,7 @@ class BeginCat extends StatelessWidget {
                     child: Text(
                       info['company_name'],
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -489,6 +489,7 @@ class _PrestatState extends State<PrestatStated> {
   bool _isLoading = true;
   Environment ev = Environment();
   late List<dynamic> _Presta;
+  var top = 0.0;
 
   void initState() {
     super.initState();
@@ -529,15 +530,41 @@ class _PrestatState extends State<PrestatStated> {
                       pinned: true,
                       snap: false,
                       elevation: 0,
-                      expandedHeight: 150.0,
+                      expandedHeight: 170.0,
+                      collapsedHeight: 100,
                       backgroundColor: Colors.black,
-                      flexibleSpace: FlexibleSpaceBar(
+                      flexibleSpace: LayoutBuilder(builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        top = constraints.biggest.height;
+                        return FlexibleSpaceBar(
+                            title: AnimatedOpacity(
+                                duration: Duration(milliseconds: 3),
+                                opacity: top < 180 ? 1.0 : 0.0,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 60),
+                                    addPresta(
+                                      textinfo: 'aa',
+                                    ),
+                                    SizedBox(height: 15),
+                                    Transform.translate(
+                                      offset: const Offset(-120.0, 0.0),
+                                      child: Text(
+                                        _Presta[0]['company_name'],
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
 
-                          title: Text(_Presta[0]['company_name']),
-                          background: Image.network(
-                            'https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-                            fit: BoxFit.cover,
-                          )),
+
+                                  ],
+                                )),
+                            background: Image.network(
+                              "https://images.ctfassets.net/pjshm78m9jt4/383122_header/d79a41045d07d114941f7641c83eea6d/importedImage383122_header",
+                              fit: BoxFit.cover,
+                            ));
+                      }),
                     ),
                     SliverList(
                       delegate: SliverChildListDelegate(

@@ -40,7 +40,7 @@ class TagList extends StatelessWidget {
                             color: Colors.grey,
                           ),
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(20))),
+                          const BorderRadius.all(Radius.circular(20))),
                       child: Padding(
                           padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                           child: Text(
