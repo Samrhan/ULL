@@ -20,19 +20,20 @@ class BeginCat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [
-          SizedBox(width: 10),
-          CircleAvatar(
+          const SizedBox(height: 150),
+
+          const SizedBox(width: 10),
+           CircleAvatar(
             radius: 50,
             backgroundImage: NetworkImage(
               //ev.providerPictures + _Listpresta[index]['profile_picture'],
               "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           SizedBox(
             width: MediaQuery.of(context).size.width - 200,
             child: Column(
@@ -43,29 +44,29 @@ class BeginCat extends StatelessWidget {
                     child: Text(
                       info['company_name'],
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                       textAlign: TextAlign.left,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 110,
                   child: Container(
                     child: Text(
                       info['company_description'],
-                      style: TextStyle(color: Colors.grey, fontSize: 13),
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
                       textAlign: TextAlign.left,
                     ),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 SizedBox(
                   width: double.infinity,
                   child: Container(
                     child: Text(
                       info['area_served'],
-                      style: TextStyle(color: Colors.grey, fontSize: 13),
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -89,8 +90,8 @@ class BeginCat extends StatelessWidget {
   }
 }
 
-class addPresta extends StatelessWidget {
-  const addPresta({
+class AddPresta extends StatelessWidget {
+  const AddPresta({
     Key? key,
     required this.textinfo,
   }) : super(key: key);
@@ -100,12 +101,12 @@ class addPresta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 20.0, right: 20.0),
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
         child: ElevatedButton(
-          child: Text("Ajouter ce prestataire"),
+          child: const Text("Ajouter ce prestataire"),
           onPressed: () {},
           style: ElevatedButton.styleFrom(
-            shape: StadiumBorder(),
+            shape: const StadiumBorder(),
             primary: Colors.red,
           ),
         ));
@@ -125,7 +126,7 @@ class InfoCat extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Padding(
-        padding: EdgeInsets.all(10), //apply padding to all four sides
+        padding: const EdgeInsets.all(10), //apply padding to all four sides
         child: Text(textinfo),
       ),
       decoration: const BoxDecoration(
@@ -155,17 +156,15 @@ class BigCat extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Padding(
-        padding: EdgeInsets.all(10), //apply padding to all four sides
+        padding: const EdgeInsets.all(10), //apply padding to all four sides
         child: Column(
           children: <Widget>[
             SizedBox(
               width: double.infinity,
-              child: Container(
-                child: Text(
-                  tinfo['section_title'],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                  textAlign: TextAlign.left,
-                ),
+              child: Text(
+                tinfo['section_title'],
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                textAlign: TextAlign.left,
               ),
             ),
             SizedBox(
@@ -178,7 +177,7 @@ class BigCat extends StatelessWidget {
                       index < tinfo['pictures'].length + 5;
                       index++)
                     Container(
-                        margin: EdgeInsets.all(2),
+                        margin: const EdgeInsets.all(2),
                         child: AspectRatio(
                           child: Image.network(
                             "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
@@ -193,27 +192,23 @@ class BigCat extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: Container(
-                    child: Text(
-                      tinfo['content'][0]['performance_title'],
-                      textAlign: TextAlign.left,
-                    ),
+                  child: Text(
+                    tinfo['content'][0]['performance_title'],
+                    textAlign: TextAlign.left,
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    child: Text(
-                      tinfo['content'][0]['price']['value'].toString() +
-                          "/" +
-                          tinfo['content'][0]['price']['unit'],
-                      textAlign: TextAlign.right,
-                    ),
+                  child: Text(
+                    tinfo['content'][0]['price']['value'].toString() +
+                        "/" +
+                        tinfo['content'][0]['price']['unit'],
+                    textAlign: TextAlign.right,
                   ),
                 ),
               ],
             ),
             Text(tinfo['content'][0]['performance_description'],
-                style: TextStyle(color: Colors.grey, fontSize: 11)),
+                style: const TextStyle(color: Colors.grey, fontSize: 11)),
           ],
         ),
       ),
@@ -247,23 +242,19 @@ class MediumCat extends StatelessWidget {
           children: [
             SizedBox(
               width: double.infinity,
-              child: Container(
-                child: Text(
-                  tinfo['section_title'],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                  textAlign: TextAlign.left,
-                ),
+              child: Text(
+                tinfo['section_title'],
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                textAlign: TextAlign.left,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
-              child: Container(
-                child: Text(
-                  tinfo['section_description'],
-                  style: TextStyle(fontSize: 16),
-                  textAlign: TextAlign.left,
-                ),
+              child: Text(
+                tinfo['section_description'],
+                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.left,
               ),
             ),
             SizedBox(
@@ -343,15 +334,13 @@ class SmallCat extends StatelessWidget {
           children: [
             SizedBox(
               width: double.infinity,
-              child: Container(
-                child: Text(
-                  tinfo['section_title'],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                  textAlign: TextAlign.left,
-                ),
+              child: Text(
+                tinfo['section_title'],
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                textAlign: TextAlign.left,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             for (int index = 0; index < 4; index++)
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -365,15 +354,15 @@ class SmallCat extends StatelessWidget {
                           SizedBox(
                             width: double.infinity,
                             child: Container(
-                              child: Text(
+                              child:  Text(
                                 "Pizza aaaa",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 18),
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: double.infinity,
                             child: Container(
@@ -385,7 +374,7 @@ class SmallCat extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: double.infinity,
                             child: Container(
@@ -462,14 +451,14 @@ class Choicecat extends StatelessWidget {
             tinfo: cat,
           ),
         ],
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }
 }
 
 class PrestatStated extends StatefulWidget {
-  String _currentPrestat = 'Default';
+   String _currentPrestat = 'Default';
   final GoogleSignInAccount? _currentAccount;
 
   PrestatStated(this._currentAccount, this._currentPrestat, {Key? key})
@@ -542,22 +531,23 @@ class _PrestatState extends State<PrestatStated> {
                                 opacity: top < 180 ? 1.0 : 0.0,
                                 child: Column(
                                   children: [
-                                    SizedBox(height: 60),
-                                    addPresta(
+                                    const SizedBox(height: 60),
+                                    AddPresta(
                                       textinfo: 'aa',
                                     ),
-                                    SizedBox(height: 15),
-                                    Transform.translate(
-                                      offset: const Offset(-120.0, 0.0),
-                                      child: Text(
-                                        _Presta[0]['company_name'],
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
+                                    const SizedBox(height: 15),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 100),
+                                      child: Transform.translate(
+                                        offset: const Offset(-58.0, 0.0),
+                                        child: Text(
+                                          _Presta[0]['company_name'],
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-
-
+                                    )
                                   ],
                                 )),
                             background: Image.network(
@@ -569,12 +559,12 @@ class _PrestatState extends State<PrestatStated> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          addPresta(
+                          AddPresta(
                             textinfo: 'aa',
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           BeginCat(info: _Presta[0]),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           for (int index = 0;
                               index < _Presta[0]['services'].length;
                               index++)
@@ -594,7 +584,7 @@ class _PrestatState extends State<PrestatStated> {
   }
 
   Future fetchPresta() async {
-    var response;
+    Response response;
     List<dynamic> presta = [];
 
     try {
