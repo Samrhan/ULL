@@ -97,18 +97,18 @@ class BeginCat extends StatelessWidget {
 class AddPresta extends StatelessWidget {
   const AddPresta({
     Key? key,
-    required this.textinfo,
+    required this.performance_id,
   }) : super(key: key);
 
-  final String textinfo;
+  final String performance_id;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+        padding: const EdgeInsets.only(left: 30.0, right: 30.0),
         child: ElevatedButton(
-          child: const Text("Ajouter ce prestataire"),
-          onPressed: () {},
+          child: const Text("Add"),
+          onPressed: () {addPresta(performance_id);},
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
             primary: Colors.red,
@@ -219,6 +219,10 @@ class BigCat extends StatelessWidget {
             ),
             Text(tinfo['content'][0]['performance_description'],
                 style: const TextStyle(color: Colors.grey, fontSize: 11)),
+
+            AddPresta( performance_id:tinfo['content'][0]['id_performance']),
+
+
           ],
         ),
       ),
@@ -239,7 +243,6 @@ class BigCat extends StatelessWidget {
 class MediumCat extends StatelessWidget {
   var prestat;
   final Environment ev = Environment();
-
   MediumCat({
     Key? key,
     required this.tinfo,
@@ -273,7 +276,7 @@ class MediumCat extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 250,
+              height: 300,
               child: ListView(
                 // This next line does the trick.
                 scrollDirection: Axis.horizontal,
@@ -323,7 +326,9 @@ class MediumCat extends StatelessWidget {
                                       tinfo["content"][index]['price']['unit'],
                                   style: const TextStyle(
                                       color: Colors.grey, fontSize: 12)),
-                            ])
+                            ]),
+                            AddPresta( performance_id:tinfo['content'][index]['id_performance']),
+
                           ],
                         ),
                       ),
@@ -338,7 +343,6 @@ class MediumCat extends StatelessWidget {
 
 class SmallCat extends StatelessWidget {
   var prestat;
-
   SmallCat({
     Key? key,
     required this.tinfo,
@@ -367,11 +371,11 @@ class SmallCat extends StatelessWidget {
             for (int index = 0; index < tinfo['content'].length; index++)
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 110,
+                height: 120,
                 child: Row(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 110,
+                      width: MediaQuery.of(context).size.width - 180,
                       child: Column(
                         children: [
                           SizedBox(
@@ -394,32 +398,30 @@ class SmallCat extends StatelessWidget {
                             width: double.infinity,
                             child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                  child: Text(
-                                    tinfo['content'][index]
-                                        ['performance_description'],
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                    textAlign: TextAlign.left,
-                                  ),
+                                child: Text(
+                                  tinfo['content'][index]
+                                      ['performance_description'],
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 15),
+                                  textAlign: TextAlign.left,
                                 )),
                           ),
                           const SizedBox(height: 20),
+
                           SizedBox(
                             width: double.infinity,
                             child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                  child: Text(
-                                    tinfo['content'][index]['price']['value']
-                                            .toString() +
-                                        "€",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 15),
-                                    textAlign: TextAlign.left,
-                                  ),
+                                child: Text(
+                                  tinfo['content'][index]['price']['value']
+                                          .toString() +
+                                      "€",
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 15),
+                                  textAlign: TextAlign.left,
                                 )),
                           ),
+
                         ],
                       ),
                     ),
@@ -439,6 +441,19 @@ class SmallCat extends StatelessWidget {
                             ),
                             aspectRatio: 1 / 1,
                           )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 25, 10, 0),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.plus_one_rounded,
+                          size: 24,
+                        ),
+                        onPressed: () {
+                          addPresta( tinfo['content'][index]['id_performance']);
+                          log('eee');
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -460,11 +475,13 @@ class SmallCat extends StatelessWidget {
 
 class Choicecat extends StatelessWidget {
   var prestat;
+  var project_id;
 
   Choicecat({
     Key? key,
     required this.cat,
     required this.prestat,
+    required this.project_id,
   }) : super(key: key);
 
   final Map<String, dynamic> cat;
@@ -513,7 +530,7 @@ class PrestatStated extends StatefulWidget {
 class _PrestatState extends State<PrestatStated> {
   @override
   PrestatStated get widget => super.widget;
-
+  var idprojet = "1";
   var _currentPrestat;
   GoogleSignInAccount? _currentAccount;
 
@@ -562,7 +579,7 @@ class _PrestatState extends State<PrestatStated> {
                       snap: false,
                       elevation: 0,
                       expandedHeight: 170.0,
-                      collapsedHeight: 100,
+                      collapsedHeight: 60,
                       backgroundColor: Colors.black,
                       flexibleSpace: LayoutBuilder(builder:
                           (BuildContext context, BoxConstraints constraints) {
@@ -571,26 +588,11 @@ class _PrestatState extends State<PrestatStated> {
                             title: AnimatedOpacity(
                                 duration: Duration(milliseconds: 3),
                                 opacity: top < 180 ? 1.0 : 0.0,
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 60),
-                                    AddPresta(
-                                      textinfo: 'aa',
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 100),
-                                      child: Transform.translate(
-                                        offset: const Offset(-58.0, 0.0),
-                                        child: Text(
-                                          _Presta[0]['company_name'],
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                child:  Text(
+                                  _Presta[0]['company_name'],
+                                  style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
                                 )),
                             background: Image.network(
                               ev.providerPictures +
@@ -604,9 +606,7 @@ class _PrestatState extends State<PrestatStated> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-                          AddPresta(
-                            textinfo: 'aa',
-                          ),
+
                           const SizedBox(height: 20),
                           BeginCat(info: _Presta[0]),
                           const SizedBox(height: 10),
@@ -615,7 +615,8 @@ class _PrestatState extends State<PrestatStated> {
                               index++)
                             Choicecat(
                                 cat: _Presta[0]['services'][index],
-                                prestat: _currentPrestat),
+                                prestat: _currentPrestat, project_id : idprojet,
+                            ),
                         ],
                       ),
                     )
@@ -651,4 +652,26 @@ class _PrestatState extends State<PrestatStated> {
       _isLoading = false;
     });
   }
+}
+Future addPresta(performance_id) async {
+  Response response;
+  Environment ev = Environment();
+  log("globals.allEvents.toString()");
+  log(globals.dropDownValue!.projectId!);
+  try {
+    Dio dio = new Dio();
+    dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
+    String url =
+        ev.baseServer + ev.reservationService + "/reservation";
+    log(url);
+    var a = {"performance_id": performance_id, "project_id": globals.dropDownValue!.projectId!,"quantity":1} ;
+    log(a.toString());
+    response = await dio.post(url, data: a);
+    log(response.toString());
+
+  } catch (e) {
+    print(e);
+  }
+
+
 }

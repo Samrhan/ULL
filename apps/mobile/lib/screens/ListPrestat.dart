@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:ULL/screens/mainScreen.dart';
@@ -258,13 +259,6 @@ class _ListPrestatState extends State<ListPrestatStated> {
     fetchPresta();
   }
 
-  final growableList = <String>[
-    'https://i.stack.imgur.com/hi0eh.jpg',
-    'https://www.atelierdeschefs.com/media/recette-e30299-pizza-pepperoni-tomate-mozza.jpg',
-    'https://i.stack.imgur.com/hi0eh.jpg',
-    'https://www.atelierdeschefs.com/media/recette-e30299-pizza-pepperoni-tomate-mozza.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/58/Forggensee_Panorama_SK_0001.jpg'
-  ]; // Creates growable list.
 
   @override
   Widget build(BuildContext context) {
@@ -318,6 +312,8 @@ class _ListPrestatState extends State<ListPrestatStated> {
                   itemExtent: 110.0,
                   delegate: SliverChildListDelegate(
                     [
+
+
                       for (int index = 0; index < _Listpresta.length; index++)
                         CustomListItem2(
                           thumbnail: ClipRRect(
@@ -325,7 +321,8 @@ class _ListPrestatState extends State<ListPrestatStated> {
                               child: AspectRatio(
                                 child: Image.network(
                                   //ev.providerPictures + _Listpresta[index]['profile_picture'],
-                                  "https://dam.savencia.com/api/wedia/dam/transform/fix635d9eidk6rrwseqxx1hm4hxuee5jn54fmie/800?t=resize&width=800",
+                                  ev.providerPictures +  _Listpresta[index]['id_provider'] +
+                                      "/" + _Listpresta[index]['profile_picture'],
                                   width: 100.0,
                                   height: 100.0,
                                   fit: BoxFit.fill,
@@ -356,6 +353,7 @@ class _ListPrestatState extends State<ListPrestatStated> {
     List<dynamic> presta = [];
     List<dynamic> prestaCatTot = [];
     List<List<dynamic>> prestaCat = [];
+
     try {
       Dio dio = new Dio();
       dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
