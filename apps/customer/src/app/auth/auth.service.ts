@@ -15,7 +15,7 @@ export class AuthService {
   @RabbitRPC({
     exchange: 'customer',
     routingKey: 'id',
-    queue: 'customer'
+    queue: 'customer-check'
   })
   async getCustomerId(checkUser: CheckUser): Promise<{ id: string }> {
     const found = await this.customerRepository.findOne({oauthSub: checkUser.id})
@@ -29,7 +29,7 @@ export class AuthService {
   @RabbitRPC({
     exchange: 'customer',
     routingKey: 'register',
-    queue: 'customer'
+    queue: 'customer-register'
   })
   async register(registerCustomer: RegisterCustomerMessage): Promise<{id: string}> {
     const customer = new Customer()

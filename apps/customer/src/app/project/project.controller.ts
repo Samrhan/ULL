@@ -32,6 +32,12 @@ export class ProjectController {
         await this.projectService.createProject(body, files[0], user)
     }
 
+    @Post('confirm/:id')
+    @UseGuards(UserGuard('customer'))
+    async confirmProject(@Param('id') id: string, @User() user: JwtUser) {
+        await this.projectService.confirmProject(id, user)
+    }
+
     @Put('project')
     @UseGuards(UserGuard('customer'))
     async editProject(@Body() body: EditProjectDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
