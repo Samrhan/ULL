@@ -4,6 +4,7 @@ import {
     JwtUser,
     Performance,
     Project,
+    ProjectState,
     Reservation as IReservation,
     ReservationState,
     UserType
@@ -165,6 +166,19 @@ export class ReservationService {
             ...reservation,
             state: body.accepted ? ReservationState.ACCEPTED : ReservationState.REJECTED
         })
+        const remainingReservationsNumber = await this.reservationRepository.count({
+            idProject: body.project_id,
+            state: ReservationState.PENDING
+        });
+        if (remainingReservationsNumber === 0) {
+            await this.amqpConnection.request({
+                exchange: 'reservation',
+                routingKey: 'update-project-state',
+                payload: {project_id: body.project_id, state: ProjectState.pending_payment},
+                timeout: 10000
+            })
+        }
+
     }
 
 }

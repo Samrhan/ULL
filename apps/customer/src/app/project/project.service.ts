@@ -145,6 +145,20 @@ export class ProjectService {
         }
     }
 
+
+    @RabbitRPC({
+        exchange: 'reservation',
+        routingKey: 'update-project-state',
+        queue: 'project-state'
+    })
+    async updateProjectState(message: { project_id: string, state: ProjectState }) {
+        try {
+            await this.projectRepository.update(message.project_id, {projectState: message.state})
+        } catch {
+            return {state: 404}
+        }
+    }
+
     async getAllProjects(user: JwtUser) {
         const customer = await this.customerRepository.findOneOrFail(user.id)
         const projects = await this.projectRepository.find({
