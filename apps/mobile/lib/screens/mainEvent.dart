@@ -181,96 +181,102 @@ class _MainEventState extends State<MainEventStated>{
                                               isScrollControlled: true,
                                               context: context,
                                               builder: (context){
-                                                return  SingleChildScrollView(
-                                                    child :Column(
-                                                      children: [
-                                                        Container(
-                                                          child:
-                                                          const Padding(
-                                                            padding: EdgeInsets.all(7.0),
-                                                            child: Text(
-                                                              "Vos évènements",
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Color(0xff832232)),
-                                                            ),
-                                                          ),
+                                                return SingleChildScrollView(
+                                                  child :Column(
+                                                  children: [
+                                                    Container(
+                                                      child:  const Text("Vos évènements",
+                                                        style: TextStyle(fontSize: 20,color: Color(0xff832232)),
+                                                      ),
+                                                      decoration : BoxDecoration(
+                                                          boxShadow: [BoxShadow(
+                                                            color: Colors.grey.withOpacity(0.5),
+                                                            spreadRadius: 2,
+                                                            blurRadius: 3,
+                                                          )],
+                                                          color: Colors.white
+                                                      ),
+                                                      width: MediaQuery
+                                                          .of(context)
+                                                          .size
+                                                          .width,
+                                                    ),
 
-                                                          decoration:
-                                                          BoxDecoration(boxShadow: [
-                                                            BoxShadow(
-                                                              color: Colors.grey
-                                                                  .withOpacity(0.5),
-                                                              spreadRadius: 2,
-                                                              blurRadius: 3,
-                                                            )
-                                                          ], color: Colors.white),
-                                                          width: MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                        ),
-                                                        for (var item in globals.allEvents)
-                                                          if (item.projectId != globals.dropDownValue!.projectId)
-                                                            Container(
-                                                                width: MediaQuery.of(context)
-                                                                    .size
-                                                                    .width,
-                                                                decoration: const BoxDecoration(
-                                                                    border: Border(
-                                                                        bottom: BorderSide(
-                                                                            width: 0.5,
-                                                                            color: Colors
-                                                                                .grey))),
-                                                                child: MaterialButton(
-                                                                    onPressed: () {
-                                                                      setState(() {
-                                                                        dropDownValue = item.name+" - "+item.projectDate;
-                                                                        globals.dropDownValue = item;
-                                                                      });
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Row(
-                                                                        mainAxisAlignment:
-                                                                        MainAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(item.name+" - "+item.projectDate,
-                                                                              style: const TextStyle(
-                                                                                  fontSize:
-                                                                                  12))
-                                                                        ])))
-                                                          else
-                                                            Container(
-                                                                width:
-                                                                MediaQuery.of(context)
-                                                                    .size
-                                                                    .width,
-                                                                decoration: const BoxDecoration(
-                                                                    border: Border(
-                                                                        bottom: BorderSide(
-                                                                            width: 0.5,
-                                                                            color: Colors.grey))),
-                                                                child: MaterialButton(
-                                                                    onPressed: () {
-                                                                      setState(() {
-                                                                        dropDownValue = item.name+" - "+item.projectDate;
-                                                                        globals.dropDownValue = item;
-                                                                      });
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Row(
-                                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                                        children:
-                                                                        [
-                                                                          const Icon(Icons.check),
-                                                                          Text(item.name+" - "+item.projectDate, style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
-                                                                        ]
-                                                                    )
+                                                    for (var item in events)
+                                                      if(item.projectId != globals.dropDownValue!.projectId)
+                                                        Container(
+                                                            width: MediaQuery
+                                                                .of(context)
+                                                                .size
+                                                                .width,
+                                                            decoration : const BoxDecoration(
+                                                                border: Border(
+                                                                    bottom: BorderSide(width: 0.5,color: Colors.grey)
                                                                 )
-                                                            ),SizedBox(height: 35,),
-                                                      ],
-                                                    )
+                                                            ),
+                                                            child : MaterialButton(
+                                                                onPressed: (){
+                                                                  setState((){
+                                                                    globals.dropDownValue = item;
+                                                                    dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
+
+                                                                    for(var ind in events){
+                                                                      if(ind.projectId == globals.dropDownValue!.projectId){
+                                                                        events.remove(ind);
+                                                                        events.insert(0,ind);
+                                                                        return;
+                                                                      }
+                                                                    }
+                                                                  });
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    children : [
+                                                                      Text(item.name+" - "+item.projectDate,style: const TextStyle(fontSize: 12))
+                                                                    ]
+                                                                )
+
+                                                            )
+                                                        )
+                                                      else
+                                                        Container(
+                                                            width: MediaQuery
+                                                                .of(context)
+                                                                .size
+                                                                .width,
+                                                            decoration : const BoxDecoration(
+                                                                border: Border(
+                                                                    bottom: BorderSide(width: 0.5,color: Colors.grey)
+                                                                )
+                                                            ),
+                                                            child : MaterialButton(
+                                                                onPressed: (){
+                                                                  setState((){
+                                                                    globals.dropDownValue = item;
+                                                                    dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
+                                                                    for(var ind in events){
+                                                                      if(ind.projectId == globals.dropDownValue!.projectId){
+                                                                        events.remove(ind);
+                                                                        events.insert(0,ind);
+                                                                        return;
+                                                                      }
+                                                                    }
+                                                                  });
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    children : [
+                                                                      const Icon(Icons.check),
+                                                                      Text(item.name+" - "+item.projectDate,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
+                                                                    ]
+                                                                )
+
+                                                            )
+                                                        )
+                                                  ],
+                                                )
                                                 );
                                               }
                                           );
@@ -297,18 +303,14 @@ class _MainEventState extends State<MainEventStated>{
                             ),
                             MaterialButton(
                               onPressed: (){
-                                showModalBottomSheet<void>(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      // <-- SEE HERE
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(12.0),
-                                      ),
-                                    ),
-                                    builder: (BuildContext context) {
-                                      return Profile(_currentUser);
-                                    });
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context,a1,a2) => Profile(_currentUser),
+                                    transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                                    transitionDuration: const Duration(milliseconds: 0),
+                                  ),
+                                );
                               },
                               child :Container(
                                   width : 50,
@@ -316,7 +318,7 @@ class _MainEventState extends State<MainEventStated>{
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image :DecorationImage(image :
-                                    getProfileImage(),fit: BoxFit.cover
+                                    getProfileImage(),fit: BoxFit.fill
                                     ),
                                   )
                               ),
