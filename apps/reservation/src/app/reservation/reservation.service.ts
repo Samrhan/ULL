@@ -1,6 +1,13 @@
 import {ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {PostReservationDto} from "./dto/post-reservation.dto";
-import {JwtUser, Performance, Project, Reservation as IReservation, ReservationState} from "@ull/api-interfaces";
+import {
+    JwtUser,
+    Performance,
+    Project,
+    Reservation as IReservation,
+    ReservationState,
+    UserType
+} from "@ull/api-interfaces";
 import {AmqpConnection, RabbitRPC} from "@golevelup/nestjs-rabbitmq";
 import {Reservation} from "./entity/reservation.entity";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -32,6 +39,12 @@ export class ReservationService {
         const reservation = await this.reservationRepository.findOne({where: {idPerformance, idProject}})
         if (!reservation) {
             throw new NotFoundException()
+        }
+        if (user.userType === UserType.CUSTOMER && reservation.customerId !== user.id) {
+            throw new ForbiddenException()
+        }
+        if (user.userType === UserType.PROVIDER && reservation.providerId !== user.id) {
+            throw new ForbiddenException()
         }
         return <IReservation>{
             project: await this.getProject(idProject, user.id),
@@ -90,8 +103,6 @@ export class ReservationService {
         switch (response.state) {
             case 404:
                 throw new NotFoundException('Project not found')
-            case 403:
-                throw new ForbiddenException()
             case 200:
                 return response.value
         }

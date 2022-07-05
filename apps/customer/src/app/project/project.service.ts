@@ -135,10 +135,6 @@ export class ProjectService {
     })
     async checkProject(message: { project_id: string, user_id: string }) {
         try {
-            const project = await this.projectRepository.findOne(message.project_id, {relations: ['customer']})
-            if (project.customer.id !== message.user_id) {
-                return {state: 403}
-            }
             return {
                 state: 200,
                 value: await this.getProjectDetail(message.project_id)
