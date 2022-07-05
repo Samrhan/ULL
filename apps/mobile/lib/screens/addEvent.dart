@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ULL/services/environment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -46,7 +47,7 @@ class AddEventState extends State<AddEvent> {
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
-
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: StickyHeader(
             header: Container(
               decoration: const BoxDecoration(
@@ -230,17 +231,27 @@ class AddEventState extends State<AddEvent> {
                                 ),
                                 child : ElevatedButton(
                                   onPressed: () async{
-                                    DateTime? newDate = await showDatePicker(
+                                    showCupertinoModalPopup(
                                         context: context,
-                                        initialDate: date,
-                                        firstDate: DateTime.now(),
-                                        lastDate: DateTime(2100)
+                                        builder: (BuildContext builder) {
+                                          return Container(
+                                            height: 300,
+                                            color: Colors.white,
+                                            child: CupertinoDatePicker(
+                                              mode: CupertinoDatePickerMode.date,
+                                              onDateTimeChanged: (value) {
+                                                print(value);
+                                                setState(() {
+                                                  date = value;
+                                                });
+                                              },
+                                              initialDateTime: DateTime.now(),
+                                              minimumDate: DateTime.now().subtract(Duration(days: 1)),
+                                              dateOrder: DatePickerDateOrder.dmy,
+                                            ),
+                                          );
+                                        }
                                     );
-                                    if(newDate != null) {
-                                      setState(() {
-                                        date = newDate;
-                                      });
-                                    }
                                   },
                                   child: Text(date.day.toString().padLeft(2,'0') + '/' + date.month.toString().padLeft(2,'0') + '/' + date.year.toString().padLeft(2,'0')
                                     ,style: const TextStyle(color: Colors.black,fontSize: 20),),
@@ -261,7 +272,7 @@ class AddEventState extends State<AddEvent> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Nombre de participants",
+                          "Nombre de\nparticipants",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Padding(
@@ -395,7 +406,7 @@ class AddEventState extends State<AddEvent> {
     try {
       formData = FormData.fromMap({
         "project_name": name,
-        "project_date": date.toString(),
+        "project_date": date.add(const Duration(hours: 3)).toString(),
         "project_description": description,
         "amount_of_people": nb,
         "address_number": addressNb,
