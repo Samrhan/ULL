@@ -346,7 +346,7 @@ class AddEventState extends State<AddEvent> {
     } else {
       return ShapeDecoration(
           image: DecorationImage(
-              fit: BoxFit.fill, image: FileImage(File(file!.path))),
+              fit: BoxFit.cover, image: FileImage(File(file!.path))),
           shape: SmoothRectangleBorder(
             borderRadius: SmoothBorderRadius(
               cornerRadius: 10,
@@ -391,18 +391,23 @@ class AddEventState extends State<AddEvent> {
     dio.options.headers['Authorization'] = "Bearer ${globals.accessToken}";
     Environment ev = Environment();
     var url = ev.baseServer + ev.customerService + "/project";
-    FormData formData = FormData.fromMap({
-      "project_name": name,
-      "project_date": date.toString(),
-      "project_description": description,
-      "amount_of_people": nb,
-      "address_number": addressNb,
-      "address_street": addressStreet,
-      "address_city": addressCity,
-      "address_postal_code": addressPostalCode,
-      "project_picture":
-          await MultipartFile.fromFile(file!.path, filename: file!.name)
-    });
+    FormData formData;
+    try {
+      formData = FormData.fromMap({
+        "project_name": name,
+        "project_date": date.toString(),
+        "project_description": description,
+        "amount_of_people": nb,
+        "address_number": addressNb,
+        "address_street": addressStreet,
+        "address_city": addressCity,
+        "address_postal_code": addressPostalCode,
+        "project_picture":
+        await MultipartFile.fromFile(file!.path, filename: file!.name)
+      });
+    } catch (e) { // Si pas tous les champs on ignore juste
+      return;
+    }
 
     try {
       var res = await dio.post(url, data: formData);

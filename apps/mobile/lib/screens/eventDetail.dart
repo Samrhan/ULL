@@ -92,7 +92,7 @@ class _EventDetailState extends State<EventDetailStated>{
                     .size
                     .height / 4,
                 decoration: BoxDecoration(
-                  image: DecorationImage(image: NetworkImage(event.image),fit: BoxFit.fill)
+                  image: DecorationImage(image: NetworkImage(event.image),fit: BoxFit.cover)
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

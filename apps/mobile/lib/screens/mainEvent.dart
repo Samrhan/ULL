@@ -364,7 +364,7 @@ class _MainEventState extends State<MainEventStated>{
                             Container(
                               decoration: ShapeDecoration(
                                   image: DecorationImage(image: NetworkImage(
-                                      event.image), fit: BoxFit.fill),
+                                      event.image), fit: BoxFit.cover),
                                   shape: const SmoothRectangleBorder(
                                     borderRadius: SmoothBorderRadius.only(
                                         topLeft: SmoothRadius(cornerRadius: 10,
@@ -489,7 +489,7 @@ class _MainEventState extends State<MainEventStated>{
                               alignment: Alignment.topCenter,
                               decoration: ShapeDecoration(
                                 image: DecorationImage(image: NetworkImage(
-                                    event.image), fit: BoxFit.fill),
+                                    event.image), fit: BoxFit.cover),
                                 shape: const SmoothRectangleBorder(
                                   borderRadius: SmoothBorderRadius.only(
                                       topLeft: SmoothRadius(cornerRadius: 10,

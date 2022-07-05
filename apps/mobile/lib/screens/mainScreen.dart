@@ -265,7 +265,7 @@ class _EventBarState extends State<EventBar> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: getProfileImage(), fit: BoxFit.fill),
+                                  image: getProfileImage(), fit: BoxFit.cover),
                             )),
                       )
                     ],
