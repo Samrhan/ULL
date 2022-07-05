@@ -344,7 +344,7 @@ class _EventDetailState extends State<EventDetailStated>{
     final Environment ev = Environment();
     String url ="";    log(event.state);
     log(event.projectId.toString());
-    if(event.state == "draft"){
+    if(event.state == "draft" && nbPrestation > 0){
        url =
           ev.baseServer + ev.customerService + "/confirm/" + event.projectId.toString();
       }
