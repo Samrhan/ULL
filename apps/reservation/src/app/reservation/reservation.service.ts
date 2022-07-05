@@ -127,6 +127,15 @@ export class ReservationService {
         await this.reservationRepository.update({idProject: message.project_id}, {projectDate: message.new_date})
     }
 
+    @RabbitRPC({
+        exchange: 'reservation',
+        routingKey: 'update-project-state',
+        queue: 'update-state'
+    })
+    async updateReservationState(message: { project_id: string, state: ReservationState }) {
+        await this.reservationRepository.update({idProject: message.project_id}, {state: message.state})
+    }
+
     async answerReservation(body: AnswerReservationDto, user: JwtUser) {
         const reservation = await this.reservationRepository.findOne({
             idPerformance: body.performance_id,

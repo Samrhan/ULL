@@ -1,5 +1,12 @@
 import {BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
-import {Address as IAddress, JwtUser, MinimalFile, Project as IProject, ProjectState} from "@ull/api-interfaces";
+import {
+    Address as IAddress,
+    JwtUser,
+    MinimalFile,
+    Project as IProject,
+    ProjectState,
+    ReservationState
+} from "@ull/api-interfaces";
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {Project} from "./entity/project.entity";
 import {Customer} from "../auth/entity/customer.entity";
@@ -163,5 +170,11 @@ export class ProjectService {
         }
         project.projectState = ProjectState.pending_validation
         await this.projectRepository.save(project)
+        await this.amqpConnection.request({
+            exchange: 'reservation',
+            routingKey: 'update-project-state',
+            payload: {project_id: project.idProject, state: ReservationState.PENDING},
+            timeout: 10000
+        })
     }
 }
