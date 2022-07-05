@@ -21,7 +21,7 @@ export class RequestedReservationsListComponent implements OnInit {
   ngOnInit(): void {
     this.filterPendingRequests = JSON.parse(localStorage.getItem(this.localStoragePrefKey) || 'false');
 
-    this.reservationService.fetchRequestedReservations().subscribe({
+    this.reservationService.fetchRequestedReservations(true).subscribe({
       next: reservationIdentifierList => {
         reservationIdentifierList.forEach(reservationIdentifier => {
           this.reservationService.fetchReservation(reservationIdentifier).subscribe({

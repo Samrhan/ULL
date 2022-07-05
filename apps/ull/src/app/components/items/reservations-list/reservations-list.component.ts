@@ -15,7 +15,7 @@ export class ReservationsListComponent implements OnInit {
   reservationList : Reservation[] = [];
 
   ngOnInit(): void {
-    this.reservationService.fetchUpcomingReservations().subscribe({
+    this.reservationService.fetchUpcomingReservations(true).subscribe({
       next: reservationIdentifierList => {
         reservationIdentifierList.forEach(reservationIdentifier => {
           this.reservationService.fetchReservation(reservationIdentifier).subscribe({
