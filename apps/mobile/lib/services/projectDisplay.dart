@@ -1,12 +1,15 @@
 
-
-
 class ProjectDisplay{
+  String? projectId;
   String name;
   String projectDate;
   String description;
-  String amountOfPeople;
-  String address;
+  int amountOfPeople;
+  String number;
+  String street;
+  String city;
+  String? complement;
+  String postal_code;
   String image;
   String state;
 
@@ -18,7 +21,21 @@ class ProjectDisplay{
     paid = 'paid',
   }*/
 
-  ProjectDisplay(this.name,this.projectDate,this.description,this.amountOfPeople,this.address,this.image,this.state);
+  ProjectDisplay(
+      this.projectId,
+      this.name,
+      this.projectDate,
+      this.description,
+      this.amountOfPeople,
+      this.number,
+      this.street,
+      this.city,
+      this.complement,
+      this.postal_code,
+      this.image,
+      this.state
+      );
+
 
 
 }

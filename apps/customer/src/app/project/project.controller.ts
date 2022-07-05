@@ -32,19 +32,25 @@ export class ProjectController {
         await this.projectService.createProject(body, files[0], user)
     }
 
+    @Post('confirm/:id')
+    @UseGuards(UserGuard('customer'))
+    async confirmProject(@Param('id') id: string, @User() user: JwtUser) {
+        await this.projectService.confirmProject(id, user)
+    }
+
     @Put('project')
     @UseGuards(UserGuard('customer'))
     async editProject(@Body() body: EditProjectDto, @UploadedFiles() files: MinimalFile[], @User() user: JwtUser) {
         await this.projectService.editProject(body, files[0], user)
     }
 
-    @Delete('project:id')
+    @Delete('project/:id')
     @UseGuards(UserGuard('customer'))
     async deleteProject(@Param('id') projectId: string, @User() user: JwtUser) {
         await this.projectService.deleteProject(projectId, user)
     }
 
-    @Get('project:id')
+    @Get('project/:id')
     async getProjectDetail(@Param('id') projectId: string): Promise<IProject>{
         return await this.projectService.getProjectDetail(projectId)
     }

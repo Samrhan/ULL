@@ -5,9 +5,17 @@ import 'package:ULL/screens/bottomNavBar.dart';
 import 'package:ULL/screens/ListPrestat.dart';
 import 'package:ULL/services/globals.dart' as globals;
 
+import 'mainScreen.dart';
+
 class Category extends StatelessWidget{
   Category(GoogleSignInAccount? _currentAccount,{Key? key}){
-    this.event = globals.dropDownValue;
+    if(globals.dropDownValue != null) {
+      event = globals.dropDownValue!.name + " - " +
+          globals.dropDownValue!.projectDate;
+    }
+    else{
+      event = "Pas d'événements pour le moment";
+    }
     this._currentAccount=_currentAccount;
 
   }
@@ -24,7 +32,7 @@ class Category extends StatelessWidget{
             bottomNavigationBar: BottomNavBar(0, _currentAccount),
             appBar: PreferredSize(
                 preferredSize:
-                    Size.fromHeight(MediaQuery.of(context).size.height / 7),
+                    Size.fromHeight(MediaQuery.of(context).size.height / 11),
                 child: Column(
                   children: [
                     Container(
@@ -56,7 +64,8 @@ class Category extends StatelessWidget{
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 17),
                                 ),
-                              )
+                              ),
+
                             ]
                             )
                         ),
@@ -66,7 +75,7 @@ class Category extends StatelessWidget{
 
             ),
             body:
-            ListPrestat('Traiteur', _currentAccount)
+            ListPrestatStated( _currentAccount,'Traiteur')
            // ListPrestat('Traiteur', _currentAccount)
 
 

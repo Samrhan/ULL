@@ -39,6 +39,7 @@ class BottomNavBar extends StatelessWidget{
             label: 'Messages'
         ),
       ],
+      type: BottomNavigationBarType.fixed,
       selectedItemColor: const Color(0xffE94B64),
       unselectedItemColor: Colors.grey,
       showUnselectedLabels: true,
