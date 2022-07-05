@@ -79,6 +79,14 @@
         "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js migration:create -f .env.local",
         "cwd": "apps/provider"
       }
+    },
+    "schema-drop": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ../../node_modules/typeorm/cli.js schema:drop -f .env.local",
+        "cwd": "apps/discovery"
+      }
     }
   },
   "tags": []

@@ -9,6 +9,7 @@
     "config": "libs/config",
     "customer": "apps/customer",
     "discovery": "apps/discovery",
+    "dummy-data-scripts": "apps/dummy-data-scripts",
     "global-constants": "libs/global-constants",
     "mailer": "libs/mailer",
     "mobile": "apps/mobile",
