@@ -1,16 +1,18 @@
 <div *ngIf="reservation">
-  <div class="d-flex justify-content-between">
-    <h3>{{reservation.performance.performance_title}}</h3>
-    <p class="alert-warning m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.PENDING">Cette réservation requiert votre attention</p>
-    <p class="alert-success m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.ACCEPTED">Vous avez accepté cette réservation</p>
-    <p class="alert-danger m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.REJECTED">Vous avez refusé cette réservation</p>
-    <p class="alert-danger m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.CUSTOMER_CANCELLED || reservation.state === ReservationState.PROVIDER_CANCELLED">Cette prestation a été annulée</p>
-  </div>
-  <h5>{{reservation.project.name}} - {{formatDate(reservation.project.project_date)}}</h5>
-  <p>{{reservation.project.customer_display_name}}</p>
-  <div class="d-flex justify-content-between">
-    <small class="text-muted">{{reservation.project.address.city}} ({{reservation.project.address.postal_code}})</small>
-    <small class="text-decoration-underline cursor-pointer" (click)="openModal(detailsModal)">Détails ></small>
+  <div (click)="openModal(detailsModal)">
+    <div class="d-flex justify-content-between">
+      <h3>{{reservation.performance.performance_title}}</h3>
+      <p class="alert-warning m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.PENDING">Cette réservation requiert votre attention</p>
+      <p class="alert-success m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.ACCEPTED">Vous avez accepté cette réservation</p>
+      <p class="alert-danger m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.REJECTED">Vous avez refusé cette réservation</p>
+      <p class="alert-danger m-0 p-2 rounded" *ngIf="reservation.state === ReservationState.CUSTOMER_CANCELLED || reservation.state === ReservationState.PROVIDER_CANCELLED">Cette prestation a été annulée</p>
+    </div>
+    <h5>{{reservation.project.name}} - {{formatDate(reservation.project.project_date)}}</h5>
+    <p>{{reservation.project.customer_display_name}}</p>
+    <div class="d-flex justify-content-between">
+      <small class="text-muted">{{reservation.project.address.city}} ({{reservation.project.address.postal_code}})</small>
+      <small class="text-decoration-underline cursor-pointer">Détails ></small>
+    </div>
   </div>
 
   <ng-template #detailsModal>

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:ULL/screens/addEvent.dart';
 import 'package:ULL/screens/eventDetail.dart';
 import 'package:ULL/screens/profile.dart';
+import 'package:ULL/screens/transition.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:ULL/screens/bottomNavBar.dart';
@@ -121,7 +124,22 @@ class _MainEventState extends State<MainEventStated>{
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return
+
+
+      RefreshIndicator(
+        onRefresh: () {return
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context,a1,a2) => Transition(_currentUser, MainEvent(_currentUser)),
+              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+              transitionDuration: const Duration(milliseconds: 0),
+            ),
+          );
+        },
+    child: SingleChildScrollView(
+         physics: AlwaysScrollableScrollPhysics(),
         child: StickyHeader(
             header : Container(
                   width: MediaQuery
@@ -303,18 +321,14 @@ class _MainEventState extends State<MainEventStated>{
                             ),
                             MaterialButton(
                               onPressed: (){
-                                showModalBottomSheet<void>(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      // <-- SEE HERE
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(12.0),
-                                      ),
-                                    ),
-                                    builder: (BuildContext context) {
-                                      return Profile(_currentUser);
-                                    });
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context,a1,a2) => Profile(_currentUser),
+                                    transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                                    transitionDuration: const Duration(milliseconds: 0),
+                                  ),
+                                );
                               },
                               child :Container(
                                   width : 50,
@@ -322,7 +336,7 @@ class _MainEventState extends State<MainEventStated>{
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image :DecorationImage(image :
-                                    getProfileImage(),fit: BoxFit.cover
+                                    getProfileImage(),fit: BoxFit.fill
                                     ),
                                   )
                               ),
@@ -342,10 +356,8 @@ class _MainEventState extends State<MainEventStated>{
                     onTap: (){
                       Navigator.push(
                         context,
-                        PageRouteBuilder(
-                          pageBuilder: (context,a1,a2) => EventDetail(_currentUser,event),
-                          transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
-                          transitionDuration: const Duration(milliseconds: 0),
+                        MaterialPageRoute(
+                            builder: (context) => EventDetail(_currentUser, event)
                         ),
                       );
                     },
@@ -364,7 +376,7 @@ class _MainEventState extends State<MainEventStated>{
                             Container(
                               decoration: ShapeDecoration(
                                   image: DecorationImage(image: NetworkImage(
-                                      event.image), fit: BoxFit.fill),
+                                      event.image), fit: BoxFit.cover),
                                   shape: const SmoothRectangleBorder(
                                     borderRadius: SmoothBorderRadius.only(
                                         topLeft: SmoothRadius(cornerRadius: 10,
@@ -466,11 +478,9 @@ class _MainEventState extends State<MainEventStated>{
                       onTap: (){
                         Navigator.push(
                           context,
-                          PageRouteBuilder(
-                            pageBuilder: (context,a1,a2) => EventDetail(_currentUser,event),
-                            transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
-                            transitionDuration: const Duration(milliseconds: 0),
-                          ),
+                          MaterialPageRoute(
+                            builder: (context) => EventDetail(_currentUser, event)
+                          )
                         );
                       },
                       child: Padding(padding: const EdgeInsets.only(left: 5, top: 5),
@@ -489,7 +499,7 @@ class _MainEventState extends State<MainEventStated>{
                               alignment: Alignment.topCenter,
                               decoration: ShapeDecoration(
                                 image: DecorationImage(image: NetworkImage(
-                                    event.image), fit: BoxFit.fill),
+                                    event.image), fit: BoxFit.cover),
                                 shape: const SmoothRectangleBorder(
                                   borderRadius: SmoothBorderRadius.only(
                                       topLeft: SmoothRadius(cornerRadius: 10,
@@ -633,7 +643,7 @@ class _MainEventState extends State<MainEventStated>{
               ]
             )
           )
-    );
+    ));
   }
 
 

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert' show json;
+import 'dart:developer';
 
+import 'package:ULL/screens/transition.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -61,23 +63,39 @@ class _EventBarState extends State<EventBar> {
   var _currentUser;
 
   @override
-  initState(){
+  initState() {
     super.initState();
     _currentUser = widget._currentAccount;
-    if (globals.dropDownValue == null){
-      if(globals.allEvents.isNotEmpty) {
+    if (globals.dropDownValue == null) {
+      if (globals.allEvents.isNotEmpty) {
         globals.dropDownValue = globals.allEvents[0];
-        dropDownValue = dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
+        dropDownValue = dropDownValue = globals.dropDownValue!.name +
+            " - " +
+            globals.dropDownValue!.projectDate;
       }
-    }else{
-      dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
+    } else {
+      dropDownValue = globals.dropDownValue!.name +
+          " - " +
+          globals.dropDownValue!.projectDate;
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return
+
+      RefreshIndicator(
+        onRefresh: () { return
+            Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context,a1,a2) => Transition(_currentUser, MainScreen(_currentUser)),
+              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+              transitionDuration: const Duration(milliseconds: 0),
+            ),
+          );
+        },
+    child: SingleChildScrollView(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,22 +142,26 @@ class _EventBarState extends State<EventBar> {
                                   onPressed: () {
                                     showModalBottomSheet(
                                         constraints: BoxConstraints(
-                                            maxHeight:MediaQuery
-                                                .of(context)
-                                                .size.height-70
-                                        ),
+                                            maxHeight: MediaQuery.of(context)
+                                                    .size
+                                                    .height -
+                                                70),
                                         isScrollControlled: true,
                                         context: context,
                                         builder: (context) {
                                           return SingleChildScrollView(
-                                            child :Column(
+                                              child: Column(
                                             children: [
                                               Container(
-                                                child: const Text(
-                                                  "Vos évènements",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Color(0xff832232)),
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(7.0),
+                                                  child: Text(
+                                                    "Vos évènements",
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color:
+                                                            Color(0xff832232)),
+                                                  ),
                                                 ),
                                                 decoration:
                                                     BoxDecoration(boxShadow: [
@@ -154,12 +176,16 @@ class _EventBarState extends State<EventBar> {
                                                     .size
                                                     .width,
                                               ),
-                                              for (var item in globals.allEvents)
-                                                if (item.projectId != globals.dropDownValue!.projectId)
+                                              for (var item
+                                                  in globals.allEvents)
+                                                if (item.projectId !=
+                                                    globals.dropDownValue!
+                                                        .projectId)
                                                   Container(
-                                                      width: MediaQuery.of(context)
-                                                          .size
-                                                          .width,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
                                                       decoration: const BoxDecoration(
                                                           border: Border(
                                                               bottom: BorderSide(
@@ -169,17 +195,26 @@ class _EventBarState extends State<EventBar> {
                                                       child: MaterialButton(
                                                           onPressed: () {
                                                             setState(() {
-                                                              dropDownValue = item.name+" - "+item.projectDate;
-                                                              globals.dropDownValue = item;
+                                                              dropDownValue = item
+                                                                      .name +
+                                                                  " - " +
+                                                                  item.projectDate;
+                                                              globals.dropDownValue =
+                                                                  item;
                                                             });
                                                             Navigator.pop(
                                                                 context);
                                                           },
                                                           child: Row(
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment.start,
+                                                                  MainAxisAlignment
+                                                                      .start,
                                                               children: [
-                                                                Text(item.name+" - "+item.projectDate,
+                                                                Text(
+                                                                    item.name +
+                                                                        " - " +
+                                                                        item
+                                                                            .projectDate,
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             12))
@@ -190,33 +225,42 @@ class _EventBarState extends State<EventBar> {
                                                           MediaQuery.of(context)
                                                               .size
                                                               .width,
-                                                      decoration: const BoxDecoration(
-                                                          border: Border(
-                                                              bottom: BorderSide(
-                                                                  width: 0.5,
-                                                                  color: Colors.grey))),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              border: Border(bottom: BorderSide(width: 0.5, color: Colors.grey))),
                                                       child: MaterialButton(
                                                           onPressed: () {
                                                             setState(() {
-                                                              dropDownValue = item.name+" - "+item.projectDate;
-                                                              globals.dropDownValue = item;
+                                                              dropDownValue = item
+                                                                      .name +
+                                                                  " - " +
+                                                                  item.projectDate;
+                                                              globals.dropDownValue =
+                                                                  item;
                                                             });
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              children:
-                                                              [
-                                                                const Icon(Icons.check),
-                                                                Text(item.name+" - "+item.projectDate, style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
-                                                              ]
-                                                          )
-                                                      )
-                                                  )
+                                                          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                                                            const Icon(
+                                                                Icons.check),
+                                                            Text(
+                                                                item.name +
+                                                                    " - " +
+                                                                    item
+                                                                        .projectDate,
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold))
+                                                          ]))),
+                                              SizedBox(
+                                                height: 35,
+                                              ),
                                             ],
-                                          )
-                                          );
+                                          ));
                                         });
                                   },
                                   child: Row(
@@ -225,12 +269,10 @@ class _EventBarState extends State<EventBar> {
                                       Expanded(
                                           child: Text(dropDownValue,
                                               maxLines: 1,
-                                              overflow : TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 15)
-                                          )
-                                      ),
+                                                  fontSize: 15))),
                                       const Icon(Icons.keyboard_arrow_down,
                                           color: Colors.white)
                                     ],
@@ -260,7 +302,7 @@ class _EventBarState extends State<EventBar> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: getProfileImage(), fit: BoxFit.fill),
+                                  image: getProfileImage(), fit: BoxFit.cover),
                             )),
                       )
                     ],
@@ -571,7 +613,7 @@ class _EventBarState extends State<EventBar> {
           ],
         )
       ],
-    ));
+    )));
   }
 
   getProfileImage() {
@@ -582,7 +624,4 @@ class _EventBarState extends State<EventBar> {
       return const AssetImage("asset/JW.jpg");
     }
   }
-
-
-
 }

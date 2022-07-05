@@ -31,8 +31,8 @@ export class AuthenticationService {
     this.router.navigate(['/profile']);
   }
 
-  register(body: RegisterProviderRequestBody): Observable<{access_token: string}> {
-    return this.httpClient.post<{access_token: string}>(environment.baseServerURL + environment.providerServiceURL + "/register", body)
+  register(body: RegisterProviderRequestBody): Observable<void> {
+    return this.httpClient.post<void>(environment.baseServerURL + environment.providerServiceURL + "/register", body)
   }
 
   login(body: LoginProviderRequestBody): Observable<{access_token: string}> {

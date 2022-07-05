@@ -121,7 +121,7 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
     else{
       return Material(
         type: MaterialType.transparency,
-        child: Transition(_currentAccount)
+        child: Transition(_currentAccount, MainScreen(_currentAccount))
       );
     }
   }

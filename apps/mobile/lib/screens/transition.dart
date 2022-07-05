@@ -14,11 +14,13 @@ import 'dart:convert' show json;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Transition extends StatefulWidget{
-  Transition(GoogleSignInAccount? _currentAccount, {super.key}){
+  Transition(GoogleSignInAccount? _currentAccount, Widget next, {super.key}){
     this._currentAccount = _currentAccount;
+    this._next = next;
   }
 
   GoogleSignInAccount? _currentAccount;
+  Widget? _next;
 
   @override
   State<Transition> createState() => TransitionState();
@@ -29,11 +31,13 @@ class TransitionState extends State<Transition>{
   Transition get widget => super.widget;
   bool done =false;
   GoogleSignInAccount? _currentAccount;
+  Widget? _next;
 
   @override
   initState(){
     super.initState();
     _currentAccount=widget._currentAccount;
+    _next=widget._next;
   }
 
   @override
@@ -50,7 +54,7 @@ class TransitionState extends State<Transition>{
     }else{
       return Material(
         type: MaterialType.transparency,
-        child: MainScreen(_currentAccount));
+        child: _next);
     }
   }
 
@@ -59,14 +63,15 @@ class TransitionState extends State<Transition>{
     Map<String, String> requestHeaders = {
       'Authorization': "Bearer ${globals.accessToken}"
     };
+    globals.allEvents =[];
+    globals.dropDownValue = null;
     Environment ev = Environment();
     String url = ev.baseServer + ev.customerService + "/all_projects" ;
     final http.Response response = await http.get(
         Uri.parse(url),
         headers: requestHeaders
     );
-    final List data =
-    json.decode(response.body);
+    final List data = json.decode(response.body);
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
     final decodedTokenBodyJson = stringToBase64.decode(globals.accessToken!.split('.')[1]+'=');
     final decodedTokenBody = json.decode(decodedTokenBodyJson);

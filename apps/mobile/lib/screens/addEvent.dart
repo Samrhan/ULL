@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:ULL/screens/mainEvent.dart';
 import 'package:ULL/services/environment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -45,19 +47,20 @@ class AddEventState extends State<AddEvent> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return  SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: StickyHeader(
             header: Container(
               decoration: const BoxDecoration(
-                color: Color(0xffeeeeee),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3)
-                  )
-                ]
+                  color: Color(0xffeeeeee),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey,
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3)
+                    )
+                  ]
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +98,7 @@ class AddEventState extends State<AddEvent> {
                     decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                                BorderSide(width: 0.5, color: Colors.grey))),
+                            BorderSide(width: 0.5, color: Colors.grey))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -126,7 +129,7 @@ class AddEventState extends State<AddEvent> {
                     decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                                BorderSide(width: 0.5, color: Colors.grey))),
+                            BorderSide(width: 0.5, color: Colors.grey))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +209,7 @@ class AddEventState extends State<AddEvent> {
                     decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                                BorderSide(width: 0.5, color: Colors.grey))),
+                            BorderSide(width: 0.5, color: Colors.grey))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -217,34 +220,44 @@ class AddEventState extends State<AddEvent> {
                         Padding(
                             padding: const EdgeInsets.all(10),
                             child: ElevatedButtonTheme(
-                              data: ElevatedButtonThemeData(
-                                style: ButtonStyle(
-                                  minimumSize: MaterialStateProperty.resolveWith<Size>(
-                                        (states) => Size((MediaQuery.of(context).size.width / 2),50)),
-                                  side: MaterialStateProperty.resolveWith<BorderSide>(
-                                          (states) => const BorderSide(color: Colors.grey)),
-                                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                          (states) => const Color(0xffeeeeee)),
+                                data: ElevatedButtonThemeData(
+                                    style: ButtonStyle(
+                                      minimumSize: MaterialStateProperty.resolveWith<Size>(
+                                              (states) => Size((MediaQuery.of(context).size.width / 2),50)),
+                                      side: MaterialStateProperty.resolveWith<BorderSide>(
+                                              (states) => const BorderSide(color: Colors.grey)),
+                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                              (states) => const Color(0xffeeeeee)),
+                                    )
+                                ),
+                                child : ElevatedButton(
+                                  onPressed: () async{
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (BuildContext builder) {
+                                          return Container(
+                                            height: 300,
+                                            color: Colors.white,
+                                            child: CupertinoDatePicker(
+                                              mode: CupertinoDatePickerMode.date,
+                                              onDateTimeChanged: (value) {
+                                                print(value);
+                                                setState(() {
+                                                  date = value;
+                                                });
+                                              },
+                                              initialDateTime: DateTime.now(),
+                                              minimumDate: DateTime.now().subtract(Duration(days: 1)),
+                                              dateOrder: DatePickerDateOrder.dmy,
+                                            ),
+                                          );
+                                        }
+                                    );
+                                  },
+                                  child: Text(date.day.toString().padLeft(2,'0') + '/' + date.month.toString().padLeft(2,'0') + '/' + date.year.toString().padLeft(2,'0')
+                                    ,style: const TextStyle(color: Colors.black,fontSize: 20),),
                                 )
-                              ),
-                              child : ElevatedButton(
-                                onPressed: () async{
-                                  DateTime? newDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: date,
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime(2100)
-                                  );
-                                  if(newDate != null) {
-                                    setState(() {
-                                      date = newDate;
-                                    });
-                                  }
-                                },
-                                child: Text(date.day.toString().padLeft(2,'0') + '/' + date.month.toString().padLeft(2,'0') + '/' + date.year.toString().padLeft(2,'0')
-                                  ,style: const TextStyle(color: Colors.black,fontSize: 20),),
-                              )
-                          )
+                            )
                         ),
                       ],
                     ),
@@ -255,12 +268,12 @@ class AddEventState extends State<AddEvent> {
                     decoration: const BoxDecoration(
                         border: Border(
                             bottom:
-                                BorderSide(width: 0.5, color: Colors.grey))),
+                            BorderSide(width: 0.5, color: Colors.grey))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Nombre de participants",
+                          "Nombre de\nparticipants",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Padding(
@@ -318,10 +331,18 @@ class AddEventState extends State<AddEvent> {
   }
 
   chooseImage() async {
-    var file1 = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      file = file1;
-    });
+    try {
+      var file1 = await _picker.pickImage(source: ImageSource.gallery);
+      print("Got image");
+      setState(() {
+        print("Image : ");
+        print(file1);
+        file = file1;
+      });
+    } catch (e){
+      print("Error when selecting image");
+      print(e);
+    }
   }
 
   ShapeDecoration getDecoration() {
@@ -337,7 +358,7 @@ class AddEventState extends State<AddEvent> {
     } else {
       return ShapeDecoration(
           image: DecorationImage(
-              fit: BoxFit.fill, image: FileImage(File(file!.path))),
+              fit: BoxFit.cover, image: FileImage(File(file!.path))),
           shape: SmoothRectangleBorder(
             borderRadius: SmoothBorderRadius(
               cornerRadius: 10,
@@ -382,25 +403,30 @@ class AddEventState extends State<AddEvent> {
     dio.options.headers['Authorization'] = "Bearer ${globals.accessToken}";
     Environment ev = Environment();
     var url = ev.baseServer + ev.customerService + "/project";
-    FormData formData = FormData.fromMap({
-      "project_name": name,
-      "project_date": date.toString(),
-      "project_description": description,
-      "amount_of_people": nb,
-      "address_number": addressNb,
-      "address_street": addressStreet,
-      "address_city": addressCity,
-      "address_postal_code": addressPostalCode,
-      "project_picture":
-          await MultipartFile.fromFile(file!.path, filename: file!.name)
-    });
+    FormData formData;
+    try {
+      formData = FormData.fromMap({
+        "project_name": name,
+        "project_date": date.add(const Duration(hours: 3)).toString(),
+        "project_description": description,
+        "amount_of_people": nb,
+        "address_number": addressNb,
+        "address_street": addressStreet,
+        "address_city": addressCity,
+        "address_postal_code": addressPostalCode,
+        "project_picture":
+        await MultipartFile.fromFile(file!.path, filename: file!.name)
+      });
+    } catch (e) { // Si pas tous les champs on ignore juste
+      return;
+    }
 
     try {
       var res = await dio.post(url, data: formData);
       Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (context,a1,a2) => Transition(_currentAccount),
+          pageBuilder: (context,a1,a2) => Transition(_currentAccount, MainEvent(_currentAccount)),
           transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
           transitionDuration: const Duration(milliseconds: 0),
         ),

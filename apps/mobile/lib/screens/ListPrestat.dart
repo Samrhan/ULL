@@ -281,11 +281,7 @@ class _ListPrestatState extends State<ListPrestatStated> {
                       color: Color(0xFFDC3535),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MainScreen(_currentAccount)),
-                      );
+                      Navigator.pop(context);
                       ;
                     },
                   ),
