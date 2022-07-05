@@ -1,5 +1,12 @@
-import {ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
-import {Address as IAddress, JwtUser, MinimalFile, Project as IProject, ProjectState} from "@ull/api-interfaces";
+import {BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
+import {
+    Address as IAddress,
+    JwtUser,
+    MinimalFile,
+    Project as IProject,
+    ProjectState,
+    ReservationState
+} from "@ull/api-interfaces";
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {Project} from "./entity/project.entity";
 import {Customer} from "../auth/entity/customer.entity";
@@ -128,15 +135,25 @@ export class ProjectService {
     })
     async checkProject(message: { project_id: string, user_id: string }) {
         try {
-            const project = await this.projectRepository.findOne(message.project_id, {relations: ['customer']})
-            if (project.customer.id !== message.user_id) {
-                return {state: 403}
-            }
             return {
                 state: 200,
                 value: await this.getProjectDetail(message.project_id)
             }
 
+        } catch {
+            return {state: 404}
+        }
+    }
+
+
+    @RabbitRPC({
+        exchange: 'reservation',
+        routingKey: 'update-project-state',
+        queue: 'project-state'
+    })
+    async updateProjectState(message: { project_id: string, state: ProjectState }) {
+        try {
+            await this.projectRepository.update(message.project_id, {projectState: message.state})
         } catch {
             return {state: 404}
         }
@@ -148,5 +165,26 @@ export class ProjectService {
             where: {customer},
         })
         return projects.map((p) => p.idProject);
+    }
+
+    async confirmProject(id: string, user: JwtUser) {
+        const project = await this.projectRepository.findOne(id, {relations: ['customer']})
+        if (!project) {
+            throw new NotFoundException()
+        }
+        if (project.customer.id !== user.id) {
+            throw new ForbiddenException()
+        }
+        if(project.projectState !== ProjectState.draft) {
+            throw new BadRequestException("Project already confirmed")
+        }
+        project.projectState = ProjectState.pending_validation
+        await this.projectRepository.save(project)
+        await this.amqpConnection.request({
+            exchange: 'reservation',
+            routingKey: 'update-project-state',
+            payload: {project_id: project.idProject, state: ReservationState.PENDING},
+            timeout: 10000
+        })
     }
 }
