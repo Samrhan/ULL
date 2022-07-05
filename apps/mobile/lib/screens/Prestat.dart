@@ -209,7 +209,7 @@ class BigCat extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    tinfo['content'][0]['price']['value'].toString() +
+                    (tinfo['content'][0]['price']['value']/100).toString() +
                         "/" +
                         tinfo['content'][0]['price']['unit'],
                     textAlign: TextAlign.right,
@@ -320,7 +320,7 @@ class MediumCat extends StatelessWidget {
                                 height: 12,
                               ),
                               Text(
-                                  tinfo["content"][index]['price']['value']
+                                  (tinfo["content"][index]['price']['value']/100)
                                           .toString() +
                                       "/" +
                                       tinfo["content"][index]['price']['unit'],
@@ -375,7 +375,7 @@ class SmallCat extends StatelessWidget {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 180,
+                      width: MediaQuery.of(context).size.width - 120,
                       child: Column(
                         children: [
                           SizedBox(
@@ -413,7 +413,7 @@ class SmallCat extends StatelessWidget {
                             child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Text(
-                                  tinfo['content'][index]['price']['value']
+                                  (tinfo['content'][index]['price']['value']/100)
                                           .toString() +
                                       "€",
                                   style: const TextStyle(
@@ -442,19 +442,7 @@ class SmallCat extends StatelessWidget {
                             aspectRatio: 1 / 1,
                           )),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 25, 10, 0),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.plus_one_rounded,
-                          size: 24,
-                        ),
-                        onPressed: () {
-                          addPresta( tinfo['content'][index]['id_performance']);
-                          log('eee');
-                        },
-                      ),
-                    ),
+
                   ],
                 ),
                 decoration: const BoxDecoration(

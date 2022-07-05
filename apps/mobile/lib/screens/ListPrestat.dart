@@ -313,19 +313,20 @@ class _ListPrestatState extends State<ListPrestatStated> {
                   delegate: SliverChildListDelegate(
                     [
 
-
                       for (int index = 0; index < _Listpresta.length; index++)
                         CustomListItem2(
                           thumbnail: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
-                              child: AspectRatio(
+                              child:
+
+                              AspectRatio(
                                 child: Image.network(
                                   //ev.providerPictures + _Listpresta[index]['profile_picture'],
                                   ev.providerPictures +  _Listpresta[index]['id_provider'] +
                                       "/" + _Listpresta[index]['profile_picture'],
                                   width: 100.0,
                                   height: 100.0,
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                 ),
                                 aspectRatio: 1 / 1,
                               )),

@@ -5,6 +5,8 @@ import 'package:ULL/screens/bottomNavBar.dart';
 import 'package:ULL/screens/ListPrestat.dart';
 import 'package:ULL/services/globals.dart' as globals;
 
+import 'mainScreen.dart';
+
 class Category extends StatelessWidget{
   Category(GoogleSignInAccount? _currentAccount,{Key? key}){
     if(globals.dropDownValue != null) {
@@ -30,7 +32,7 @@ class Category extends StatelessWidget{
             bottomNavigationBar: BottomNavBar(0, _currentAccount),
             appBar: PreferredSize(
                 preferredSize:
-                    Size.fromHeight(MediaQuery.of(context).size.height / 7),
+                    Size.fromHeight(MediaQuery.of(context).size.height / 11),
                 child: Column(
                   children: [
                     Container(
@@ -62,7 +64,8 @@ class Category extends StatelessWidget{
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 17),
                                 ),
-                              )
+                              ),
+
                             ]
                             )
                         ),
