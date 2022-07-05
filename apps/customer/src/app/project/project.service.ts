@@ -1,4 +1,4 @@
-import {ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
+import {BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {Address as IAddress, JwtUser, MinimalFile, Project as IProject, ProjectState} from "@ull/api-interfaces";
 import {CreateProjectDto} from "./dto/create-project.dto";
 import {Project} from "./entity/project.entity";
@@ -148,5 +148,20 @@ export class ProjectService {
             where: {customer},
         })
         return projects.map((p) => p.idProject);
+    }
+
+    async confirmProject(id: string, user: JwtUser) {
+        const project = await this.projectRepository.findOne(id, {relations: ['customer']})
+        if (!project) {
+            throw new NotFoundException()
+        }
+        if (project.customer.id !== user.id) {
+            throw new ForbiddenException()
+        }
+        if(project.projectState !== ProjectState.draft) {
+            throw new BadRequestException("Project already confirmed")
+        }
+        project.projectState = ProjectState.pending_validation
+        await this.projectRepository.save(project)
     }
 }
