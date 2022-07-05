@@ -303,18 +303,14 @@ class _MainEventState extends State<MainEventStated>{
                             ),
                             MaterialButton(
                               onPressed: (){
-                                showModalBottomSheet<void>(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      // <-- SEE HERE
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(12.0),
-                                      ),
-                                    ),
-                                    builder: (BuildContext context) {
-                                      return Profile(_currentUser);
-                                    });
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context,a1,a2) => Profile(_currentUser),
+                                    transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                                    transitionDuration: const Duration(milliseconds: 0),
+                                  ),
+                                );
                               },
                               child :Container(
                                   width : 50,
@@ -322,7 +318,7 @@ class _MainEventState extends State<MainEventStated>{
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image :DecorationImage(image :
-                                    getProfileImage(),fit: BoxFit.cover
+                                    getProfileImage(),fit: BoxFit.fill
                                     ),
                                   )
                               ),
