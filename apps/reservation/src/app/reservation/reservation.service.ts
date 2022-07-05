@@ -1,6 +1,14 @@
 import {ForbiddenException, Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {PostReservationDto} from "./dto/post-reservation.dto";
-import {JwtUser, Performance, Project, Reservation as IReservation, ReservationState} from "@ull/api-interfaces";
+import {
+    JwtUser,
+    Performance,
+    Project,
+    ProjectState,
+    Reservation as IReservation,
+    ReservationState,
+    UserType
+} from "@ull/api-interfaces";
 import {AmqpConnection, RabbitRPC} from "@golevelup/nestjs-rabbitmq";
 import {Reservation} from "./entity/reservation.entity";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -29,15 +37,24 @@ export class ReservationService {
     }
 
     async getReservationDetail(idProject: string, idPerformance: string, user: JwtUser): Promise<IReservation> {
-        const reservation = await this.reservationRepository.findOne({where: {idPerformance, idProject}})
+        const reservation = await this.reservationRepository.findOne({
+            where: {idPerformance, idProject},
+            relations: ['state', 'reservationReplace']
+        },)
         if (!reservation) {
             throw new NotFoundException()
+        }
+        if (user.userType === UserType.CUSTOMER && reservation.customerId !== user.id) {
+            throw new ForbiddenException()
+        }
+        if (user.userType === UserType.PROVIDER && reservation.providerId !== user.id) {
+            throw new ForbiddenException()
         }
         return <IReservation>{
             project: await this.getProject(idProject, user.id),
             performance: await this.getPerformance(idPerformance),
             quantity: reservation.quantity,
-            state: reservation.state,
+            state: (reservation.state as any).state,
             replacement_performance_id: reservation.reservationReplace?.idPerformance,
         }
     }
@@ -90,8 +107,6 @@ export class ReservationService {
         switch (response.state) {
             case 404:
                 throw new NotFoundException('Project not found')
-            case 403:
-                throw new ForbiddenException()
             case 200:
                 return response.value
         }
@@ -127,6 +142,15 @@ export class ReservationService {
         await this.reservationRepository.update({idProject: message.project_id}, {projectDate: message.new_date})
     }
 
+    @RabbitRPC({
+        exchange: 'reservation',
+        routingKey: 'update-project-state',
+        queue: 'update-state'
+    })
+    async updateReservationState(message: { project_id: string, state: ReservationState }) {
+        await this.reservationRepository.update({idProject: message.project_id}, {state: message.state})
+    }
+
     async answerReservation(body: AnswerReservationDto, user: JwtUser) {
         const reservation = await this.reservationRepository.findOne({
             idPerformance: body.performance_id,
@@ -142,6 +166,19 @@ export class ReservationService {
             ...reservation,
             state: body.accepted ? ReservationState.ACCEPTED : ReservationState.REJECTED
         })
+        const remainingReservationsNumber = await this.reservationRepository.count({
+            idProject: body.project_id,
+            state: ReservationState.PENDING
+        });
+        if (remainingReservationsNumber === 0) {
+            await this.amqpConnection.request({
+                exchange: 'reservation',
+                routingKey: 'update-project-state',
+                payload: {project_id: body.project_id, state: ProjectState.pending_payment},
+                timeout: 10000
+            })
+        }
+
     }
 
 }

@@ -8,6 +8,7 @@ services:
       dockerfile: ./apps/ull/Dockerfile
     ports:
       - "3000:80"
+    restart: unless-stopped
   authentication:
     image: ull/authentication
     build:
@@ -21,6 +22,7 @@ services:
       - TYPEORM_AUTHENTICATION_URI=postgres://postgres@postgres-authentication:5432/authentication
     ports:
       - "3333:3333"
+    restart: unless-stopped
     networks:
       - services_database_postgres
   customer:
@@ -36,6 +38,7 @@ services:
       - TYPEORM_CUSTOMER_URI=postgres://postgres@postgres-customer:5432/customer
     ports:
       - "3335:3335"
+    restart: unless-stopped
     networks:
       - services_database_postgres
   discovery:
@@ -51,6 +54,7 @@ services:
       - TYPEORM_DISCOVERY_URI=postgres://postgres@postgres-discovery:5432/discovery
     ports:
       - "3337:3337"
+    restart: unless-stopped
     networks:
       - services_database_postgres
   reservation:
@@ -66,6 +70,7 @@ services:
       - TYPEORM_RESERVATION_URI=postgres://postgres@postgres-reservation:5432/reservation
     ports:
       - "3339:3339"
+    restart: unless-stopped
     networks:
       - services_database_postgres
   provider:
@@ -81,6 +86,7 @@ services:
       - TYPEORM_PROVIDER_URI=postgres://postgres@postgres-provider:5432/provider
     ports:
       - "3338:3338"
+    restart: unless-stopped
     networks:
       - services_database_postgres
 
