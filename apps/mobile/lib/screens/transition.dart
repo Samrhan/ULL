@@ -59,6 +59,7 @@ class TransitionState extends State<Transition>{
     Map<String, String> requestHeaders = {
       'Authorization': "Bearer ${globals.accessToken}"
     };
+    globals.allEvents =[];
     Environment ev = Environment();
     String url = ev.baseServer + ev.customerService + "/all_projects" ;
     final http.Response response = await http.get(
