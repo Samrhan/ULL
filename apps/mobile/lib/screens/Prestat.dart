@@ -212,8 +212,9 @@ class BigCat extends StatelessWidget {
                 Expanded(
                   child: Text(
                     (tinfo['content'][0]['price']['value']/100).toString() +
-                        "/" +
-                        tinfo['content'][0]['price']['unit'],
+                        "€ / Participant",
+
+                   // tinfo['content'][0]['price']['unit'],
                     textAlign: TextAlign.right,
                   ),
                 ),
@@ -324,8 +325,8 @@ class MediumCat extends StatelessWidget {
                               Text(
                                   (tinfo["content"][index]['price']['value']/100)
                                           .toString() +
-                                      "/" +
-                                      tinfo["content"][index]['price']['unit'],
+                                      "€ / Participant",
+                                    //  + tinfo["content"][index]['price']['unit'],
                                   style: const TextStyle(
                                       color: Colors.grey, fontSize: 12)),
                             ]),
