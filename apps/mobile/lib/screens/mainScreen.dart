@@ -218,7 +218,7 @@ class _EventBarState extends State<EventBar> {
                                                               ]
                                                           )
                                                       )
-                                                  ),SizedBox(height: 10,),
+                                                  ),SizedBox(height: 35,),
                                             ],
                                           )
                                           );
