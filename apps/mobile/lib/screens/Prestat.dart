@@ -95,12 +95,14 @@ class BeginCat extends StatelessWidget {
 }
 
 class AddPresta extends StatelessWidget {
-  const AddPresta({
+   AddPresta({
     Key? key,
     required this.performance_id,
   }) : super(key: key);
 
   final String performance_id;
+
+  var color =globals.dropDownValue!.state =="draft" ? Colors.red : Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +113,7 @@ class AddPresta extends StatelessWidget {
           onPressed: () {addPresta(performance_id);},
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
-            primary: Colors.red,
+            primary: color,
           ),
         ));
   }
@@ -645,7 +647,11 @@ Future addPresta(performance_id) async {
   Response response;
   Environment ev = Environment();
   log("globals.allEvents.toString()");
-  log(globals.dropDownValue!.projectId!);
+  log(globals.dropDownValue!.state);
+  if(globals.dropDownValue!.state == "pending_validation"){
+    log("qesrsqdr");
+    return null;
+  }
   try {
     Dio dio = new Dio();
     dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
