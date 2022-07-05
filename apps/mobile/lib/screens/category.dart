@@ -7,7 +7,13 @@ import 'package:ULL/services/globals.dart' as globals;
 
 class Category extends StatelessWidget{
   Category(GoogleSignInAccount? _currentAccount,{Key? key}){
-    this.event = globals.dropDownValue;
+    if(globals.dropDownValue != null) {
+      event = globals.dropDownValue!.name + " - " +
+          globals.dropDownValue!.projectDate;
+    }
+    else{
+      event = "Pas d'événements pour le moment";
+    }
     this._currentAccount=_currentAccount;
 
   }
@@ -66,7 +72,7 @@ class Category extends StatelessWidget{
 
             ),
             body:
-            ListPrestat('Traiteur', _currentAccount)
+            ListPrestatStated( _currentAccount,'Traiteur')
            // ListPrestat('Traiteur', _currentAccount)
 
 

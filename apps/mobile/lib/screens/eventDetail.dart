@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:ULL/screens/bottomNavBar.dart';
 import 'package:ULL/screens/mainEvent.dart';
+import 'package:dio/dio.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ULL/services/projectDisplay.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import 'package:ULL/services/globals.dart' as globals;
+import '../services/environment.dart';
 
 class EventDetail extends StatelessWidget{
   EventDetail(this._currentAccount,this.event, {Key? key}) : super(key: key);
@@ -54,7 +59,7 @@ class _EventDetailState extends State<EventDetailStated>{
         bottomNavigationBar: BottomNavBar(1,_currentUser),
         floatingActionButton: SizedBox(
           child :FloatingActionButton(
-            onPressed: (){},
+            onPressed: (){ChangestateProject();},
             shape: SmoothRectangleBorder(
               borderRadius: SmoothBorderRadius(
                 cornerRadius: 20,
@@ -181,7 +186,8 @@ class _EventDetailState extends State<EventDetailStated>{
                                   ),
                                   Expanded(child:Padding(
                                     padding: const EdgeInsets.only(right: 10,bottom: 10, top : 10),
-                                    child: Text(event.address,maxLines: 2,style: const TextStyle(fontSize: 18),),
+                                    child: Text(event.number+" "+event.street+" "+event.city+" "+event.postal_code+ " "
+                                      ,maxLines: 2,style: const TextStyle(fontSize: 18),),
                                   ))
                                 ],
                               ),
@@ -206,7 +212,7 @@ class _EventDetailState extends State<EventDetailStated>{
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 10),
-                                    child: Text(event.amountOfPeople+" participants",maxLines: 1,style: const TextStyle(fontSize: 18),),
+                                    child: Text(event.amountOfPeople.toString()+" participants",maxLines: 1,style: const TextStyle(fontSize: 18),),
                                   )
                                 ],
                               ),
@@ -293,6 +299,35 @@ class _EventDetailState extends State<EventDetailStated>{
       case "paid" :
         return "En attente du jour J !";
     }
+
+  }
+
+  Future ChangestateProject() async {
+    Response response;
+    List<dynamic> presta = [];
+    final Environment ev = Environment();
+    String url ="";    log(event.state);
+    log(event.projectId.toString());
+    if(event.state == "draft"){
+       url =
+          ev.baseServer + ev.customerService + "/confirm/" + event.projectId.toString();
+      }
+
+    try {
+      Dio dio = new Dio();
+      dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
+      response = await dio.post(url);
+
+      setState(() {
+        event.state = "pending_validation";
+      });
+      log('la');
+
+    } catch (e) {
+      print(e);
+    }
+
+    log('ici');
 
   }
 

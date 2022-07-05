@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'dart:convert' show json;
 
+import 'package:ULL/screens/transition.dart';
+import 'package:ULL/services/projectDisplay.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ULL/services/authentication.dart';
 import 'package:ULL/screens/mainScreen.dart';
+import 'package:ULL/services/environment.dart';
+import 'package:ULL/services/globals.dart' as globals;
+import 'package:http/http.dart' as http;
+import 'dart:convert' show json;
 
 
 class AuthenticationPage extends StatefulWidget{
@@ -89,6 +95,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
                 child: MaterialButton(
                   onPressed: ()  async {
                     var _auth = await _authentication.signIn();
+                    await _authentication.handleGetContact(_auth!);
+                    print(globals.allEvents);
                     setState(() {
                        _currentAccount = _auth;
                     });
@@ -113,10 +121,11 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
     else{
       return Material(
         type: MaterialType.transparency,
-        child: MainScreen(_currentAccount)
+        child: Transition(_currentAccount)
       );
     }
   }
+
 
 
 }

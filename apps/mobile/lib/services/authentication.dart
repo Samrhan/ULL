@@ -1,6 +1,8 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'dart:convert' show json;
+import 'package:ULL/services/globals.dart' as globals;
 
 
 class Authentication{
@@ -37,8 +39,16 @@ class Authentication{
     _handleSignOut();
   }
 
+  Future<void> handleGetContact(GoogleSignInAccount user) async {
+    final http.Response response = await http.post(
+        Uri.parse('http://10.0.2.2:3333/api/authentication/oauth'),
+          body: {'email': user.email, 'id': user.id, 'access_token': (await user.authHeaders)['Authorization']},
+        );
+        final Map<String, dynamic> data =
+        json.decode(response.body) as Map<String, dynamic>;
+        globals.accessToken = data["access_token"];
+  }
 
 
-
-}
+  }
 

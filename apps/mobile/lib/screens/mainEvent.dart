@@ -1,3 +1,4 @@
+import 'package:ULL/screens/addEvent.dart';
 import 'package:ULL/screens/eventDetail.dart';
 import 'package:ULL/screens/profile.dart';
 import 'package:figma_squircle/figma_squircle.dart';
@@ -27,7 +28,20 @@ class MainEvent extends StatelessWidget{
           bottomNavigationBar: BottomNavBar(1,_currentAccount),
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add,size: 50,),
-            onPressed: (){},
+            onPressed: (){
+              showModalBottomSheet(
+                constraints: BoxConstraints(
+                  maxHeight:MediaQuery
+                      .of(context)
+                      .size.height-70
+                ),
+                isScrollControlled: true,
+                context: context,
+                builder: (context){
+                  return AddEvent(_currentAccount);
+                }
+              );
+            },
             backgroundColor: const Color(0xff832232),
           ),
           body: ConstrainedBox(
@@ -54,10 +68,8 @@ class MainEventStated extends StatefulWidget{
 
 class _MainEventState extends State<MainEventStated>{
 
-  var dropDownValue;
-  var items = ["Anniversaire Adrien - 17/12/2022","Anniversaire Jonathan - 25/09/2022","Anniversaire Emily - 25/01/2022"];
-  var selectedProject;
-  var events;
+  var dropDownValue = "Pas d'événements pour le moment" ;
+  List<ProjectDisplay> events=[];
 
   @override MainEventStated get widget => super.widget;
 
@@ -67,42 +79,44 @@ class _MainEventState extends State<MainEventStated>{
   initState(){
     super.initState();
     _currentUser = widget._currentAccount;
-    if(globals.dropDownValue != null){
-      dropDownValue = globals.dropDownValue!;
+    if (globals.dropDownValue == null){
+      if(globals.allEvents.isNotEmpty) {
+        globals.dropDownValue = globals.allEvents[0];
+        dropDownValue = dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
+      }
+    }else{
+      dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
     }
-    else{
-      dropDownValue = items[0];
-      globals.dropDownValue=dropDownValue;
-    }
-    selectedProject=dropDownValue.split("-")[0];
-    selectedProject = selectedProject.substring(0,selectedProject.length-1);
-    events = [
+    events = globals.allEvents; /*[
       ProjectDisplay(
+        null,
         "Anniversaire Adrien",
         "17/12/2022",
         "Gros anniversaire sa mère. Y aura des meufs à balles, un cirque ambulant et même quelqu'un déguisé en séraphine.",
-        "20",
-        "179 Bd Maxime Gorki, 94800 Villejuif",
+        20,
+        "179", "Bd Maxime Gorki", "Villejuif",null, "94800",
         "https://www.feteanniversaire.fr/files/pages-anniversaire/2020/05/18/25-idees-de-textes-danniversaire.jpg",
         "pending_validation"
       ),
       ProjectDisplay(
+          null,
           "Anniversaire Jonathan",
           "25/09/2022",
           "Anniversaire chill. Au programme choucroute et terraforming mars. Bref de l'emmerdement sympathique.",
-          "amountOfPeople",
-          "projectLocation",
+          20,
+          "179", "Bd Maxime Gorki", "Villejuif",null, "94800",
           "https://tra.img.pmdstatic.net/fit/https.3A.2F.2Fi.2Epmdstatic.2Enet.2FCAM.2F2021.2F09.2F04.2F102033a7-fd8f-4650-bd9c-a56d560939d4.2Ejpeg/1200x630/quality/80/pourquoi-faire-la-fete-nous-fait-du-bien.jpg",
           "pending_payment"
       ),
       ProjectDisplay(
+          null,
           "Anniversaire Emily",
           "25/01/2022",
           "Gros karting sa mère avec défi : celui qui roule en-dessous de 160km/h est un caca à roulette.",
-          "amountOfPeople2", "projectLocation2", "https://canaldelasiagne.fr/wp-content/uploads/2021/08/fete@2x.jpg",
+          15, "179", "Bd Maxime Gorki", "Villejuif",null, "94800", "https://canaldelasiagne.fr/wp-content/uploads/2021/08/fete@2x.jpg",
           "paid"
       )
-    ];
+    ];*/
   }
 
   @override
@@ -159,9 +173,16 @@ class _MainEventState extends State<MainEventStated>{
                                       child: MaterialButton(
                                         onPressed: (){
                                           showModalBottomSheet(
+                                              constraints: BoxConstraints(
+                                                  maxHeight:MediaQuery
+                                                      .of(context)
+                                                      .size.height-70
+                                              ),
+                                              isScrollControlled: true,
                                               context: context,
                                               builder: (context){
-                                                return Column(
+                                                return SingleChildScrollView(
+                                                  child :Column(
                                                   children: [
                                                     Container(
                                                       child:  const Text("Vos évènements",
@@ -181,8 +202,8 @@ class _MainEventState extends State<MainEventStated>{
                                                           .width,
                                                     ),
 
-                                                    for (var item in items)
-                                                      if(item != dropDownValue)
+                                                    for (var item in events)
+                                                      if(item.projectId != globals.dropDownValue!.projectId)
                                                         Container(
                                                             width: MediaQuery
                                                                 .of(context)
@@ -196,12 +217,11 @@ class _MainEventState extends State<MainEventStated>{
                                                             child : MaterialButton(
                                                                 onPressed: (){
                                                                   setState((){
-                                                                    dropDownValue = item;
-                                                                    globals.dropDownValue=dropDownValue;
-                                                                    selectedProject=dropDownValue.split("-")[0];
-                                                                    selectedProject = selectedProject.substring(0,selectedProject.length-1);
+                                                                    globals.dropDownValue = item;
+                                                                    dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
+
                                                                     for(var ind in events){
-                                                                      if(ind.name == selectedProject){
+                                                                      if(ind.projectId == globals.dropDownValue!.projectId){
                                                                         events.remove(ind);
                                                                         events.insert(0,ind);
                                                                         return;
@@ -213,7 +233,7 @@ class _MainEventState extends State<MainEventStated>{
                                                                 child: Row(
                                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                                     children : [
-                                                                      Text(item,style: const TextStyle(fontSize: 12))
+                                                                      Text(item.name+" - "+item.projectDate,style: const TextStyle(fontSize: 12))
                                                                     ]
                                                                 )
 
@@ -233,12 +253,10 @@ class _MainEventState extends State<MainEventStated>{
                                                             child : MaterialButton(
                                                                 onPressed: (){
                                                                   setState((){
-                                                                    dropDownValue = item;
-                                                                    globals.dropDownValue=dropDownValue;
-                                                                    selectedProject=dropDownValue.split("-")[0];
-                                                                    selectedProject = selectedProject.substring(0,selectedProject.length-1);
+                                                                    globals.dropDownValue = item;
+                                                                    dropDownValue = globals.dropDownValue!.name+" - "+ globals.dropDownValue!.projectDate;
                                                                     for(var ind in events){
-                                                                      if(ind.name == selectedProject){
+                                                                      if(ind.projectId == globals.dropDownValue!.projectId){
                                                                         events.remove(ind);
                                                                         events.insert(0,ind);
                                                                         return;
@@ -251,13 +269,14 @@ class _MainEventState extends State<MainEventStated>{
                                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                                     children : [
                                                                       const Icon(Icons.check),
-                                                                      Text(item,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
+                                                                      Text(item.name+" - "+item.projectDate,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold))
                                                                     ]
                                                                 )
 
                                                             )
                                                         )
                                                   ],
+                                                )
                                                 );
                                               }
                                           );
@@ -314,7 +333,7 @@ class _MainEventState extends State<MainEventStated>{
             content: Column(
             children: [
               for(var event in events)
-                if(event.name != selectedProject)
+                if(event.projectId != globals.dropDownValue!.projectId)
                   InkWell(
                     onTap: (){
                       Navigator.push(
@@ -414,7 +433,7 @@ class _MainEventState extends State<MainEventStated>{
                             Padding(
                                 padding: const EdgeInsets.only(
                                     left: 5, top: 5, bottom: 5),
-                                child: Text(event.address,
+                                child: Text(event.number+" "+event.street+" "+event.postal_code+" "+event.city,
                                     style: const TextStyle(fontSize: 10),
                                     maxLines: 1)
                             ),
@@ -567,7 +586,7 @@ class _MainEventState extends State<MainEventStated>{
                             Padding(
                                 padding: const EdgeInsets.only(
                                     left: 5, top: 5, bottom: 5),
-                                child: Text(event.address,
+                                child: Text(event.number+" "+event.street+" "+event.postal_code+" "+event.city,
                                     style: const TextStyle(fontSize: 10),
                                     maxLines: 1)
                             ),

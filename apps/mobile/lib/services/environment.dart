@@ -1,15 +1,16 @@
 
 class Environment{
-  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,providerPictures;
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,customerPictures,providerPictures;
   Environment(){
     bool isProd = const bool.fromEnvironment('dart.vm.product');
     if(isProd){
-      environmentCopy(EnvironmentProd());
+      environmentCopyProd(EnvironmentProd());
     }else{
-      environmentCopy(EnvironmentDebug());
+      environmentCopyDebug(EnvironmentDebug());
     }
   }
-  environmentCopy(Environment e){
+  environmentCopyProd(EnvironmentProd e){
+
     baseServer = e.baseServer;
     authenticationService = e.authenticationService;
     chatService = e.chatService;
@@ -18,14 +19,29 @@ class Environment{
     discoveryService = e.discoveryService;
     providerService = e.providerService;
     reservationService = e.reservationService;
+    customerPictures = e.customerPictures;
+    providerPictures = e.providerPictures;
+  }
+  environmentCopyDebug(EnvironmentDebug e){
+
+    baseServer = e.baseServer;
+    authenticationService = e.authenticationService;
+    chatService = e.chatService;
+    customerService = e.customerService;
+    accountingService = e.accountingService;
+    discoveryService = e.discoveryService;
+    providerService = e.providerService;
+    reservationService = e.reservationService;
+    customerPictures = e.customerPictures;
     providerPictures = e.providerPictures;
   }
 
 }
 
-class EnvironmentDebug extends Environment{
+class EnvironmentDebug{
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,customerPictures,providerPictures;
   EnvironmentDebug(){
-    baseServer = "http://localhost:";
+    baseServer = "http://10.0.2.2:";
     authenticationService = "3333/api/authentication";
     chatService = "3337/api/chat";
     customerService = "3336/api/customer";
@@ -33,11 +49,13 @@ class EnvironmentDebug extends Environment{
     discoveryService = "3338/api/discovery";
     providerService = "3335/api/provider";
     reservationService = "3334/api/reservation";
+    customerPictures = "https://cdn.sbader.fr/customer/";
     providerPictures = "https://cdn.sbader.fr/provider/";
   }
 }
 
-class EnvironmentProd extends Environment{
+class EnvironmentProd{
+  var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,customerPictures,providerPictures;
   EnvironmentProd(){
     baseServer = "https://ull.sbader.fr/";
     authenticationService = "api/authentication";
@@ -47,6 +65,8 @@ class EnvironmentProd extends Environment{
     discoveryService = "api/discovery";
     providerService = "api/provider";
     reservationService = "api/reservation";
+    customerPictures = "https://cdn.sbader.fr/customer/";
     providerPictures = "https://cdn.sbader.fr/provider/";
+
   }
 }
