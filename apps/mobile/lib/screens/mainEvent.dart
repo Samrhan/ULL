@@ -318,7 +318,7 @@ class _MainEventState extends State<MainEventStated>{
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image :DecorationImage(image :
-                                    getProfileImage(),fit: BoxFit.fill
+                                    getProfileImage(),fit: BoxFit.cover
                                     ),
                                   )
                               ),
