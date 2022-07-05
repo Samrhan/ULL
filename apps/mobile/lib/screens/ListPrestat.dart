@@ -318,7 +318,9 @@ class _ListPrestatState extends State<ListPrestatStated> {
                         CustomListItem2(
                           thumbnail: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
-                              child: AspectRatio(
+                              child:
+
+                              AspectRatio(
                                 child: Image.network(
                                   //ev.providerPictures + _Listpresta[index]['profile_picture'],
                                   ev.providerPictures +  _Listpresta[index]['id_provider'] +
