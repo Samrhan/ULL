@@ -313,7 +313,6 @@ class _ListPrestatState extends State<ListPrestatStated> {
                   delegate: SliverChildListDelegate(
                     [
 
-
                       for (int index = 0; index < _Listpresta.length; index++)
                         CustomListItem2(
                           thumbnail: ClipRRect(
@@ -327,7 +326,7 @@ class _ListPrestatState extends State<ListPrestatStated> {
                                       "/" + _Listpresta[index]['profile_picture'],
                                   width: 100.0,
                                   height: 100.0,
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                 ),
                                 aspectRatio: 1 / 1,
                               )),

@@ -192,7 +192,7 @@ class BigCat extends StatelessWidget {
                                 "/" +
                                 tinfo['pictures'][index],
                             height: 190.0,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                           ),
                           aspectRatio: 5 / 3,
                         )),
@@ -296,7 +296,7 @@ class MediumCat extends StatelessWidget {
                                     prestat +
                                     "/" +
                                     tinfo['content'][index]["picture"],
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(
@@ -437,7 +437,7 @@ class SmallCat extends StatelessWidget {
                                   tinfo['content'][index]["picture"],
                               width: 100.0,
                               height: 100.0,
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                             ),
                             aspectRatio: 1 / 1,
                           )),
