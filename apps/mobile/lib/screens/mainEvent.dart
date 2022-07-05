@@ -303,14 +303,18 @@ class _MainEventState extends State<MainEventStated>{
                             ),
                             MaterialButton(
                               onPressed: (){
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context,a1,a2) => Profile(_currentUser),
-                                    transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
-                                    transitionDuration: const Duration(milliseconds: 0),
-                                  ),
-                                );
+                                showModalBottomSheet<void>(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                      // <-- SEE HERE
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(12.0),
+                                      ),
+                                    ),
+                                    builder: (BuildContext context) {
+                                      return Profile(_currentUser);
+                                    });
                               },
                               child :Container(
                                   width : 50,
