@@ -36,7 +36,10 @@ export class ReservationService {
     }
 
     async getReservationDetail(idProject: string, idPerformance: string, user: JwtUser): Promise<IReservation> {
-        const reservation = await this.reservationRepository.findOne({where: {idPerformance, idProject}})
+        const reservation = await this.reservationRepository.findOne({
+            where: {idPerformance, idProject},
+            relations: ['state', 'reservationReplace']
+        },)
         if (!reservation) {
             throw new NotFoundException()
         }
@@ -50,7 +53,7 @@ export class ReservationService {
             project: await this.getProject(idProject, user.id),
             performance: await this.getPerformance(idPerformance),
             quantity: reservation.quantity,
-            state: reservation.state,
+            state: (reservation.state as any).state,
             replacement_performance_id: reservation.reservationReplace?.idPerformance,
         }
     }
