@@ -95,14 +95,15 @@ class BeginCat extends StatelessWidget {
 }
 
 class AddPresta extends StatelessWidget {
-   AddPresta({
+  AddPresta({
     Key? key,
     required this.performance_id,
   }) : super(key: key);
 
   final String performance_id;
 
-  var color =globals.dropDownValue!.state =="draft" ? Colors.red : Colors.grey;
+  var color =
+      globals.dropDownValue!.state == "draft" ? Colors.red : Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +111,9 @@ class AddPresta extends StatelessWidget {
         padding: const EdgeInsets.only(left: 30.0, right: 30.0),
         child: ElevatedButton(
           child: const Text("Add"),
-          onPressed: () {addPresta(performance_id);},
+          onPressed: () {
+            addPresta(performance_id);
+          },
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
             primary: color,
@@ -211,10 +214,10 @@ class BigCat extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    (tinfo['content'][0]['price']['value']/100).toString() +
+                    (tinfo['content'][0]['price']['value'] / 100).toString() +
                         "€ / Participant",
 
-                   // tinfo['content'][0]['price']['unit'],
+                    // tinfo['content'][0]['price']['unit'],
                     textAlign: TextAlign.right,
                   ),
                 ),
@@ -222,10 +225,7 @@ class BigCat extends StatelessWidget {
             ),
             Text(tinfo['content'][0]['performance_description'],
                 style: const TextStyle(color: Colors.grey, fontSize: 11)),
-
-            AddPresta( performance_id:tinfo['content'][0]['id_performance']),
-
-
+            AddPresta(performance_id: tinfo['content'][0]['id_performance']),
           ],
         ),
       ),
@@ -246,6 +246,7 @@ class BigCat extends StatelessWidget {
 class MediumCat extends StatelessWidget {
   var prestat;
   final Environment ev = Environment();
+
   MediumCat({
     Key? key,
     required this.tinfo,
@@ -323,15 +324,17 @@ class MediumCat extends StatelessWidget {
                                 height: 12,
                               ),
                               Text(
-                                  (tinfo["content"][index]['price']['value']/100)
+                                  (tinfo["content"][index]['price']['value'] /
+                                              100)
                                           .toString() +
                                       "€ / Participant",
-                                    //  + tinfo["content"][index]['price']['unit'],
+                                  //  + tinfo["content"][index]['price']['unit'],
                                   style: const TextStyle(
                                       color: Colors.grey, fontSize: 12)),
                             ]),
-                            AddPresta( performance_id:tinfo['content'][index]['id_performance']),
-
+                            AddPresta(
+                                performance_id: tinfo['content'][index]
+                                    ['id_performance']),
                           ],
                         ),
                       ),
@@ -346,6 +349,7 @@ class MediumCat extends StatelessWidget {
 
 class SmallCat extends StatelessWidget {
   var prestat;
+
   SmallCat({
     Key? key,
     required this.tinfo,
@@ -374,7 +378,6 @@ class SmallCat extends StatelessWidget {
             for (int index = 0; index < tinfo['content'].length; index++)
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 120,
                 child: Row(
                   children: [
                     SizedBox(
@@ -410,13 +413,13 @@ class SmallCat extends StatelessWidget {
                                 )),
                           ),
                           const SizedBox(height: 20),
-
                           SizedBox(
                             width: double.infinity,
                             child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Text(
-                                  (tinfo['content'][index]['price']['value']/100)
+                                  (tinfo['content'][index]['price']['value'] /
+                                              100)
                                           .toString() +
                                       "€",
                                   style: const TextStyle(
@@ -424,28 +427,28 @@ class SmallCat extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                 )),
                           ),
-
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: AspectRatio(
-                            child: Image.network(
-                              ev.providerPictures +
-                                  prestat +
-                                  "/" +
-                                  tinfo['content'][index]["picture"],
-                              width: 100.0,
-                              height: 100.0,
-                              fit: BoxFit.cover,
-                            ),
-                            aspectRatio: 1 / 1,
-                          )),
+                    SizedBox(
+                      width: 115,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: AspectRatio(
+                              child: Image.network(
+                                ev.providerPictures +
+                                    prestat +
+                                    "/" +
+                                    tinfo['content'][index]["picture"],
+                                height: 100.0,
+                                fit: BoxFit.cover,
+                              ),
+                              aspectRatio: 1 / 1,
+                            )),
+                      ),
                     ),
-
                   ],
                 ),
                 decoration: const BoxDecoration(
@@ -579,7 +582,7 @@ class _PrestatState extends State<PrestatStated> {
                             title: AnimatedOpacity(
                                 duration: Duration(milliseconds: 3),
                                 opacity: top < 180 ? 1.0 : 0.0,
-                                child:  Text(
+                                child: Text(
                                   _Presta[0]['company_name'],
                                   style: const TextStyle(
                                       fontSize: 25,
@@ -597,7 +600,6 @@ class _PrestatState extends State<PrestatStated> {
                     SliverList(
                       delegate: SliverChildListDelegate(
                         [
-
                           const SizedBox(height: 20),
                           BeginCat(info: _Presta[0]),
                           const SizedBox(height: 10),
@@ -605,8 +607,9 @@ class _PrestatState extends State<PrestatStated> {
                               index < _Presta[0]['services'].length;
                               index++)
                             Choicecat(
-                                cat: _Presta[0]['services'][index],
-                                prestat: _currentPrestat, project_id : idprojet,
+                              cat: _Presta[0]['services'][index],
+                              prestat: _currentPrestat,
+                              project_id: idprojet,
                             ),
                         ],
                       ),
@@ -644,29 +647,30 @@ class _PrestatState extends State<PrestatStated> {
     });
   }
 }
+
 Future addPresta(performance_id) async {
   Response response;
   Environment ev = Environment();
   log("globals.allEvents.toString()");
   log(globals.dropDownValue!.state);
-  if(globals.dropDownValue!.state == "pending_validation"){
+  if (globals.dropDownValue!.state == "pending_validation") {
     log("qesrsqdr");
     return null;
   }
   try {
     Dio dio = new Dio();
     dio.options.headers["Authorization"] = "Bearer ${globals.accessToken}";
-    String url =
-        ev.baseServer + ev.reservationService + "/reservation";
+    String url = ev.baseServer + ev.reservationService + "/reservation";
     log(url);
-    var a = {"performance_id": performance_id, "project_id": globals.dropDownValue!.projectId!,"quantity":1} ;
+    var a = {
+      "performance_id": performance_id,
+      "project_id": globals.dropDownValue!.projectId!,
+      "quantity": 1
+    };
     log(a.toString());
     response = await dio.post(url, data: a);
     log(response.toString());
-
   } catch (e) {
     print(e);
   }
-
-
 }
