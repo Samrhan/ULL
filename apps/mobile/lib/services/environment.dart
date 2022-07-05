@@ -41,7 +41,7 @@ class Environment{
 class EnvironmentDebug{
   var baseServer,authenticationService,chatService,customerService, accountingService,discoveryService,providerService,reservationService,customerPictures,providerPictures;
   EnvironmentDebug(){
-    baseServer = "http://10.0.2.2:";
+    baseServer = "http://localhost:"/*"http://10.0.2.2:"*/;
     authenticationService = "3333/api/authentication";
     chatService = "3337/api/chat";
     customerService = "3336/api/customer";

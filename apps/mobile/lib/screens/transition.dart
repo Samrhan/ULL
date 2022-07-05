@@ -65,8 +65,7 @@ class TransitionState extends State<Transition>{
         Uri.parse(url),
         headers: requestHeaders
     );
-    final List data =
-    json.decode(response.body);
+    final List data = json.decode(response.body);
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
     final decodedTokenBodyJson = stringToBase64.decode(globals.accessToken!.split('.')[1]+'=');
     final decodedTokenBody = json.decode(decodedTokenBodyJson);

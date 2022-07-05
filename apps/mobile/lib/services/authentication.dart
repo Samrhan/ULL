@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert' show json;
 import 'package:ULL/services/globals.dart' as globals;
 
+import '../services/environment.dart';
 
 class Authentication{
 
+  final Environment ev = Environment();
 
   final  GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[
@@ -20,6 +22,7 @@ class Authentication{
     try {
       await _googleSignIn.signIn();
     } catch (error) {
+      print("An error occured at google sign in");
       print(error);
     }
   }
@@ -41,12 +44,11 @@ class Authentication{
 
   Future<void> handleGetContact(GoogleSignInAccount user) async {
     final http.Response response = await http.post(
-        Uri.parse('http://10.0.2.2:3333/api/authentication/oauth'),
+          Uri.parse(ev.baseServer + ev.authenticationService + '/oauth'),
           body: {'email': user.email, 'id': user.id, 'access_token': (await user.authHeaders)['Authorization']},
         );
-        final Map<String, dynamic> data =
-        json.decode(response.body) as Map<String, dynamic>;
-        globals.accessToken = data["access_token"];
+    final Map<String, dynamic> data = json.decode(response.body) as Map<String, dynamic>;
+    globals.accessToken = data["access_token"];
   }
 
 
