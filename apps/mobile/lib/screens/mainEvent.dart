@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:ULL/screens/addEvent.dart';
 import 'package:ULL/screens/eventDetail.dart';
 import 'package:ULL/screens/profile.dart';
+import 'package:ULL/screens/transition.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:ULL/screens/bottomNavBar.dart';
@@ -121,7 +124,22 @@ class _MainEventState extends State<MainEventStated>{
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return
+
+
+      RefreshIndicator(
+        onRefresh: () {return
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context,a1,a2) => Transition(_currentUser, MainEvent(_currentUser)),
+              transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+              transitionDuration: const Duration(milliseconds: 0),
+            ),
+          );
+        },
+    child: SingleChildScrollView(
+         physics: AlwaysScrollableScrollPhysics(),
         child: StickyHeader(
             header : Container(
                   width: MediaQuery
@@ -625,7 +643,7 @@ class _MainEventState extends State<MainEventStated>{
               ]
             )
           )
-    );
+    ));
   }
 
 

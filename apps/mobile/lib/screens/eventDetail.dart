@@ -11,6 +11,7 @@ import 'package:ULL/services/projectDisplay.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:ULL/services/globals.dart' as globals;
 import '../services/environment.dart';
+import 'mainScreen.dart';
 
 class EventDetail extends StatelessWidget{
   EventDetail(this._currentAccount,this.event, {Key? key}) : super(key: key);
@@ -57,249 +58,265 @@ class _EventDetailState extends State<EventDetailStated>{
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-        bottomNavigationBar: BottomNavBar(1,_currentUser),
-        floatingActionButton: SizedBox(
-          child :FloatingActionButton(
-            onPressed: (){ChangestateProject();},
-            shape: SmoothRectangleBorder(
-              borderRadius: SmoothBorderRadius(
-                cornerRadius: 20,
-                cornerSmoothing: 1,
+    return
+
+      Scaffold(
+          bottomNavigationBar: BottomNavBar(1,_currentUser),
+          floatingActionButton: SizedBox(
+            child :
+            FloatingActionButton(
+              onPressed: (){ChangestateProject();},
+              shape: SmoothRectangleBorder(
+                borderRadius: SmoothBorderRadius(
+                  cornerRadius: 20,
+                  cornerSmoothing: 1,
+                ),
               ),
+              child: Text(getStateText(event.state),style: const TextStyle(fontSize: 20,),),
+              backgroundColor: getStateColor(event.state),
             ),
-            child: Text(getStateText(event.state),style: const TextStyle(fontSize: 20,),),
-            backgroundColor: getStateColor(event.state),
+            width: MediaQuery
+                .of(context)
+                .size
+                .width-20,
+            height: 30,
           ),
-          width: MediaQuery
-              .of(context)
-              .size
-              .width-20,
-          height: 30,
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: SingleChildScrollView(
-            child: StickyHeader(
-              header: Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 4,
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: NetworkImage(event.image),fit: BoxFit.cover)
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children : [
-                    Row(
-                      children: [InkWell(
-                          onTap: (){
-                            Navigator.pop(
-                              context
-                            );
-                          },
-                          child :Padding(
-                            padding: const EdgeInsets.only(top: 40,left: 20),
-                            child : Container(
-                              width: 50,
-                              height: 50,
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child : const Icon(Icons.keyboard_arrow_left, size: 50,color: Color(0xff832232),),
-                            ),
-                          )
-
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          body: ConstrainedBox(
+              constraints: const BoxConstraints.expand(),
+              child:  RefreshIndicator(
+                  onRefresh: () { return
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context,a1,a2) => Transition(_currentUser, EventDetail(_currentUser, event)),
+                        transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
+                        transitionDuration: const Duration(milliseconds: 0),
                       ),
-                        SizedBox(width: 240,),
-                        InkWell(
-                            onTap: () => showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Suppression'),
-                                content: const Text('Etes vous sur de vouloir suprimer ce projet ?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context, 'Cancel'),
-                                    child: const Text('Annuler'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {Navigator.pop(context, 'OK') ;delProjet();},
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            child :Padding(
-                              padding: const EdgeInsets.only(top: 40,left: 20),
-                              child : Container(
-                                width: 30,
-                                height: 30,
-                                alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
-                                child : const Icon(Icons.delete_forever, size: 25,color: Color(0xff832232),),
-                              ),
-                            )
+                    );
+                  },
+                  child:  SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
 
-                        )],
-                    ),
-
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
-                      child: Text(event.name,style: const TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold,shadows:
-                      [
-                        Shadow(offset: Offset(3, 3),blurRadius: 10,color: Colors.black87)
-                      ])),),
-                  Padding(padding: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
-                    child: Text(event.projectDate,style: const TextStyle(fontSize: 20,color: Colors.white,shadows:
-                    [
-                      Shadow(offset: Offset(3, 3),blurRadius: 10,color: Colors.black87)
-                    ])),)
-                  ],
-                ),
-                ]
-            )
-              ),
-              content: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15,left: 10),
-                    child: Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width-20,
-                      decoration:  ShapeDecoration(
-                        shape:  SmoothRectangleBorder(
-                            borderRadius: SmoothBorderRadius(
-                            cornerRadius: 10,
-                            cornerSmoothing: 0.5,
-                          ),
+                      child: StickyHeader(
+                    header: Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height / 4,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(image: NetworkImage(event.image),fit: BoxFit.cover)
                         ),
-                        color: Colors.white,
-                        shadows: const [
-                          BoxShadow(offset: Offset(3, 3),blurRadius: 10,color: Colors.black38),
-                          BoxShadow(offset: Offset(-3, -3),blurRadius: 10,color: Colors.black38)
-                        ]
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Container(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width-40,
-                              decoration: const BoxDecoration(
-                                border: Border(bottom: BorderSide(color: Colors.grey))
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children : [
+                              Row(
+                                children: [InkWell(
+                                    onTap: (){
+                                      Navigator.pop(
+                                          context
+                                      );
+                                    },
+                                    child :Padding(
+                                      padding: const EdgeInsets.only(top: 40,left: 20),
+                                      child : Container(
+                                        width: 50,
+                                        height: 50,
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                        ),
+                                        child : const Icon(Icons.keyboard_arrow_left, size: 50,color: Color(0xff832232),),
+                                      ),
+                                    )
+
+                                ),
+                                  SizedBox(width: 240,),
+                                  InkWell(
+                                      onTap: () => showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) => AlertDialog(
+                                          title: const Text('Suppression'),
+                                          content: const Text('Etes vous sur de vouloir suprimer ce projet ?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                                              child: const Text('Annuler'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {Navigator.pop(context, 'OK') ;delProjet();},
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      child :Padding(
+                                        padding: const EdgeInsets.only(top: 40,left: 20),
+                                        child : Container(
+                                          width: 30,
+                                          height: 30,
+                                          alignment: Alignment.center,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          child : const Icon(Icons.delete_forever, size: 25,color: Color(0xff832232),),
+                                        ),
+                                      )
+
+                                  )],
                               ),
-                              child: Row(
+
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                   const Padding(
-                                    padding: EdgeInsets.all( 10),
-                                    child: Icon(Icons.location_on_outlined,size: 40,),
-                                  ),
-                                  Expanded(child:Padding(
-                                    padding: const EdgeInsets.only(right: 10,bottom: 10, top : 10),
-                                    child: Text(event.number+" "+event.street+" "+event.city+" "+event.postal_code+ " "
-                                      ,maxLines: 2,style: const TextStyle(fontSize: 18),),
-                                  ))
+                                  Padding(padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
+                                    child: Text(event.name,style: const TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold,shadows:
+                                    [
+                                      Shadow(offset: Offset(3, 3),blurRadius: 10,color: Colors.black87)
+                                    ])),),
+                                  Padding(padding: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
+                                    child: Text(event.projectDate,style: const TextStyle(fontSize: 20,color: Colors.white,shadows:
+                                    [
+                                      Shadow(offset: Offset(3, 3),blurRadius: 10,color: Colors.black87)
+                                    ])),)
                                 ],
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
+                            ]
+                        )
+                    ),
+                    content: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(top: 15,left: 10),
                             child: Container(
                               width: MediaQuery
                                   .of(context)
                                   .size
-                                  .width-40,
-                              decoration: const BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.grey))
+                                  .width-20,
+                              decoration:  ShapeDecoration(
+                                  shape:  SmoothRectangleBorder(
+                                    borderRadius: SmoothBorderRadius(
+                                      cornerRadius: 10,
+                                      cornerSmoothing: 0.5,
+                                    ),
+                                  ),
+                                  color: Colors.white,
+                                  shadows: const [
+                                    BoxShadow(offset: Offset(3, 3),blurRadius: 10,color: Colors.black38),
+                                    BoxShadow(offset: Offset(-3, -3),blurRadius: 10,color: Colors.black38)
+                                  ]
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              child: Column(
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all( 10),
-                                    child: Icon(Icons.person_outline,size: 40,),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width-40,
+                                      decoration: const BoxDecoration(
+                                          border: Border(bottom: BorderSide(color: Colors.grey))
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all( 10),
+                                            child: Icon(Icons.location_on_outlined,size: 40,),
+                                          ),
+                                          Expanded(child:Padding(
+                                            padding: const EdgeInsets.only(right: 10,bottom: 10, top : 10),
+                                            child: Text(event.number+" "+event.street+" "+event.city+" "+event.postal_code+ " "
+                                              ,maxLines: 2,style: const TextStyle(fontSize: 18),),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Text(event.amountOfPeople.toString()+" participants",maxLines: 1,style: const TextStyle(fontSize: 18),),
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width-40,
+                                      decoration: const BoxDecoration(
+                                          border: Border(bottom: BorderSide(color: Colors.grey))
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all( 10),
+                                            child: Icon(Icons.person_outline,size: 40,),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: Text(event.amountOfPeople.toString()+" participants",maxLines: 1,style: const TextStyle(fontSize: 18),),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  MaterialButton(onPressed: (){},
+                                    child : Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Container(
+                                        width: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width-40,
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                    padding: const EdgeInsets.all( 10),
+                                                    child: Image.asset("asset/bow_tie.png",height: 40,width: 40,)
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(right: 10),
+                                                  child: Text(nbPrestation.toString()+" Prestations",maxLines: 1,style: const TextStyle(fontSize: 18),),
+                                                )
+                                              ],
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.only(right: 10),
+                                              child: Icon(Icons.keyboard_arrow_right),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
-                            ),
-                          ),
-                          MaterialButton(onPressed: (){},
-                            child : Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Container(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width-40,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                            padding: const EdgeInsets.all( 10),
-                                            child: Image.asset("asset/bow_tie.png",height: 40,width: 40,)
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 10),
-                                          child: Text(nbPrestation.toString()+" Prestations",maxLines: 1,style: const TextStyle(fontSize: 18),),
-                                        )
-                                      ],
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(right: 10),
-                                      child: Icon(Icons.keyboard_arrow_right),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10,top: 25,bottom: 25),
-                    child: Text("L'événement",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10,bottom: 10),
-                    child: Text(event.description,style: const TextStyle(color: Colors.black,fontSize: 18),),
-                  ),
-                ],
-              ),
-            )
-        )
-      )
-    );
+                            )
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 10,top: 25,bottom: 25),
+                          child: Text("L'événement",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10,bottom: 10),
+                          child: Text(event.description,style: const TextStyle(color: Colors.black,fontSize: 18),),
+                        ),
+                      ],
+                    ),
+                  )
+              ))
+          )
+      );
   }
 
   getStateColor(String state){
