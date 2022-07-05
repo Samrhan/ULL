@@ -135,12 +135,17 @@ class _EventBarState extends State<EventBar> {
                                             child :Column(
                                             children: [
                                               Container(
-                                                child: const Text(
-                                                  "Vos évènements",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Color(0xff832232)),
+                                                child:
+                                                const Padding(
+                                                  padding: EdgeInsets.all(7.0),
+                                                  child: Text(
+                                                    "Vos évènements",
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Color(0xff832232)),
+                                                  ),
                                                 ),
+
                                                 decoration:
                                                     BoxDecoration(boxShadow: [
                                                   BoxShadow(
@@ -213,7 +218,7 @@ class _EventBarState extends State<EventBar> {
                                                               ]
                                                           )
                                                       )
-                                                  )
+                                                  ),SizedBox(height: 10,),
                                             ],
                                           )
                                           );

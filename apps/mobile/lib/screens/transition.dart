@@ -60,6 +60,7 @@ class TransitionState extends State<Transition>{
       'Authorization': "Bearer ${globals.accessToken}"
     };
     globals.allEvents =[];
+    globals.dropDownValue = null;
     Environment ev = Environment();
     String url = ev.baseServer + ev.customerService + "/all_projects" ;
     final http.Response response = await http.get(
