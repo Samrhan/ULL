@@ -26,8 +26,7 @@ class Category extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    return Scaffold(
             extendBodyBehindAppBar: true,
             bottomNavigationBar: BottomNavBar(0, _currentAccount),
             appBar: PreferredSize(
@@ -79,6 +78,6 @@ class Category extends StatelessWidget{
            // ListPrestat('Traiteur', _currentAccount)
 
 
-        ));
+        );
   }
 }

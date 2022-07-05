@@ -342,10 +342,8 @@ class _MainEventState extends State<MainEventStated>{
                     onTap: (){
                       Navigator.push(
                         context,
-                        PageRouteBuilder(
-                          pageBuilder: (context,a1,a2) => EventDetail(_currentUser,event),
-                          transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
-                          transitionDuration: const Duration(milliseconds: 0),
+                        MaterialPageRoute(
+                            builder: (context) => EventDetail(_currentUser, event)
                         ),
                       );
                     },
@@ -466,11 +464,9 @@ class _MainEventState extends State<MainEventStated>{
                       onTap: (){
                         Navigator.push(
                           context,
-                          PageRouteBuilder(
-                            pageBuilder: (context,a1,a2) => EventDetail(_currentUser,event),
-                            transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
-                            transitionDuration: const Duration(milliseconds: 0),
-                          ),
+                          MaterialPageRoute(
+                            builder: (context) => EventDetail(_currentUser, event)
+                          )
                         );
                       },
                       child: Padding(padding: const EdgeInsets.only(left: 5, top: 5),
