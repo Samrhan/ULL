@@ -318,10 +318,18 @@ class AddEventState extends State<AddEvent> {
   }
 
   chooseImage() async {
-    var file1 = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      file = file1;
-    });
+    try {
+      var file1 = await _picker.pickImage(source: ImageSource.gallery);
+      print("Got image");
+      setState(() {
+        print("Image : ");
+        print(file1);
+        file = file1;
+      });
+    } catch (e){
+      print("Error when selecting image");
+      print(e);
+    }
   }
 
   ShapeDecoration getDecoration() {

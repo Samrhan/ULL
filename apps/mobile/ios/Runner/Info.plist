@@ -67,5 +67,11 @@
 		</dict>
 	</array>
 	<!-- End of the Google Sign-in Section -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Access Warning</string>
+	<key>NSBonjourServices</key>
+	<array>
+	  <string>_dartobservatory._tcp</string>
+	</array>
 </dict>
 </plist>
