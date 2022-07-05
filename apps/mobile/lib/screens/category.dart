@@ -32,7 +32,7 @@ class Category extends StatelessWidget{
             bottomNavigationBar: BottomNavBar(0, _currentAccount),
             appBar: PreferredSize(
                 preferredSize:
-                    Size.fromHeight(MediaQuery.of(context).size.height / 11),
+                    Size.fromHeight(MediaQuery.of(context).size.height / 10),
                 child: Column(
                   children: [
                     Container(
