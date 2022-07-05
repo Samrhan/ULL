@@ -402,7 +402,7 @@ class _EventDetailState extends State<EventDetailStated>{
       Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (context,a1,a2) => Transition(_currentUser),
+          pageBuilder: (context,a1,a2) => Transition(_currentUser, MainEvent(_currentUser)),
           transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
           transitionDuration: const Duration(milliseconds: 0),
         ),

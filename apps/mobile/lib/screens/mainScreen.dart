@@ -89,7 +89,7 @@ class _EventBarState extends State<EventBar> {
             Navigator.pushReplacement(
             context,
             PageRouteBuilder(
-              pageBuilder: (context,a1,a2) => Transition(_currentUser),
+              pageBuilder: (context,a1,a2) => Transition(_currentUser, MainScreen(_currentUser)),
               transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
               transitionDuration: const Duration(milliseconds: 0),
             ),

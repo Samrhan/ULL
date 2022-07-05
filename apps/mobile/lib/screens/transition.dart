@@ -14,11 +14,13 @@ import 'dart:convert' show json;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Transition extends StatefulWidget{
-  Transition(GoogleSignInAccount? _currentAccount, {super.key}){
+  Transition(GoogleSignInAccount? _currentAccount, Widget next, {super.key}){
     this._currentAccount = _currentAccount;
+    this._next = next;
   }
 
   GoogleSignInAccount? _currentAccount;
+  Widget? _next;
 
   @override
   State<Transition> createState() => TransitionState();
@@ -29,11 +31,13 @@ class TransitionState extends State<Transition>{
   Transition get widget => super.widget;
   bool done =false;
   GoogleSignInAccount? _currentAccount;
+  Widget? _next;
 
   @override
   initState(){
     super.initState();
     _currentAccount=widget._currentAccount;
+    _next=widget._next;
   }
 
   @override
@@ -50,7 +54,7 @@ class TransitionState extends State<Transition>{
     }else{
       return Material(
         type: MaterialType.transparency,
-        child: MainScreen(_currentAccount));
+        child: _next);
     }
   }
 

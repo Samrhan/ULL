@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ULL/screens/mainEvent.dart';
 import 'package:ULL/services/environment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -425,7 +426,7 @@ class AddEventState extends State<AddEvent> {
       Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (context,a1,a2) => Transition(_currentAccount),
+          pageBuilder: (context,a1,a2) => Transition(_currentAccount, MainEvent(_currentAccount)),
           transitionsBuilder : (context,anim,a2,child) => FadeTransition(opacity: anim, child: child),
           transitionDuration: const Duration(milliseconds: 0),
         ),
