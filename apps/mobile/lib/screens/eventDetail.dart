@@ -53,7 +53,7 @@ class _EventDetailState extends State<EventDetailStated>{
     _currentUser = widget._currentAccount;
     event = widget.event;
     fetchPresta();
-    nbPrestation = "4";
+    nbPrestation = "";
   }
 
   @override

@@ -108,8 +108,8 @@ class _AuthenticationPageState extends State<AuthenticationPage>{
                       const SizedBox(
                         width: 20,
                       ),
-                      const Text("Continuer avec Google",
-                        style: TextStyle(color: Colors.grey, fontSize: 18),)
+                      const Text("Se connecter avec Google",
+                        style: TextStyle(color: Colors.grey, fontSize: 16),)
                     ],
                   ),),
               )
