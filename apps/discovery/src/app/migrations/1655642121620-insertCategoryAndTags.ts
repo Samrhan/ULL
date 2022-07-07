@@ -53,7 +53,7 @@ export class insertCategoryAndTags1655642121620 implements MigrationInterface {
             '        (\'Style minimaliste\'),\n' +
             '        (\'Style industriel\'),\n' +
             '        (\'Style scandinave\'),\n' +
-            '        (\'Style Transitionnel\'),\n' +
+            '        (\'Style traditionnel\'),\n' +
             '        (\'Style campagne\'),\n' +
             '        (\'style bohème\'),\n' +
             '        (\'Style Rustique\'),\n' +
